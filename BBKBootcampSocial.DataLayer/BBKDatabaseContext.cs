@@ -1,5 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using BBKBootcampSocial.Domains;
+﻿using System.Linq;
+using BBKBootcampSocial.Domains.Access;
+using BBKBootcampSocial.Domains.Post;
+using Microsoft.EntityFrameworkCore;
+using BBKBootcampSocial.Domains.User;
+using BBKBootcampSocial.Domains.Image;
+using BBKBootcampSocial.Domains.Comment;
 
 namespace BBKBootcampSocial.DataLayer
 {
@@ -13,6 +18,30 @@ namespace BBKBootcampSocial.DataLayer
         #region Db Sets
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Story> Stories { get; set; }
+        public DbSet<Image> Images { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
+        #endregion
+
+        #region disable cascading delete in database
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            var cascades = modelBuilder.Model.GetEntityTypes()
+                .SelectMany(t => t.GetForeignKeys())
+                .Where(fk => fk.IsOwnership && fk.DeleteBehavior == DeleteBehavior.Cascade);
+
+            foreach (var fk in cascades)
+            {
+                fk.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+
+            base.OnModelCreating(modelBuilder);
+        }
+
         #endregion
 
     }
