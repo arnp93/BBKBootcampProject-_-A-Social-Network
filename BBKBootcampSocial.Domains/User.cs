@@ -1,5 +1,4 @@
-﻿
-namespace BBKBootcampSocial.Domains
+﻿namespace BBKBootcampSocial.Domains
 {
     public class User : BaseEntity
     {
