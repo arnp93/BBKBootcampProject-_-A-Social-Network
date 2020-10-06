@@ -17,9 +17,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IoC", "IoC", "{55E16632-80D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BBKBootcampSocial.DataLayer", "BBKBootcampSocial.DataLayer\BBKBootcampSocial.DataLayer.csproj", "{1829BBA8-F97A-4595-833A-CD13651ED2F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BBKBootcampSocial.Domains", "BBKBootcampSocial.Domains\BBKBootcampSocial.Domains.csproj", "{41A17EA5-6B99-442F-8B1C-F3797292D391}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BBKBootcampSocial.Domains", "BBKBootcampSocial.Domains\BBKBootcampSocial.Domains.csproj", "{41A17EA5-6B99-442F-8B1C-F3797292D391}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BBKBootcampSocial.IoC", "BBKBootcampSocial.IoC\BBKBootcampSocial.IoC.csproj", "{C35DA970-3610-4D47-B284-EDC018B0B14E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BBKBootcampSocial.IoC", "BBKBootcampSocial.IoC\BBKBootcampSocial.IoC.csproj", "{C35DA970-3610-4D47-B284-EDC018B0B14E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BBKBootcampSocial.Core", "BBKBootcampSocial.Core\BBKBootcampSocial.Core.csproj", "{10242649-2037-4C9D-847A-6E6DFBEDF4E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +45,10 @@ Global
 		{C35DA970-3610-4D47-B284-EDC018B0B14E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C35DA970-3610-4D47-B284-EDC018B0B14E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C35DA970-3610-4D47-B284-EDC018B0B14E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10242649-2037-4C9D-847A-6E6DFBEDF4E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10242649-2037-4C9D-847A-6E6DFBEDF4E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10242649-2037-4C9D-847A-6E6DFBEDF4E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10242649-2037-4C9D-847A-6E6DFBEDF4E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,6 +58,7 @@ Global
 		{1829BBA8-F97A-4595-833A-CD13651ED2F7} = {A09547EE-36E8-4879-8130-E52AF97A21AA}
 		{41A17EA5-6B99-442F-8B1C-F3797292D391} = {008AC73F-0F31-4487-8675-2FBEF3F479CE}
 		{C35DA970-3610-4D47-B284-EDC018B0B14E} = {55E16632-80D8-4E16-B3D0-B4E6D041F576}
+		{10242649-2037-4C9D-847A-6E6DFBEDF4E1} = {C8314B3B-B8A5-4429-965E-62CCCFCE133C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C383CB06-B2E4-4320-8BBE-C5F033996D5A}

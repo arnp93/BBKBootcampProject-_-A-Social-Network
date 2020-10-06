@@ -17,4 +17,8 @@
     <ProjectReference Include="..\BBKBootcampSocial.IoC\BBKBootcampSocial.IoC.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\" />
+  </ItemGroup>
+
 </Project>
