@@ -1,8 +1,8 @@
-﻿using BBKBootcampSocial.Core.IServices;
-using BBKBootcampSocial.Domains.Common;
+﻿using BBKBootcampSocial.Domains.Common;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
+using BBKBootcampSocial.DataLayer.Interfaces;
 
 namespace BBKBootcampSocial.DataLayer.Implementations
 {

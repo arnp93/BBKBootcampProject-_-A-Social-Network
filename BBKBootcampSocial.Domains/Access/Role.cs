@@ -13,7 +13,6 @@ namespace BBKBootcampSocial.Domains.Access
         #endregion
 
 
-
         #region Relations
 
         public virtual ICollection<UserRole> UserRoles { get; set; }

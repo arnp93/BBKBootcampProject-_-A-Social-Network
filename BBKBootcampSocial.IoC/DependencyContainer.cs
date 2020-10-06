@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using BBKBootcampSocial.Core.IServices;
+using BBKBootcampSocial.Core.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BBKBootcampSocial.IoC
 {
@@ -7,7 +9,7 @@ namespace BBKBootcampSocial.IoC
 
         public static void RegisterServices(IServiceCollection services)
         {
-
+            services.AddScoped<IUserService, UserService>();
         }
     }
 }

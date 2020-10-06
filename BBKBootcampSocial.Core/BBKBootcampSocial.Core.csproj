@@ -5,11 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BBKBootcampSocial.DataLayer\BBKBootcampSocial.DataLayer.csproj" />
     <ProjectReference Include="..\BBKBootcampSocial.Domains\BBKBootcampSocial.Domains.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

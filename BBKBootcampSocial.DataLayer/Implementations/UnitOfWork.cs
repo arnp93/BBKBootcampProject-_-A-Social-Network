@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using BBKBootcampSocial.Core.IServices;
+using BBKBootcampSocial.DataLayer.Interfaces;
 
 namespace BBKBootcampSocial.DataLayer.Implementations
 {

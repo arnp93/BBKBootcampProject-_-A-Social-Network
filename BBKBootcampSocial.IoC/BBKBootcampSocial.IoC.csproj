@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BBKBootcampSocial.Core\BBKBootcampSocial.Core.csproj" />
     <ProjectReference Include="..\BBKBootcampSocial.DataLayer\BBKBootcampSocial.DataLayer.csproj" />
   </ItemGroup>
 

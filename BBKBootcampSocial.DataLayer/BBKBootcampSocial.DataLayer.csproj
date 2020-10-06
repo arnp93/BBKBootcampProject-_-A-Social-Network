@@ -11,7 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BBKBootcampSocial.Core\BBKBootcampSocial.Core.csproj" />
     <ProjectReference Include="..\BBKBootcampSocial.Domains\BBKBootcampSocial.Domains.csproj" />
   </ItemGroup>
 

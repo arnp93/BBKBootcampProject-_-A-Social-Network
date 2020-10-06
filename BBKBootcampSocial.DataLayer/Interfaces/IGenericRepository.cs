@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BBKBootcampSocial.Core.IServices
+namespace BBKBootcampSocial.DataLayer.Interfaces
 {
     public interface IGenericRepository<TEntity> : IDisposable where  TEntity : BaseEntity
     {

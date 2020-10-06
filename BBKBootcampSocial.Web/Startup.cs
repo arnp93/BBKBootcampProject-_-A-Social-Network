@@ -1,4 +1,6 @@
 using BBKBootcampSocial.DataLayer;
+using BBKBootcampSocial.DataLayer.Implementations;
+using BBKBootcampSocial.DataLayer.Interfaces;
 using BBKBootcampSocial.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,9 +23,10 @@ namespace BBKBootcampSocial.Web
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddMvc();
             services.AddControllers();
+
+            RegisterServices(services);
 
             #region Database
 
@@ -33,9 +36,14 @@ namespace BBKBootcampSocial.Web
                 }
             );
 
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             #endregion
 
-            RegisterServices(services);
+     
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

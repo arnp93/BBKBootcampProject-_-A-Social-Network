@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
- using BBKBootcampSocial.Core.IServices;
 using BBKBootcampSocial.Domains.Common;
 
-namespace BBKBootcampSocial.Core.IServices
+namespace BBKBootcampSocial.DataLayer.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
