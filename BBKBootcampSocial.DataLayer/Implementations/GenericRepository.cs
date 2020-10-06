@@ -1,4 +1,4 @@
-﻿using BBKBootcampSocial.DataLayer.Interfaces;
+﻿using BBKBootcampSocial.Core.IServices;
 using BBKBootcampSocial.Domains.Common;
 using Microsoft.EntityFrameworkCore;
 using System;

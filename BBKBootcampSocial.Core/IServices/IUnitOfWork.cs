@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using BBKBootcampSocial.DataLayer.Interfaces;
+ using BBKBootcampSocial.Core.IServices;
 using BBKBootcampSocial.Domains.Common;
 
 namespace BBKBootcampSocial.Core.IServices
