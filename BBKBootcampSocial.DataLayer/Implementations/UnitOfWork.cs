@@ -1,12 +1,12 @@
-﻿
-
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using BBKBootcampSocial.Core.IServices;
 
 namespace BBKBootcampSocial.DataLayer.Implementations
 {
     public class UnitOfWork : IUnitOfWork
     {
+        #region Constructor
+
         private BBKDatabaseContext db;
 
         public UnitOfWork(BBKDatabaseContext db)
@@ -14,11 +14,9 @@ namespace BBKBootcampSocial.DataLayer.Implementations
             this.db = db;
         }
 
+        #endregion
 
-        public void Dispose()
-        {
-            db?.Dispose();
-        }
+        #region Implementations
 
         public async Task<int> SaveChanges()
         {
@@ -30,5 +28,16 @@ namespace BBKBootcampSocial.DataLayer.Implementations
             await Task.CompletedTask;
             return new GenericRepository<TEntity>(db) as TRepository;
         }
+
+        #endregion
+
+        #region Dispose
+
+        public void Dispose()
+        {
+            db?.Dispose();
+        }
+
+        #endregion
     }
 }
