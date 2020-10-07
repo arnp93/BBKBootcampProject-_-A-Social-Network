@@ -6,9 +6,7 @@ using BBKBootcampSocial.Core.Utilities;
 
 namespace BBKBootcampSocial.Web.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountController : BaseController
     {
         private readonly IUserService UserService;
 

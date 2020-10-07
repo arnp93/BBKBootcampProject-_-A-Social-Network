@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using BBKBootcampSocial.Core.DTOs.Account;
-using BBKBootcampSocial.Domains.User;
 
 namespace BBKBootcampSocial.Core.IServices
 {
