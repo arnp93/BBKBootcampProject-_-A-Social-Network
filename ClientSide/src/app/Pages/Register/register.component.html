@@ -5,39 +5,94 @@
                 <div class="RegisterPage__container">
                     <div class="RegisterPage__boxes register">
                         <h2>Crea tu cuenta</h2>
-                        <form class="go-bottom">
+                        <form [formGroup]="registerForm" (submit)="registerUser()" class="go-bottom">
                             <div>
-                                <input id="name" name="name" type="text" required>
+                                <div>
+                                    <p class="text-error" *ngIf="registerForm.controls.firstName.errors?.required && registerForm.controls.firstName.touched">
+                                    Rellenar este campo es obligatorio
+                                  </p>
+                                  <p class="text-error" *ngIf="registerForm.controls.firstName.errors?.maxlength && registerForm.controls.firstName.touched">
+                                    No se puede tener mas que 50 caracteres
+                                  </p>
+                                </div>
+                                <input id="name" formControlName="firstName" type="text" required>
                                 <label for="name">Nombre</label>
                             </div>
                             <div>
-                                <input id="surname" name="surname" type="text" required>
+                                <div>
+                                    <p class="text-error" *ngIf="registerForm.controls.lastName.errors?.required && registerForm.controls.lastName.touched">
+                                    Rellenar este campo es obligatorio
+                                  </p>
+                                  <p class="text-error" *ngIf="registerForm.controls.lastName.errors?.maxlength && registerForm.controls.lastName.touched">
+                                    No se puede tener mas que 50 caracteres
+                                  </p>
+                                </div>
+                                <input id="surname" formControlName="lastName" type="text" required>
                                 <label for="surname">Apellidos</label>
+                              
                             </div>
                             <div>
-                                <input id="nickName" name="nickName" type="text" required>
-                                <label for="nickName">Nickname</label>
+                                <div>
+                                    <p class="text-error" *ngIf="registerForm.controls.userName.errors?.required && registerForm.controls.userName.touched">
+                                    Rellenar este campo es obligatorio
+                                  </p>
+                                  <p class="text-error" *ngIf="registerForm.controls.userName.errors?.maxlength && registerForm.controls.userName.touched">
+                                    No se puede tener mas que 100 caracteres
+                                  </p>
+                                </div>
+                                <input id="nickName" formControlName="userName" type="text" required>
+                                <label for="nickName">User Name</label>
                             </div>
                             <div>
-                                <input id="email" name="email" type="email" required>
+                                <div>
+                                    <p class="text-error" *ngIf="registerForm.controls.email.errors?.required && registerForm.controls.email.touched">
+                                    Rellenar este campo es obligatorio
+                                  </p>
+                                  <p class="text-error" *ngIf="registerForm.controls.email.errors?.email && registerForm.controls.email.touched">
+                                    Este Email no es valido
+                                  </p>
+                                </div>
+                                <input id="email" formControlName="email" type="email" required>
                                 <label for="email">Email</label>
                             </div>
                             <div>
-                                <input id="password" name="password" type="password" required>
+                                <div>
+                                    <p class="text-error" *ngIf="registerForm.controls.firstName.errors?.required && registerForm.controls.firstName.touched">
+                                    Rellenar este campo es obligatorio
+                                  </p>
+                                  <p class="text-error" *ngIf="registerForm.controls.firstName.errors?.maxlength && registerForm.controls.firstName.touched">
+                                    No se puede tener mas que 150 caracteres
+                                  </p>
+                                  <p class="text-error" *ngIf="registerForm.controls.firstName.errors?.minlength && registerForm.controls.firstName.touched">
+                                    No se puede tener menos que 9 caracteres
+                                  </p>
+                                </div>
+                                <input id="password" formControlName="password" type="password" required>
                                 <label for="password">Contraseña</label>
                             </div>
                             <div>
-                                <input id="repeatPassword" name="repeatPassword" type="password" required>
+                                <div>
+                                    <p class="text-error" *ngIf="registerForm.controls.firstName.errors?.required && registerForm.controls.firstName.touched">
+                                    Rellenar este campo es obligatorio
+                                  </p>
+                                  <p class="text-error" *ngIf="registerForm.controls.firstName.errors?.maxlength && registerForm.controls.firstName.touched">
+                                    No se puede tener mas que 150 caracteres
+                                  </p>
+                                  <p class="text-error" *ngIf="registerForm.controls.firstName.errors?.minlength && registerForm.controls.firstName.touched">
+                                    No se puede tener menos que 9 caracteres
+                                  </p>
+                                </div>
+                                <input id="repeatPassword" formControlName="rePassword" type="password" required>
                                 <label for="repeatPassword">Repetir contraseña</label>
                             </div>
                             <div>
-                                <button id="left-right-button" class="button button--left-right">
+                                <button type="submit" id="left-right-button" class="button button--left-right">
                                     <span>Registrarse</span>
                                 </button>
                             </div>
                         </form>
 
-                        <p class="alreadyAcount">¿Ya tienes una cuenta? <a class="standar-link" href="login.html">Inicia sesión</a></p>
+                       
 
                     </div>
                 </div>

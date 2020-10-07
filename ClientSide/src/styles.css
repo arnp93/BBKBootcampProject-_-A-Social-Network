@@ -1,1 +1,25 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  body, body * {
+    font-family: Roboto, Arial, sans-serif;
+    color: white;
+    font-weight: 400;
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  .main-container {
+    background-color: #181818;
+    width: 100%;
+    min-height: 100vh;
+    height: 100%;
+  }
+
+  .text-error{
+    color: red
+  }

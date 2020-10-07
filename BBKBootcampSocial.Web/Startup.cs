@@ -1,6 +1,9 @@
+using AutoMapper;
+using BBKBootcampSocial.Core.DTOs.Account;
 using BBKBootcampSocial.DataLayer;
 using BBKBootcampSocial.DataLayer.Implementations;
 using BBKBootcampSocial.DataLayer.Interfaces;
+using BBKBootcampSocial.Domains.User;
 using BBKBootcampSocial.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,7 +29,18 @@ namespace BBKBootcampSocial.Web
             services.AddMvc();
             services.AddControllers();
 
+            #region AutoMapper
+            services.AddAutoMapper(configuration =>
+            {
+                configuration.CreateMap<RegisterUserDTO,User>();
+            }, typeof(Startup));
+            #endregion
+
+            #region Pass service to IoC Layer
+
             RegisterServices(services);
+
+            #endregion
 
             #region Database
 
@@ -42,7 +56,19 @@ namespace BBKBootcampSocial.Web
 
             #endregion
 
-     
+            #region CORS
+            services.AddCors(options =>
+            {
+                options.AddPolicy("EnableCors", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .Build();
+                });
+            });
+            #endregion
+
 
         }
 
@@ -61,7 +87,7 @@ namespace BBKBootcampSocial.Web
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseCors("EnableCors");
             app.UseRouting();
 
             app.UseAuthorization();

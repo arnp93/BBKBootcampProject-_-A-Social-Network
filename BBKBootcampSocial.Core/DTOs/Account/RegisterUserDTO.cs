@@ -1,14 +1,9 @@
-﻿using BBKBootcampSocial.Domains.Common;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using BBKBootcampSocial.Domains.Access;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace BBKBootcampSocial.Domains.User
+namespace BBKBootcampSocial.Core.DTOs.Account
 {
-    public class User : BaseEntity
+    public class RegisterUserDTO
     {
-        #region Properties
-
         [Display(Name = "Username")]
         [Required(ErrorMessage = "Introduce un Username unico")]
         [MinLength(4, ErrorMessage = "Ese campo no puede tener menos de 4 caracteres")]
@@ -29,26 +24,18 @@ namespace BBKBootcampSocial.Domains.User
         public string Email { get; set; }
         [Display(Name = "Contraseña")]
         [Required(ErrorMessage = "Introduce tu contraseña")]
-        [MinLength(9,ErrorMessage = "Ese campo no puede tener menos de 9 caracteres")]
+        [MinLength(9, ErrorMessage = "Ese campo no puede tener menos de 9 caracteres")]
         [MaxLength(150, ErrorMessage = "Ese campo no puede tener mas de 150 caracteres")]
         public string Password { get; set; }
-        public string Facebook { get; set; }
-        public string LinkdIn { get; set; }
-        public string Instagram { get; set; }
-        public string WhatsApp { get; set; }
-        public bool IsActive { get; set; }
+        [Display(Name = "Repetir la Contraseña")]
+        [Required(ErrorMessage = "Introduce tu contraseña")]
+        [Compare("Password")]
+        public string RePassword { get; set; }
+    }
 
-
-        #endregion
-
-        #region Relations
-
-        public virtual ICollection<Post.Post> Posts { get; set; }
-        public virtual ICollection<Post.Story> Stories { get; set; }
-        public virtual ICollection<Image.Image> Images { get; set; }
-        public virtual ICollection<UserRole> UserRoles { get; set; }
-
-        #endregion
-
+    public enum RegisterUserResult
+    {
+        Success,
+        EmailExists
     }
 }

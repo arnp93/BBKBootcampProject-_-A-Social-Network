@@ -9,6 +9,7 @@ namespace BBKBootcampSocial.IoC
 
         public static void RegisterServices(IServiceCollection services)
         {
+            
             services.AddScoped<IUserService, UserService>();
         }
     }
