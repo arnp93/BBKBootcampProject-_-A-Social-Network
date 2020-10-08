@@ -7,6 +7,7 @@ using BBKBootcampSocial.Domains.User;
 using BBKBootcampSocial.Core.DTOs.Account;
 using AutoMapper;
 using System.Linq;
+using BBKBootcampSocial.Core.Security;
 
 namespace BBKBootcampSocial.Core.Services
 {
@@ -31,6 +32,7 @@ namespace BBKBootcampSocial.Core.Services
         {
             var Repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
             User User = mapper.Map<User>(user);
+            User.Password = PasswordHelper.EncodePasswordMd5(User.Password);
             if (await IsEmailExist(User.Email))
             {
                 return RegisterUserResult.EmailExists;
@@ -46,6 +48,7 @@ namespace BBKBootcampSocial.Core.Services
 
         public async Task<LoginUserResult> LoginUser(LoginUserDTO login)
         {
+            login.Password = PasswordHelper.EncodePasswordMd5(login.Password);
             try
             {
                 if (!await IsEmailExist(login.Email))

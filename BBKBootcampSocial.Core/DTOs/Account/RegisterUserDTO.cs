@@ -37,5 +37,6 @@ namespace BBKBootcampSocial.Core.DTOs.Account
     {
         Success,
         EmailExists
+
     }
 }

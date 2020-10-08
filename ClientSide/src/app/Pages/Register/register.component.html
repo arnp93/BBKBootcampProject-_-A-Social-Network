@@ -91,7 +91,7 @@
                                 </button>
                             </div>
                         </form>
-
+                        <p class="alreadyAcount">¿tienes uenta? <a class="standar-link" [routerLink]="''" routerLinkActive="router-link-active" >Login</a></p>
                        
 
                     </div>
@@ -100,3 +100,22 @@
         </div>
     </div>
 </main>
+
+<div class="my-container">
+  <ng-template #customLoadingTemplate>
+      <div class="custom-class">
+          <h3>
+              Loading...
+          </h3>
+      </div>
+  </ng-template>
+
+  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate"></ngx-loading>
+</div>
+<swal
+  #emailExist
+  title="Oops"
+  icon="error"
+  [showCancelButton]="true"
+  [focusCancel]="true">
+</swal>

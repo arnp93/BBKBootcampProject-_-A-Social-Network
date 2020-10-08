@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import { AuthServiceService } from '../../Services/auth-service.service';
 import { RegisterUserDTO } from '../../DTOs/Account/RegisterUserDTO';
+import { Router } from '@angular/router';
+import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 
 @Component({
   selector: 'app-register',
@@ -10,8 +12,12 @@ import { RegisterUserDTO } from '../../DTOs/Account/RegisterUserDTO';
 })
 export class RegisterComponent implements OnInit {
 
+  @ViewChild('emailExist') private emailExist: SwalComponent;
+
+
+  public loading = false;
   public registerForm: FormGroup;
-  constructor(private authService: AuthServiceService) { }
+  constructor(private authService: AuthServiceService, private route:Router) { }
 
   ngOnInit(): void {
     this.registerForm = new FormGroup({
@@ -50,6 +56,7 @@ export class RegisterComponent implements OnInit {
   }
 
   registerUser(){
+    this.loading = true;
     const registerData = new RegisterUserDTO(
       this.registerForm.controls.firstName.value,
       this.registerForm.controls.lastName.value,
@@ -58,10 +65,24 @@ export class RegisterComponent implements OnInit {
       this.registerForm.controls.password.value,
       this.registerForm.controls.rePassword.value
     );
+    if(registerData.password === registerData.rePassword){
     this.authService.RegisterUser(registerData).subscribe(res =>{
-      console.log(res);
+      if(res.status === "Success"){
+        this.authService.setAlertOfNewRegister();
+        return this.route.navigate([""]);
+      }else{
+      this.loading = false;
+      if(res.data.error === "Email Exist"){
+        this.emailExist.title = "Este email ya esta Disponible!";
+        this.emailExist.fire();
+      }
+    }
     });
-    
+  }else{
+    this.loading = false;
+    this.emailExist.title = "Las contraseñas no son iguales";
+    this.emailExist.fire();
+  }
   }
 
 
