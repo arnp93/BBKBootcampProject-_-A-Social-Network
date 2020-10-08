@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using BBKBootcampSocial.Domains.User;
 using BBKBootcampSocial.Domains.Image;
 using BBKBootcampSocial.Domains.Comment;
+using BBKBootcampSocial.Domains.Canal;
 
 namespace BBKBootcampSocial.DataLayer
 {
@@ -24,6 +25,8 @@ namespace BBKBootcampSocial.DataLayer
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Canal> Canals { get; set; }
+        public DbSet<CanalUser> CanalUsers { get; set; }
         #endregion
 
         #region disable cascading delete in database

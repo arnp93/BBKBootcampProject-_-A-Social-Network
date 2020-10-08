@@ -1,3 +1,4 @@
+using System.Text;
 using AutoMapper;
 using BBKBootcampSocial.Core.DTOs.Account;
 using BBKBootcampSocial.DataLayer;
@@ -5,12 +6,14 @@ using BBKBootcampSocial.DataLayer.Implementations;
 using BBKBootcampSocial.DataLayer.Interfaces;
 using BBKBootcampSocial.Domains.User;
 using BBKBootcampSocial.IoC;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BBKBootcampSocial.Web
 {
@@ -54,6 +57,21 @@ namespace BBKBootcampSocial.Web
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            #endregion
+
+            #region Authentication
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = "https://localhost:44352",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("BBKBootCampIssuerKeyJWTByArashNP"))
+                };
+            });
             #endregion
 
             #region CORS

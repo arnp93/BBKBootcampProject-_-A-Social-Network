@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using BBKBootcampSocial.Domains.Access;
+using System.ComponentModel.DataAnnotations.Schema;
+using BBKBootcampSocial.Domains.Canal;
 
 namespace BBKBootcampSocial.Domains.User
 {
@@ -38,6 +40,8 @@ namespace BBKBootcampSocial.Domains.User
         public string WhatsApp { get; set; }
         public bool IsActive { get; set; }
 
+        public long? FriendId { get; set; }
+
 
         #endregion
 
@@ -47,6 +51,10 @@ namespace BBKBootcampSocial.Domains.User
         public virtual ICollection<Post.Story> Stories { get; set; }
         public virtual ICollection<Image.Image> Images { get; set; }
         public virtual ICollection<UserRole> UserRoles { get; set; }
+        [ForeignKey("FriendId")]
+        public virtual ICollection<User> Users{ get; set; }
+
+        public ICollection<CanalUser> Canals { get; set; }
 
         #endregion
 

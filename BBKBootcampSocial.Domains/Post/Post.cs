@@ -1,5 +1,6 @@
 ﻿using BBKBootcampSocial.Domains.Common;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BBKBootcampSocial.Domains.Post
 {
@@ -8,15 +9,16 @@ namespace BBKBootcampSocial.Domains.Post
         #region Properties  
         public string PostText { get; set; }
         public string FileName { get; set; }
-
         public long UserId { get; set; }
+        public long? CanalId { get; set; }
         #endregion
 
         #region Relations
 
         public virtual User.User User { get; set; }
-
         public virtual ICollection<Comment.Comment> Comments { get; set; }
+        [ForeignKey("CanalId")]
+        public Canal.Canal Canal { get; set; }
 
         #endregion
 
