@@ -17,5 +17,6 @@ namespace BBKBootcampSocial.Core.IServices
         Task<User> GetUserByEmail(string email);
 
         Task<bool> IsUserActive(string email);
+        Task<bool> ActiveAccount(string activeCode);
     }
 }

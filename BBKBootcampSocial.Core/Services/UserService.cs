@@ -8,6 +8,7 @@ using BBKBootcampSocial.Core.DTOs.Account;
 using AutoMapper;
 using System.Linq;
 using BBKBootcampSocial.Core.Security;
+using BBKBootcampSocial.Core.Utilities.Convertors;
 
 namespace BBKBootcampSocial.Core.Services
 {
@@ -17,31 +18,52 @@ namespace BBKBootcampSocial.Core.Services
 
         private IUnitOfWork unitOfWork;
         private IMapper mapper;
+        private IMailSender mailSender;
+        private IViewRenderService viewRenderService;
 
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper, IMailSender mailSender, IViewRenderService viewRenderService)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            this.mailSender = mailSender;
+            this.viewRenderService = viewRenderService;
         }
 
         #endregion
 
         #region Register
-
         public async Task<RegisterUserResult> AddUser(RegisterUserDTO user)
         {
             var Repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
+
+            #region Sanitize Properties of user (RegisterUserDTO) || Secutiry
+
+            user.Email = user.Email.SanitizeText();
+            user.FirstName = user.FirstName.SanitizeText();
+            user.LastName = user.LastName.SanitizeText();
+            user.Password = user.Password.SanitizeText();
+            user.RePassword = user.RePassword.SanitizeText();
+
+            #endregion
+
             User User = mapper.Map<User>(user);
             User.Password = PasswordHelper.EncodePasswordMd5(User.Password);
             if (await IsEmailExist(User.Email))
             {
                 return RegisterUserResult.EmailExists;
             }
+
+            User.ActiveCode = Guid.NewGuid().ToString() + "BBK-BootCamp";
             await Repository.AddEntity(User);
             await unitOfWork.SaveChanges();
+
+
+            string body = await viewRenderService.RenderToStringAsync("Email/ActivateAccount", User);
+            mailSender.Send(user.Email, "BBK Bootcamp Social Network - Activate your Account", body);
             return RegisterUserResult.Success;
 
         }
+
         #endregion
 
         #region Login
@@ -59,6 +81,7 @@ namespace BBKBootcampSocial.Core.Services
 
                 if (await ValidateEmailAndPassword(login.Email, login.Password))
                     return LoginUserResult.Success;
+                    
 
             }
             catch (Exception e)
@@ -68,6 +91,28 @@ namespace BBKBootcampSocial.Core.Services
             }
 
             return LoginUserResult.UnknownError;
+        }
+
+        #endregion
+
+        #region Active Account
+
+        public async Task<bool> ActiveAccount(string activeCode)
+        {
+            var repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
+
+            User user = repository.GetEntitiesQuery().FirstOrDefault(u => u.ActiveCode == activeCode);
+
+            if (user != null)
+            {
+                user.ActiveCode = Guid.NewGuid().ToString() + "BBK-Bootcamp";
+                user.IsActive = true;
+                repository.UpdateEntity(user);
+                await unitOfWork.SaveChanges();
+                return true;
+            }
+
+            return false;
         }
 
         #endregion

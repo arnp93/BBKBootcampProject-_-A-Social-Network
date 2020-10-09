@@ -1,3 +1,11 @@
+  #all{
+    height: auto;
+    color: white;
+    font-weight: 400;
+  }
+  #all *{
+    font-family: Roboto, Arial, sans-serif;
+  }
   form {
     width: 100%;
     max-width: 100%;
@@ -139,10 +147,8 @@
   
   .RegisterPage {
     width: 100%;
-    position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
   }
   @media screen and (max-width: 767px) {
     .RegisterPage {

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthServiceService } from '../../Services/auth-service.service';
 import { RegisterUserDTO } from '../../DTOs/Account/RegisterUserDTO';
 import { Router } from '@angular/router';
@@ -14,10 +14,10 @@ export class RegisterComponent implements OnInit {
 
   @ViewChild('emailExist') private emailExist: SwalComponent;
 
-
+  public activeEmailMsg: string = null;
   public loading = false;
   public registerForm: FormGroup;
-  constructor(private authService: AuthServiceService, private route:Router) { }
+  constructor(private authService: AuthServiceService, private route: Router) { }
 
   ngOnInit(): void {
     this.registerForm = new FormGroup({
@@ -42,20 +42,20 @@ export class RegisterComponent implements OnInit {
           Validators.email,
           Validators.required
         ]),
-        password: new FormControl(null,[
-          Validators.required,
-          Validators.minLength(9),
-          Validators.maxLength(150)
-        ]),
-        rePassword: new FormControl(null,[
-          Validators.required,
-          Validators.minLength(9),
-          Validators.maxLength(150)
-        ])
+      password: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(9),
+        Validators.maxLength(150)
+      ]),
+      rePassword: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(9),
+        Validators.maxLength(150)
+      ])
     });
   }
 
-  registerUser(){
+  registerUser() {
     this.loading = true;
     const registerData = new RegisterUserDTO(
       this.registerForm.controls.firstName.value,
@@ -65,24 +65,25 @@ export class RegisterComponent implements OnInit {
       this.registerForm.controls.password.value,
       this.registerForm.controls.rePassword.value
     );
-    if(registerData.password === registerData.rePassword){
-    this.authService.RegisterUser(registerData).subscribe(res =>{
-      if(res.status === "Success"){
-        this.authService.setAlertOfNewRegister();
-        return this.route.navigate([""]);
-      }else{
+    if (registerData.password === registerData.rePassword) {
+      this.authService.RegisterUser(registerData).subscribe(res => {
+        if (res.status === "Success") {
+          this.authService.setAlertOfNewRegister();
+          this.activeEmailMsg = "Te hemos enviado un email con el enlace de Activar tu cuenta"
+          this.loading = false;
+        } else {
+          this.loading = false;
+          if (res.data.error === "Email Exist") {
+            this.emailExist.title = "Este email ya esta Disponible!";
+            this.emailExist.fire();
+          }
+        }
+      });
+    } else {
       this.loading = false;
-      if(res.data.error === "Email Exist"){
-        this.emailExist.title = "Este email ya esta Disponible!";
-        this.emailExist.fire();
-      }
+      this.emailExist.title = "Las contraseñas no son iguales";
+      this.emailExist.fire();
     }
-    });
-  }else{
-    this.loading = false;
-    this.emailExist.title = "Las contraseñas no son iguales";
-    this.emailExist.fire();
-  }
   }
 
 

@@ -39,6 +39,7 @@ namespace BBKBootcampSocial.Domains.User
         public string Instagram { get; set; }
         public string WhatsApp { get; set; }
         public bool IsActive { get; set; }
+        public string ActiveCode { get; set; }
 
         public long? FriendId { get; set; }
 

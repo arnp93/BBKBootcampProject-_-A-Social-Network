@@ -40,8 +40,22 @@ namespace BBKBootcampSocial.Web.Controllers
 
         #endregion
 
+        #region Active Account
+        [HttpGet("activate-account/{activeCode}")]
+        public async Task<IActionResult> ActiveUserFromEmail(string activeCode)
+        {
+            bool isSuccess = await UserService.ActiveAccount(activeCode);
+            if (isSuccess)
+                return Redirect("http://localhost:4300/");
+
+            return Redirect("http://localhost:4200/active-error");
+
+
+        }
+        #endregion
+
         #region Login
-        [HttpPost]
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginUserDTO login)
         {
             if (ModelState.IsValid)
@@ -54,7 +68,7 @@ namespace BBKBootcampSocial.Web.Controllers
                         return JsonResponseStatus.NotFound();
 
                     case LoginUserResult.NotActivated:
-                        return JsonResponseStatus.Error(new { message = "Tu cuenta no esta activo" });
+                        return JsonResponseStatus.Error();
 
                     case LoginUserResult.Success:
                         var user = await UserService.GetUserByEmail(login.Email);
@@ -74,7 +88,10 @@ namespace BBKBootcampSocial.Web.Controllers
                         var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
                         return JsonResponseStatus.Success(new LoginUserInfoDTO
                         {
-                            Token = tokenString, ExpireTime = 30, FirstName = user.FirstName, LastName = user.LastName,
+                            Token = tokenString,
+                            ExpireTime = 30,
+                            FirstName = user.FirstName,
+                            LastName = user.LastName,
                             UserId = user.Id
                         });
                 }

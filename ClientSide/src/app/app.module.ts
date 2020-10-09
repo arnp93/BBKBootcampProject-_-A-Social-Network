@@ -10,12 +10,22 @@ import { Interceptor } from './Utilities/Interceptor';
 import { LoginComponent } from './Pages/Login/login/login.component';
 import { NgxLoadingModule } from 'ngx-loading';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { IndexComponent } from './Pages/Index/index/index.component';
+import { ResponsiveMenuComponent } from './SharedComponents/responsive-menu/responsive-menu.component';
+import { FooterComponent } from './SharedComponents/footer/footer.component';
+import { LoginErrorComponent } from './Pages/login-error/login-error.component';
+import { NotFoundComponent } from './Pages/not-found/not-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    IndexComponent,
+    ResponsiveMenuComponent,
+    FooterComponent,
+    LoginErrorComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,

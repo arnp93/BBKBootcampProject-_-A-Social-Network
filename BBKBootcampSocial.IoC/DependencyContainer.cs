@@ -1,5 +1,6 @@
 ﻿using BBKBootcampSocial.Core.IServices;
 using BBKBootcampSocial.Core.Services;
+using BBKBootcampSocial.Core.Utilities.Convertors;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BBKBootcampSocial.IoC
@@ -11,6 +12,8 @@ namespace BBKBootcampSocial.IoC
         {
             
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IMailSender, SendEmail>();
+            services.AddScoped<IViewRenderService, RenderViewToString>();
         }
     }
 }
