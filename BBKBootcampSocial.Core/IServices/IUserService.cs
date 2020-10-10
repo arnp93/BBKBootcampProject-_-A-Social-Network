@@ -8,7 +8,7 @@ namespace BBKBootcampSocial.Core.IServices
     {
         Task<RegisterUserResult> AddUser(RegisterUserDTO user);
 
-        Task<bool>IsEmailExist(string email);
+        Task<bool> IsEmailExist(string email);
 
         Task<LoginUserResult> LoginUser(LoginUserDTO login);
 

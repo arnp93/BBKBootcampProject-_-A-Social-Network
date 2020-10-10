@@ -16,6 +16,14 @@ import { FooterComponent } from './SharedComponents/footer/footer.component';
 import { LoginErrorComponent } from './Pages/login-error/login-error.component';
 import { NotFoundComponent } from './Pages/not-found/not-found.component';
 import { CookieService } from 'ngx-cookie-service';
+import { ShortcutsComponent } from './SharedComponents/leftSideBar/shortcuts/shortcuts.component';
+import { RecentActivitiesComponent } from './SharedComponents/leftSideBar/recent-activities/recent-activities.component';
+import { WhosFollowingComponent } from './SharedComponents/leftSideBar/whos-following/whos-following.component';
+import { MenuComponent } from './SharedComponents/normalMenu/menu/menu.component';
+import { AddNewPostComponent } from './Pages/Index/add-new-post/add-new-post.component';
+import { UserPostsComponent } from './Pages/Index/user-posts/user-posts.component';
+import { RightSideBarComponent } from './SharedComponents/right-side-bar/right-side-bar.component';
+import { SettingsComponent } from './SharedComponents/settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +34,15 @@ import { CookieService } from 'ngx-cookie-service';
     ResponsiveMenuComponent,
     FooterComponent,
     LoginErrorComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    ShortcutsComponent,
+    RecentActivitiesComponent,
+    WhosFollowingComponent,
+    MenuComponent,
+    AddNewPostComponent,
+    UserPostsComponent,
+    RightSideBarComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
