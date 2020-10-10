@@ -15,6 +15,7 @@ import { ResponsiveMenuComponent } from './SharedComponents/responsive-menu/resp
 import { FooterComponent } from './SharedComponents/footer/footer.component';
 import { LoginErrorComponent } from './Pages/login-error/login-error.component';
 import { NotFoundComponent } from './Pages/not-found/not-found.component';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { NotFoundComponent } from './Pages/not-found/not-found.component';
   ],
   providers: [
     AuthServiceService,
+    CookieService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: Interceptor,

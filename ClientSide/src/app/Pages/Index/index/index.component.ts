@@ -10,14 +10,18 @@ import { AuthServiceService } from '../../../Services/auth-service.service';
 })
 export class IndexComponent implements OnInit {
 
-  constructor(private authService : AuthServiceService, private route : Router) { }
+  constructor(private authService: AuthServiceService, private route: Router) { }
 
   ngOnInit(): void {
-    this.authService.getCurrentUser().subscribe(res =>{
-      if(res === null){
+    this.authService.checkAuth().subscribe(res => {
+      if (res.status === 'Success') {
+        const currentUser = new UserDTO(res.data.token,res.data.expireTime,res.data.firstName,res.data.lastName,res.data.userId);
+        this.authService.setCurrentUser(currentUser);
+      }
+      if (res === null) {
         this.route.navigate(["login-error"]);
       }
     });
-  }
 
+  }
 }

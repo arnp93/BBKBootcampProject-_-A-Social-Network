@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserLoginDTO } from '../../../DTOs/Account/UserLoginDTO';
 import { Router } from '@angular/router';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,7 @@ export class LoginComponent implements OnInit {
   public IsRegisteredNow: boolean = false;
   public LoginForm: FormGroup;
 
-  constructor(private authService: AuthServiceService, private route: Router) { }
+  constructor(private authService: AuthServiceService, private route: Router, private CookieService: CookieService) { }
 
   ngOnInit(): void {
     this.IsRegisteredNow = this.authService.getAlertOfNewRegister();
@@ -40,20 +41,19 @@ export class LoginComponent implements OnInit {
 
     this.authService.LoginUser(userLoginData).subscribe(res => {
       if (res.status === "Success") {
+        this.CookieService.set("BBKBootcampCookie", res.data.token, res.data.expireTime * 60);
         this.loading = false;
         this.authService.setCurrentUser(res.data);
-        console.log(this.authService.getCurrentUser());
         this.route.navigate(["/index"]);
       } else if (res.status === "NotFound") {
         this.loading = false;
         this.error.title = "Este usario no existe";
         this.error.fire();
-      }else if(res.status === "Error"){
+      } else if (res.status === "Error") {
         this.loading = false;
         this.error.title = "Activa tu cuenta!";
         this.error.fire();
       }
-
     });
   }
 

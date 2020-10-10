@@ -34,4 +34,8 @@ export class AuthServiceService {
   getCurrentUser():Observable<UserDTO> {
     return this.currentUser;
   }
+
+  checkAuth():Observable<ILoginUserAccount>{
+    return this.http.post<ILoginUserAccount>('/api/account/check-auth', null);
+  }
 }

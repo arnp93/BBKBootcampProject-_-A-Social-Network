@@ -1,9 +1,9 @@
 export class UserDTO{
     constructor(
-        public Token : string,
-        public ExpireTime : string,
-        public FirstName : string,
-        public LastName : string,
-        public Id: number
+        public token : string,
+        public expireTime : number,
+        public firstName : string,
+        public lastName : string,
+        public userId: number
     ){}
 }

@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 using BBKBootcampSocial.Core.IServices;
 using BBKBootcampSocial.Core.DTOs.Account;
 using BBKBootcampSocial.Core.Utilities;
+using BBKBootcampSocial.Core.Utilities.Identity;
 using Microsoft.IdentityModel.Tokens;
+using BBKBootcampSocial.Domains.User;
 
 namespace BBKBootcampSocial.Web.Controllers
 {
@@ -40,18 +42,27 @@ namespace BBKBootcampSocial.Web.Controllers
 
         #endregion
 
-        #region Active Account
-        [HttpGet("activate-account/{activeCode}")]
-        public async Task<IActionResult> ActiveUserFromEmail(string activeCode)
+        #region Check if User is Authenticated
+
+        [HttpPost("check-auth")]
+        public async Task<IActionResult> CheckAuth()
         {
-            bool isSuccess = await UserService.ActiveAccount(activeCode);
-            if (isSuccess)
-                return Redirect("http://localhost:4300/");
+            if (User.Identity.IsAuthenticated)
+            {
+                User user = await UserService.GetUserById(User.GetUserId());
 
-            return Redirect("http://localhost:4200/active-error");
+                return JsonResponseStatus.Success(new LoginUserInfoDTO
+                {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    UserId = user.Id
+                });
+            
+            }
 
-
+            return JsonResponseStatus.Error();
         }
+
         #endregion
 
         #region Login
@@ -97,6 +108,20 @@ namespace BBKBootcampSocial.Web.Controllers
                 }
             }
             return JsonResponseStatus.Error();
+        }
+        #endregion
+
+        #region Active Account
+        [HttpGet("activate-account/{activeCode}")]
+        public async Task<IActionResult> ActiveUserFromEmail(string activeCode)
+        {
+            bool isSuccess = await UserService.ActiveAccount(activeCode);
+            if (isSuccess)
+                return Redirect("http://localhost:4200/");
+
+            return Redirect("http://localhost:4200/active-error");
+
+
         }
         #endregion
     }

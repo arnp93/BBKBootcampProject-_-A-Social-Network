@@ -32,20 +32,14 @@ namespace BBKBootcampSocial.Web
             services.AddMvc();
             services.AddControllers();
 
-            #region AutoMapper
+            #region AutoMapper Configurations
             services.AddAutoMapper(configuration =>
             {
                 configuration.CreateMap<RegisterUserDTO,User>();
             }, typeof(Startup));
             #endregion
 
-            #region Pass service to IoC Layer
-
-            RegisterServices(services);
-
-            #endregion
-
-            #region Database
+            #region Database Configurations
 
             services.AddDbContext<BBKDatabaseContext>(options =>
                 {
@@ -59,6 +53,12 @@ namespace BBKBootcampSocial.Web
 
             #endregion
 
+            #region Pass service to IoC Layer
+
+            RegisterServices(services);
+
+            #endregion
+
             #region Authentication
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
@@ -68,13 +68,13 @@ namespace BBKBootcampSocial.Web
                     ValidateAudience = false,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = "https://localhost:44352",
+                    ValidIssuer = "https://localhost:44317",
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("BBKBootCampIssuerKeyJWTByArashNP"))
                 };
             });
             #endregion
 
-            #region CORS
+            #region Enable CORS
             services.AddCors(options =>
             {
                 options.AddPolicy("EnableCors", builder =>
@@ -108,6 +108,7 @@ namespace BBKBootcampSocial.Web
             app.UseCors("EnableCors");
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

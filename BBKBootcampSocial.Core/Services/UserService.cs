@@ -34,7 +34,7 @@ namespace BBKBootcampSocial.Core.Services
         #region Register
         public async Task<RegisterUserResult> AddUser(RegisterUserDTO user)
         {
-            var Repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
+            var repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
 
             #region Sanitize Properties of user (RegisterUserDTO) || Secutiry
 
@@ -54,7 +54,7 @@ namespace BBKBootcampSocial.Core.Services
             }
 
             User.ActiveCode = Guid.NewGuid().ToString() + "BBK-BootCamp";
-            await Repository.AddEntity(User);
+            await repository.AddEntity(User);
             await unitOfWork.SaveChanges();
 
 
@@ -81,7 +81,7 @@ namespace BBKBootcampSocial.Core.Services
 
                 if (await ValidateEmailAndPassword(login.Email, login.Password))
                     return LoginUserResult.Success;
-                    
+
 
             }
             catch (Exception e)
@@ -121,9 +121,9 @@ namespace BBKBootcampSocial.Core.Services
 
         public async Task<bool> IsEmailExist(string email)
         {
-            var Repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
+            var repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
 
-            return Repository.GetEntitiesQuery().Any(u => u.Email == email);
+            return repository.GetEntitiesQuery().Any(u => u.Email == email);
 
         }
 
@@ -143,16 +143,23 @@ namespace BBKBootcampSocial.Core.Services
 
         public async Task<User> GetUserByEmail(string email)
         {
-            var Repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
+            var repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
 
-            return Repository.GetEntitiesQuery().FirstOrDefault(u => u.Email == email);
+            return repository.GetEntitiesQuery().FirstOrDefault(u => u.Email == email);
         }
 
         public async Task<bool> IsUserActive(string email)
         {
-            var Repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
+            var repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
 
-            return Repository.GetEntitiesQuery().Any(u => u.Email == email && u.IsActive == true);
+            return repository.GetEntitiesQuery().Any(u => u.Email == email && u.IsActive == true);
+        }
+
+        public async Task<User> GetUserById(long id)
+        {
+            var repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
+
+            return repository.GetEntitiesQuery().FirstOrDefault(u => u.Id == id);
         }
 
         #endregion
