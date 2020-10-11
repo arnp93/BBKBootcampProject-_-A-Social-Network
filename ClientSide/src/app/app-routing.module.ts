@@ -11,7 +11,8 @@ const appRoutes:Routes = [
     {path: '', component: LoginComponent},
     {path: 'index', component: IndexComponent},
     {path: 'login-error', component: LoginErrorComponent},
-    {path: 'active-error', component: NotFoundComponent}
+    {path: 'active-error', component: NotFoundComponent},
+    {path: '**', component: NotFoundComponent}
 ]
 
 @NgModule({

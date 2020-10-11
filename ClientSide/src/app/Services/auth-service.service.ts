@@ -30,7 +30,6 @@ export class AuthServiceService {
   setCurrentUser(user : UserDTO) : void{
     this.currentUser.next(user);
   }
-
   getCurrentUser():Observable<UserDTO> {
     return this.currentUser;
   }

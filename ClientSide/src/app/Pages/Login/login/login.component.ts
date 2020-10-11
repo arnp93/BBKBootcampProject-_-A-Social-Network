@@ -21,6 +21,16 @@ export class LoginComponent implements OnInit {
   constructor(private authService: AuthServiceService, private route: Router, private CookieService: CookieService) { }
 
   ngOnInit(): void {
+    this.authService.getCurrentUser().subscribe(res => {
+      if (res != null) {
+        this.route.navigate(["index"]);
+      }
+    });
+    //delay
+    setInterval(function () {
+      document.getElementById("loginForm").style.display = "block";
+    }, 1500);
+
     this.IsRegisteredNow = this.authService.getAlertOfNewRegister();
 
     this.LoginForm = new FormGroup({

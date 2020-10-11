@@ -14,11 +14,11 @@ export class IndexComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.checkAuth().subscribe(res => {
-      if (res.status === 'Success') {
-        const currentUser = new UserDTO(res.data.token,res.data.expireTime,res.data.firstName,res.data.lastName,res.data.userId);
-        this.authService.setCurrentUser(currentUser);
+       if (res.status === 'Success') {
+         const currentUser = new UserDTO(res.data.token,res.data.expireTime,res.data.firstName,res.data.lastName,res.data.userId);
+         this.authService.setCurrentUser(currentUser);
       }
-      if (res === null) {
+      if (res.status === "Error") {
         this.route.navigate(["login-error"]);
       }
     });

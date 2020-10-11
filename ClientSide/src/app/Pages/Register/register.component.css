@@ -6,6 +6,9 @@
   #all *{
     font-family: Roboto, Arial, sans-serif;
   }
+  .display{
+    display: block;
+  }
   form {
     width: 100%;
     max-width: 100%;

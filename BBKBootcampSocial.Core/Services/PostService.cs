@@ -7,8 +7,6 @@ using BBKBootcampSocial.DataLayer.Interfaces;
 using BBKBootcampSocial.Domains.Post;
 using BBKBootcampSocial.DataLayer.Implementations;
 using BBKBootcampSocial.Core.DTOs.Post;
-using AngleSharp.Text;
-using BBKBootcampSocial.Core.Security;
 
 namespace BBKBootcampSocial.Core.Services
 {

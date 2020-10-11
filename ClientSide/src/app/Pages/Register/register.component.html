@@ -3,7 +3,7 @@
     <div class="RegisterPage">
       <div class="RegisterPage__wrap">
         <div class="RegisterPage__container">
-          <div class="RegisterPage__boxes register">
+          <div class="RegisterPage__boxes register" style="display: none;" id="registerForm" >
             <h1 class="text-error" *ngIf="activeEmailMsg != null">{{activeEmailMsg}}</h1>
             <h2>Crea tu cuenta</h2>
             <form [formGroup]="registerForm" (submit)="registerUser()" class="go-bottom">

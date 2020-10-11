@@ -1,3 +1,7 @@
+#loginForm{
+  display: none;
+}
+
 #all {
   height: auto;
   color: white;
@@ -37,6 +41,7 @@ form input[type=text], form input[type=tel], form input[type=password], form inp
 form input[type=text]:valid, form input[type=tel]:valid, form input[type=password]:valid, form input[type=email]:valid, form textarea:valid {
   background: #181818;
 }
+
 
 form input[type=text]:focus, form input[type=tel]:focus, form input[type=password]:focus, form input[type=email]:focus, form textarea:focus {
   border-color: #9900cc;

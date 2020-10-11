@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthServiceService } from '../../Services/auth-service.service';
 import { RegisterUserDTO } from '../../DTOs/Account/RegisterUserDTO';
@@ -11,7 +11,6 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-
   @ViewChild('emailExist') private emailExist: SwalComponent;
 
   public activeEmailMsg: string = null;
@@ -20,6 +19,17 @@ export class RegisterComponent implements OnInit {
   constructor(private authService: AuthServiceService, private route: Router) { }
 
   ngOnInit(): void {
+    this.authService.getCurrentUser().subscribe(res => {
+      if (res != null) {
+        this.route.navigate(["index"]);
+      }
+    });
+    //delay
+    setInterval(function () {
+      document.getElementById("registerForm").style.display = "block";
+    }, 1500);
+
+    //Form Group
     this.registerForm = new FormGroup({
       firstName: new FormControl(null,
         [
@@ -84,6 +94,5 @@ export class RegisterComponent implements OnInit {
       this.emailExist.fire();
     }
   }
-
 
 }

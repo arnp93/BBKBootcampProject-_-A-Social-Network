@@ -16,11 +16,17 @@ export class AppComponent {
     // this.authService.checkAuth().subscribe(res => {
     //   if (res.status === 'Success'){
     //     console.log("from app compo");
-        
+
     //     const currentUser = new UserDTO(res.data.token,res.data.expireTime,res.data.firstName,res.data.lastName,res.data.userId);
     //     this.authService.setCurrentUser(currentUser);
     //   }
-  //   });
-   }
+    //   });
+    this.authService.checkAuth().subscribe(res => {
+      if (res.status === 'Success') {
+        const currentUser = new UserDTO(res.data.token, res.data.expireTime, res.data.firstName, res.data.lastName, res.data.userId);
+        this.authService.setCurrentUser(currentUser);
+      }
+    });
 
+  }
 }
