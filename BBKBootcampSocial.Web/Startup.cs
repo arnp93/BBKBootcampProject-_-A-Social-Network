@@ -1,10 +1,12 @@
 using System.Text;
 using AutoMapper;
 using BBKBootcampSocial.Core.DTOs.Account;
+using BBKBootcampSocial.Core.DTOs.Comment;
 using BBKBootcampSocial.Core.DTOs.Post;
 using BBKBootcampSocial.DataLayer;
 using BBKBootcampSocial.DataLayer.Implementations;
 using BBKBootcampSocial.DataLayer.Interfaces;
+using BBKBootcampSocial.Domains.Comment;
 using BBKBootcampSocial.Domains.Post;
 using BBKBootcampSocial.Domains.User;
 using BBKBootcampSocial.IoC;
@@ -32,15 +34,21 @@ namespace BBKBootcampSocial.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             #region AutoMapper Configurations
-            services.AddAutoMapper(configuration =>
+
+            var autoMap = services.AddAutoMapper(configuration =>
             {
                 configuration.CreateMap<RegisterUserDTO,User>();
                 configuration.CreateMap<PostDTO, Post>();
+                configuration.CreateMap<Post, ShowPostDTO>();
+                configuration.CreateMap<Comment, CommentDTO>();
 
             }, typeof(Startup));
+
+           
             #endregion
 
             #region Database Configurations
@@ -50,7 +58,7 @@ namespace BBKBootcampSocial.Web
                     options.UseSqlServer(Configuration.GetConnectionString("BBKSocialConnection"));
                 }
             );
-
+           
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();

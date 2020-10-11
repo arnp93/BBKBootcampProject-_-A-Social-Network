@@ -4,14 +4,16 @@ using BBKBootcampSocial.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BBKBootcampSocial.DataLayer.Migrations
 {
     [DbContext(typeof(BBKDatabaseContext))]
-    partial class BBKDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20201011190845_cmReplies")]
+    partial class cmReplies
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -168,9 +170,6 @@ namespace BBKBootcampSocial.DataLayer.Migrations
 
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 

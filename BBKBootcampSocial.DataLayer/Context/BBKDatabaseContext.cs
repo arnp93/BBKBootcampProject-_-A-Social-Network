@@ -12,6 +12,7 @@ namespace BBKBootcampSocial.DataLayer
     public class BBKDatabaseContext : DbContext
     {
         #region Constructor
+
         public BBKDatabaseContext(DbContextOptions<BBKDatabaseContext> options) : base(options) { }
 
         #endregion

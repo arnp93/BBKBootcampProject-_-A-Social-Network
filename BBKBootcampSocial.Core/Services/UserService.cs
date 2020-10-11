@@ -170,6 +170,8 @@ namespace BBKBootcampSocial.Core.Services
              return repository.GetEntitiesQuery().Any(u => u.Email == email && u.Password == PasswordHelper.EncodePasswordMd5(password));
         }
 
+       
+
         #endregion
     }
 }

@@ -7,6 +7,10 @@ using BBKBootcampSocial.DataLayer.Interfaces;
 using BBKBootcampSocial.Domains.Post;
 using BBKBootcampSocial.DataLayer.Implementations;
 using BBKBootcampSocial.Core.DTOs.Post;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using BBKBootcampSocial.Core.DTOs.Comment;
 
 namespace BBKBootcampSocial.Core.Services
 {
@@ -16,10 +20,12 @@ namespace BBKBootcampSocial.Core.Services
 
         private IUnitOfWork unitOfWork;
         private IMapper mapper;
-        public PostService(IUnitOfWork unitOfWork, IMapper mapper)
+        private IUserService userService;
+        public PostService(IUnitOfWork unitOfWork, IMapper mapper, IUserService userService)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            this.userService = userService;
         }
 
         #endregion
@@ -32,6 +38,7 @@ namespace BBKBootcampSocial.Core.Services
             var repository = await unitOfWork.GetRepository<GenericRepository<Post>, Post>();
 
             Post savedPost = mapper.Map<Post>(post);
+            savedPost.TimesOfReports = 0;
             if (post.FileName != null)
             {
                 savedPost.FileName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(post.FileName.FileName);
@@ -40,7 +47,7 @@ namespace BBKBootcampSocial.Core.Services
                 await post.FileName.CopyToAsync(stream);
             }
             await repository.AddEntity(savedPost);
-
+            await unitOfWork.SaveChanges();
             return post;
         }
 
@@ -84,6 +91,52 @@ namespace BBKBootcampSocial.Core.Services
             repository.UpdateEntity(editedPost);
 
             return post;
+        }
+
+        public async Task<List<ShowPostDTO>> PostsOfUser(long userId)
+        {
+            var repository = await unitOfWork.GetRepository<GenericRepository<Post>, Post>();
+
+            List<ShowPostDTO> ShowPosts = new List<ShowPostDTO>();
+
+            List<Post> posts = repository.GetEntitiesQuery().Where(p => p.UserId == userId)
+                .Include(p => p.Comments).ToList();
+
+            foreach (var post in posts)
+            {
+                ShowPosts.Add(new ShowPostDTO
+                {
+                    Comments = post.Comments != null ? post.Comments.Select(c => new CommentDTO
+                    {
+                        FirstName = userService.GetUserById(c.UserId).Result.FirstName,
+                        LastName = userService.GetUserById(c.UserId).Result.LastName.ToString(),
+                        Text = c.Text,
+                        LikeCount=0,
+                        PostId = post.Id,
+                        ProfileImage = null,
+                        UserId = post.UserId,
+                        ParentId =null
+                    }): null,
+                    PostText = post.PostText,
+                    DateTime = post.CreateDate,
+                    FileName = post.FileName,
+                    Id = post.Id,
+                    UserId = post.UserId,
+                    CanalId = null,
+                    ParentId = null
+            });
+
+            }
+
+            //List<Post> posts = repository.GetEntitiesQuery().Where(p => p.UserId == userId)
+            //    .Include(p => p.Comments.Select(c => new CommentDTO
+            //    {
+            //        FirstName = userService.GetUserById(c.UserId).Result.FirstName.ToString(),
+            //        LastName = userService.GetUserById(c.UserId).Result.LastName.ToString(),
+            //        Text = c.Text
+            //    })).ToList();
+
+            return test;
         }
 
         #endregion
