@@ -4,14 +4,16 @@ using BBKBootcampSocial.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BBKBootcampSocial.DataLayer.Migrations
 {
     [DbContext(typeof(BBKDatabaseContext))]
-    partial class BBKDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20201011124954_addUserBan")]
+    partial class addUserBan
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -224,12 +226,6 @@ namespace BBKBootcampSocial.DataLayer.Migrations
                     b.Property<string>("PostText")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ReportDeleteReason")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TimesOfReports")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
 
@@ -336,9 +332,6 @@ namespace BBKBootcampSocial.DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(150)")
                         .HasMaxLength(150);
-
-                    b.Property<int>("TimesOfReports")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");

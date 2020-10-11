@@ -1,11 +1,14 @@
 ﻿using BBKBootcampSocial.Core.IServices;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
 using BBKBootcampSocial.DataLayer.Interfaces;
 using BBKBootcampSocial.Domains.Post;
 using BBKBootcampSocial.DataLayer.Implementations;
 using BBKBootcampSocial.Core.DTOs.Post;
+using AngleSharp.Text;
+using BBKBootcampSocial.Core.Security;
 
 namespace BBKBootcampSocial.Core.Services
 {
@@ -29,7 +32,15 @@ namespace BBKBootcampSocial.Core.Services
         {
             post.UserId = userId;
             var repository = await unitOfWork.GetRepository<GenericRepository<Post>, Post>();
+
             Post savedPost = mapper.Map<Post>(post);
+            if (post.FileName != null)
+            {
+                savedPost.FileName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(post.FileName.FileName);
+                string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/PostFiles", savedPost.FileName);
+                await using var stream = new FileStream(imagePath, FileMode.Create);
+                await post.FileName.CopyToAsync(stream);
+            }
             await repository.AddEntity(savedPost);
 
             return post;

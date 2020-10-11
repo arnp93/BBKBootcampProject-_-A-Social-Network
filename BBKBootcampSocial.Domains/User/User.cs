@@ -40,6 +40,10 @@ namespace BBKBootcampSocial.Domains.User
         public string WhatsApp { get; set; }
         public bool IsActive { get; set; }
         public string ActiveCode { get; set; }
+        public bool IsBan { get; set; }
+        public string BanReason { get; set; }
+        public int TimesOfReports { get; set; }
+        public string Description { get; set; }
 
         public long? FriendId { get; set; }
 

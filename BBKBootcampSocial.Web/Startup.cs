@@ -1,9 +1,11 @@
 using System.Text;
 using AutoMapper;
 using BBKBootcampSocial.Core.DTOs.Account;
+using BBKBootcampSocial.Core.DTOs.Post;
 using BBKBootcampSocial.DataLayer;
 using BBKBootcampSocial.DataLayer.Implementations;
 using BBKBootcampSocial.DataLayer.Interfaces;
+using BBKBootcampSocial.Domains.Post;
 using BBKBootcampSocial.Domains.User;
 using BBKBootcampSocial.IoC;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -36,6 +38,8 @@ namespace BBKBootcampSocial.Web
             services.AddAutoMapper(configuration =>
             {
                 configuration.CreateMap<RegisterUserDTO,User>();
+                configuration.CreateMap<PostDTO, Post>();
+
             }, typeof(Startup));
             #endregion
 

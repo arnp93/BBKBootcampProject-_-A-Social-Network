@@ -20,4 +20,8 @@
     <ProjectReference Include="..\BBKBootcampSocial.IoC\BBKBootcampSocial.IoC.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\PostFiles\" />
+  </ItemGroup>
+
 </Project>

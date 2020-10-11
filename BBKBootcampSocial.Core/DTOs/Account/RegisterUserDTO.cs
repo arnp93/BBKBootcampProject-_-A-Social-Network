@@ -5,7 +5,6 @@ namespace BBKBootcampSocial.Core.DTOs.Account
     public class RegisterUserDTO
     {
         [Display(Name = "Username")]
-        [Required(ErrorMessage = "Introduce un Username unico")]
         [MinLength(4, ErrorMessage = "Ese campo no puede tener menos de 4 caracteres")]
         [MaxLength(100, ErrorMessage = "Ese campo no puede tener mas de 100 caracteres")]
         public string Username { get; set; }

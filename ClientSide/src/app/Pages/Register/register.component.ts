@@ -60,7 +60,6 @@ export class RegisterComponent implements OnInit {
     const registerData = new RegisterUserDTO(
       this.registerForm.controls.firstName.value,
       this.registerForm.controls.lastName.value,
-      this.registerForm.controls.userName.value,
       this.registerForm.controls.email.value,
       this.registerForm.controls.password.value,
       this.registerForm.controls.rePassword.value

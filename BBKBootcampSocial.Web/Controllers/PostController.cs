@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using BBKBootcampSocial.Core.DTOs.Post;
 using BBKBootcampSocial.Core.Utilities.Identity;
+using Microsoft.AspNetCore.Http;
 
 namespace BBKBootcampSocial.Web.Controllers
 {
@@ -14,7 +15,8 @@ namespace BBKBootcampSocial.Web.Controllers
         {
             this.postService = postService;
         }
-        public async Task<IActionResult> Post(PostDTO post)
+        [HttpPost("new-post")]
+        public async Task<IActionResult> Post([FromForm]PostDTO post)
         {
             if (!ModelState.IsValid)
                 return JsonResponseStatus.Error();

@@ -10,6 +10,8 @@ namespace BBKBootcampSocial.Domains.Post
         #region Properties  
         public string PostText { get; set; }
         public string FileName { get; set; }
+        public int TimesOfReports { get; set; }
+        public string ReportDeleteReason { get; set; }  
         public long UserId { get; set; }
         public long? CanalId { get; set; }
         #endregion

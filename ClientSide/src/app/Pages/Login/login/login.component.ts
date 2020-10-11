@@ -24,10 +24,8 @@ export class LoginComponent implements OnInit {
     this.IsRegisteredNow = this.authService.getAlertOfNewRegister();
 
     this.LoginForm = new FormGroup({
-      email: new FormControl(null, [
-        Validators.email
-      ]),
-      password: new FormControl(null)
+      email: new FormControl,
+      password: new FormControl
     });
   }
 
@@ -47,7 +45,7 @@ export class LoginComponent implements OnInit {
         this.route.navigate(["/index"]);
       } else if (res.status === "NotFound") {
         this.loading = false;
-        this.error.title = "Este usario no existe";
+        this.error.title = "la informacion no es valido";
         this.error.fire();
       } else if (res.status === "Error") {
         this.loading = false;

@@ -4,14 +4,14 @@
             <img src="/assets/images/resources/admin2.jpg" alt="">
         </figure>
         <div class="newpst-input">
-            <form method="post">
-                <textarea rows="2" placeholder="write something"></textarea>
+            <form [formGroup]="PostForm" (submit)="postSubmit()">
+                <textarea formControlName="postText" rows="2" placeholder="write something"></textarea>
                 <div class="attachments">
                     <ul>
                         <li>
                             <i class="fa fa-music"></i>
                             <label class="fileContainer">
-                                <input type="file">
+                                <input (change)="addPhoto($event)" type="file">
                             </label>
                         </li>
                         <li>

@@ -38,7 +38,7 @@ namespace BBKBootcampSocial.Core.Services
 
             #region Sanitize Properties of user (RegisterUserDTO) || Secutiry
 
-            user.Email = user.Email.SanitizeText();
+            user.Email = user.Email.ToLower().Trim().SanitizeText();
             user.FirstName = user.FirstName.SanitizeText();
             user.LastName = user.LastName.SanitizeText();
             user.Password = user.Password.SanitizeText();
@@ -54,6 +54,7 @@ namespace BBKBootcampSocial.Core.Services
             }
 
             User.ActiveCode = Guid.NewGuid().ToString() + "BBK-BootCamp";
+            User.Username = $"BBK{User.Email}Bootcamp";
             await repository.AddEntity(User);
             await unitOfWork.SaveChanges();
 
@@ -70,10 +71,10 @@ namespace BBKBootcampSocial.Core.Services
 
         public async Task<LoginUserResult> LoginUser(LoginUserDTO login)
         {
-            login.Password = PasswordHelper.EncodePasswordMd5(login.Password);
+            login.Email = login.Email.ToLower().Trim();
             try
             {
-                if (!await IsEmailExist(login.Email))
+                if (!await IsUserExist(login.Email,login.Password))
                     return LoginUserResult.UserNotExist;
 
                 if (!await IsUserActive(login.Email))
@@ -133,10 +134,10 @@ namespace BBKBootcampSocial.Core.Services
 
             if (user != null)
             {
-                if (password == user.Password)
+                if (user.Password == PasswordHelper.EncodePasswordMd5(password))
                     return true;
-                else
-                    return false;
+
+                return false;
             }
             return false;
         }
@@ -152,7 +153,7 @@ namespace BBKBootcampSocial.Core.Services
         {
             var repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
 
-            return repository.GetEntitiesQuery().Any(u => u.Email == email && u.IsActive == true);
+            return repository.GetEntitiesQuery().Any(u => u.Email == email && u.IsActive);
         }
 
         public async Task<User> GetUserById(long id)
@@ -160,6 +161,13 @@ namespace BBKBootcampSocial.Core.Services
             var repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
 
             return repository.GetEntitiesQuery().FirstOrDefault(u => u.Id == id);
+        }
+
+        public async Task<bool> IsUserExist(string email, string password)
+        {
+            var repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
+
+             return repository.GetEntitiesQuery().Any(u => u.Email == email && u.Password == PasswordHelper.EncodePasswordMd5(password));
         }
 
         #endregion
