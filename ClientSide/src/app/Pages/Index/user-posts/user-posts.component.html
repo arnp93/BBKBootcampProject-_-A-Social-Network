@@ -95,15 +95,15 @@
                 </div>
             </div>
             <div class="coment-area">
-                <ul class="we-comet">
-                    <li *ngFor="let comment of post.comments">
-                        <div *ngIf="comment.parentId === null">
+                <ul class="we-comet"  *ngFor="let comment of post.comments">
+                    <li *ngIf="comment.parentId === null">
+                        <div>
                         <div class="comet-avatar">
                             <img src="/assets/images/resources/comet-1.jpg" alt="">
                         </div>
                         <div class="we-comment">
                             <div class="coment-head">
-                                <h5><a href="time-line.html" title="">{{comment.id}}</a>
+                                <h5><a href="time-line.html" title="">{{comment.firstName}} {{comment.lastName}}</a>
                                 </h5>
                                 <span>1 year ago</span>
                                 <a class="we-reply" href="#" title="Reply"><i
@@ -113,7 +113,7 @@
                         </div>
                     </div>
                     
-                        <ul *ngFor="let reply of comment.replies">
+                        <ul *ngFor="let reply of post.comments">
                             <div *ngIf="reply.parentId === comment.id" >
                             <li>
                                 <div class="comet-avatar">
@@ -122,7 +122,7 @@
                                 </div>
                                 <div class="we-comment">
                                     <div class="coment-head">
-                                        <h5><a href="time-line.html" title="">{{reply.id}}</a></h5>
+                                        <h5><a href="time-line.html" title="">{{reply.firstName}} {{reply.lastName}}</a></h5>
                                         <span>1 month ago</span>
                                         <a class="we-reply" href="#" title="Reply"><i
                                                 class="fa fa-reply"></i></a>
@@ -132,9 +132,7 @@
                             </li>
                         </div>
                         </ul>
-                   
                     </li>
-                  
                 </ul>
             </div>
         </div>

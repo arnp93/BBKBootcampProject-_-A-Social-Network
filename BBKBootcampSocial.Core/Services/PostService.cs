@@ -108,14 +108,15 @@ namespace BBKBootcampSocial.Core.Services
                 {
                     Comments = post.Comments != null ? post.Comments.Select(c => new CommentDTO
                     {
+                        Id = c.Id,
                         FirstName = userService.GetUserById(c.UserId).Result.FirstName,
-                        LastName = userService.GetUserById(c.UserId).Result.LastName.ToString(),
+                        LastName = userService.GetUserById(c.UserId).Result.LastName,
                         Text = c.Text,
                         LikeCount=0,
                         PostId = post.Id,
                         ProfileImage = null,
                         UserId = post.UserId,
-                        ParentId =null
+                        ParentId = c.ParentId
                     }): null,
                     PostText = post.PostText,
                     DateTime = post.CreateDate,
@@ -136,7 +137,7 @@ namespace BBKBootcampSocial.Core.Services
             //        Text = c.Text
             //    })).ToList();
 
-            return test;
+            return ShowPosts;
         }
 
         #endregion
