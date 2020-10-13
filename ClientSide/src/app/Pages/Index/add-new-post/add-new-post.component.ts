@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component,EventEmitter, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PostService } from '../../../Services/post.service';
 import { Router } from '@angular/router';
+import { ShowPostDTO } from '../../../DTOs/Post/ShowPostDTO';
 
 @Component({
   selector: 'app-add-new-post',
@@ -10,6 +11,7 @@ import { Router } from '@angular/router';
 })
 export class AddNewPostComponent implements OnInit {
 
+  @Output() newPost : EventEmitter<ShowPostDTO> = new EventEmitter<ShowPostDTO>();
   public selectedFile: File = null;
   public PostForm: FormGroup;
   constructor(private postService: PostService, private router: Router) { }
@@ -26,6 +28,7 @@ export class AddNewPostComponent implements OnInit {
   addPhoto(event) {
     this.selectedFile = <File>event.target.files[0];
   }
+
   postSubmit(): void {
     const formData: FormData = new FormData();
     if (this.selectedFile != null)
@@ -34,9 +37,14 @@ export class AddNewPostComponent implements OnInit {
     formData.append("PostText", this.PostForm.controls.postText.value);
 
     this.postService.addNewPost(formData).subscribe(res => {
-      // this.router.navigateByUrl('/user-posts-component', { skipLocationChange: true }).then(() => {
-      //   this.router.navigate(['/index']);
-      // });
+      if(res.status === "Success"){
+        this.newPost.emit(res.data);
+        this.PostForm.reset();
+      }else{
+        alert("ha surgido algun problema en Add New Comment Component");
+      }
+     
+     
 
     });
   }

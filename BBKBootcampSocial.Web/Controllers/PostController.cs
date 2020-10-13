@@ -32,15 +32,16 @@ namespace BBKBootcampSocial.Web.Controllers
             if (!ModelState.IsValid)
                 return JsonResponseStatus.Error();
             long userId = User.GetUserId();
-            PostDTO savedPost = await postService.SavePost(userId, post);
+            ShowPostDTO savedPost = await postService.SavePost(userId, post);
             return JsonResponseStatus.Success(savedPost);
         }
+
         [HttpGet("user-posts")]
         public async Task<IActionResult> GetUserPosts()
         {
-            //long userId = User.GetUserId();
+            long userId = User.GetUserId();
 
-            return JsonResponseStatus.Success(await postService.PostsOfUser(10032));
+            return JsonResponseStatus.Success(await postService.PostsOfUser(userId));
         }
 
         #endregion

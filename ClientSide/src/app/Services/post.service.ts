@@ -1,7 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { PostDTO } from '../DTOs/Post/PostDTO';
+import { NewPostResponseDTO } from '../DTOs/Post/NewPostResponseDTO';
 import { PostResultResponse } from '../DTOs/Post/PostResultResponse';
 
 @Injectable({
@@ -12,8 +12,8 @@ export class PostService {
   private posts : BehaviorSubject<PostResultResponse> = new BehaviorSubject<PostResultResponse>(null);
   constructor(private http: HttpClient) { }
 
-  addNewPost(post: FormData):Observable<PostDTO>{
-    return this.http.post<PostDTO>("/api/post/new-post",post);
+  addNewPost(post: FormData):Observable<NewPostResponseDTO>{
+    return this.http.post<NewPostResponseDTO>("/api/post/new-post",post);
   }
 
   getPostsByUserId() : Observable<PostResultResponse>{

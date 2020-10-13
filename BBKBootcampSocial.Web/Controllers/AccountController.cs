@@ -28,6 +28,7 @@ namespace BBKBootcampSocial.Web.Controllers
         #endregion
 
         #region Register
+
         [HttpPost("register")]
         public async Task<IActionResult> RegisterUser([FromBody] RegisterUserDTO user)
         {

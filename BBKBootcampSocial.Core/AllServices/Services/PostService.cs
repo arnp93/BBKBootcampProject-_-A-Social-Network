@@ -33,7 +33,7 @@ namespace BBKBootcampSocial.Core.AllServices.Services
 
         #region Properties
 
-        public async Task<PostDTO> SavePost(long userId, PostDTO post)
+        public async Task<ShowPostDTO> SavePost(long userId, PostDTO post)
         {
             post.UserId = userId;
             var repository = await unitOfWork.GetRepository<GenericRepository<Post>, Post>();
@@ -49,7 +49,13 @@ namespace BBKBootcampSocial.Core.AllServices.Services
             }
             await repository.AddEntity(savedPost);
             await unitOfWork.SaveChanges();
-            return post;
+            return new ShowPostDTO
+            {
+                PostText = savedPost.PostText,
+                FileName = savedPost.FileName,
+                DateTime = savedPost.CreateDate,
+                Id = savedPost.Id
+            };
         }
 
         public async Task<bool> DeletePost(long postId)
@@ -113,11 +119,11 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                         FirstName = userService.GetUserById(c.UserId).Result.FirstName,
                         LastName = userService.GetUserById(c.UserId).Result.LastName,
                         Text = c.Text,
-                        LikeCount=0,
+                        LikeCount = 0,
                         PostId = post.Id,
                         ProfileImage = null,
                         UserId = post.UserId,
-                        ParentId  = c.ParentId,
+                        ParentId = c.ParentId,
                         Replies = c.Replies.Select(r => new CommentDTO
                         {
                             Id = r.Id,
@@ -138,8 +144,9 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                     UserId = post.UserId,
                     CanalId = null,
                     ParentId = null
-            });
+                });
             }
+            return ShowPosts;
 
             //List<Post> posts = repository.GetEntitiesQuery().Where(p => p.UserId == userId)
             //    .Include(p => p.Comments.Select(c => new CommentDTO
@@ -149,7 +156,7 @@ namespace BBKBootcampSocial.Core.AllServices.Services
             //        Text = c.Text
             //    })).ToList();
 
-            return ShowPosts;
+            //return mapper.Map<List<ShowPostDTO>>(posts);
         }
 
         #endregion

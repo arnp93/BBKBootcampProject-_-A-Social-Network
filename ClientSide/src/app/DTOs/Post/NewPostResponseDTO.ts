@@ -1,8 +1,8 @@
 import { ShowPostDTO } from './ShowPostDTO';
 
-export class PostResultResponse{
+export class NewPostResponseDTO{
     constructor(
         public status: string,
-        public data : ShowPostDTO[]
+        public data : ShowPostDTO
     ){}
 }
