@@ -1,3 +1,4 @@
+
 <div class="loadMore">
     <div class="central-meta item" *ngFor="let post of posts">
         <div class="user-post">
@@ -10,6 +11,9 @@
                     <span>{{post.dateTime}}</span>
                 </div>
                 <div class="post-meta">
+                    <p>
+                        {{post.postText}}
+                    </p>
                     <img src="{{URL}}/PostFiles/{{post.fileName}}" alt="" *ngIf="post.fileName != null">
                     <div class="we-video-info">
                         <ul>
@@ -20,8 +24,7 @@
                                 </span>
                             </li>
                             <li>
-                                <span class="comment" data-toggle="tooltip"
-                                    title="Comments">
+                                <span class="comment" data-toggle="tooltip" title="Comments">
                                     <i class="fa fa-comments-o"></i>
                                     <ins>{{post.comments.length}}</ins>
                                 </span>
@@ -34,50 +37,41 @@
                             </li>
                             <li class="social-media">
                                 <div class="menu">
-                                    <div class="btn trigger"><i
-                                            class="fa fa-share-alt"></i></div>
+                                    <div class="btn trigger"><i class="fa fa-share-alt"></i></div>
                                     <div class="rotater">
-                                        <div class="btn btn-icon"><a href="#"
-                                                title=""><i class="fa fa-html5"></i></a>
+                                        <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-html5"></i></a>
                                         </div>
                                     </div>
                                     <div class="rotater">
-                                        <div class="btn btn-icon"><a href="#"
-                                                title=""><i
+                                        <div class="btn btn-icon"><a href="#" title=""><i
                                                     class="fa fa-facebook"></i></a>
                                         </div>
                                     </div>
                                     <div class="rotater">
-                                        <div class="btn btn-icon"><a href="#"
-                                                title=""><i
+                                        <div class="btn btn-icon"><a href="#" title=""><i
                                                     class="fa fa-google-plus"></i></a>
                                         </div>
                                     </div>
                                     <div class="rotater">
-                                        <div class="btn btn-icon"><a href="#"
-                                                title=""><i
-                                                    class="fa fa-twitter"></i></a></div>
-                                    </div>
-                                    <div class="rotater">
-                                        <div class="btn btn-icon"><a href="#"
-                                                title=""><i class="fa fa-css3"></i></a>
+                                        <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-twitter"></i></a>
                                         </div>
                                     </div>
                                     <div class="rotater">
-                                        <div class="btn btn-icon"><a href="#"
-                                                title=""><i
+                                        <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-css3"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="rotater">
+                                        <div class="btn btn-icon"><a href="#" title=""><i
                                                     class="fa fa-instagram"></i></a>
                                         </div>
                                     </div>
                                     <div class="rotater">
-                                        <div class="btn btn-icon"><a href="#"
-                                                title=""><i
+                                        <div class="btn btn-icon"><a href="#" title=""><i
                                                     class="fa fa-dribbble"></i></a>
                                         </div>
                                     </div>
                                     <div class="rotater">
-                                        <div class="btn btn-icon"><a href="#"
-                                                title=""><i
+                                        <div class="btn btn-icon"><a href="#" title=""><i
                                                     class="fa fa-pinterest"></i></a>
                                         </div>
                                     </div>
@@ -88,54 +82,55 @@
                     </div>
                     <div class="description">
 
-                        <p>
-                           {{post.postText}}
-                        </p>
                     </div>
                 </div>
             </div>
             <div class="coment-area">
-                <ul class="we-comet"  *ngFor="let comment of post.comments">
-                    <li *ngIf="comment.parentId === null">
-                        <div>
-                        <div class="comet-avatar">
-                            <img src="/assets/images/resources/comet-1.jpg" alt="">
-                        </div>
-                        <div class="we-comment">
-                            <div class="coment-head">
-                                <h5><a href="time-line.html" title="">{{comment.firstName}} {{comment.lastName}}</a>
-                                </h5>
-                                <span>1 year ago</span>
-                                <a class="we-reply" href="#" title="Reply"><i
-                                        class="fa fa-reply"></i></a>
+                <ul class="we-comet">
+                    <li *ngFor="let comment of post.comments">
+                        <div *ngIf="comment.parentId === null">
+                            <div class="comet-avatar">
+                                <img src="/assets/images/resources/comet-1.jpg" alt="">
                             </div>
-                            <p>{{comment.text}}</p>
+                            <div class="we-comment">
+                                <div class="coment-head">
+                                    <h5><a href="time-line.html" title="">{{comment.firstName}} {{comment.lastName}}</a>
+                                    </h5>
+                                    <span>1 year ago</span>
+                                    <a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a>
+                                </div>
+                                <p>{{comment.text}}</p>
+                            </div>
                         </div>
-                    </div>
-                    
+
                         <ul *ngFor="let reply of comment.replies">
-                            <div *ngIf="reply.parentId === comment.id" >
-                            <li>
-                                <div class="comet-avatar">
-                                    <img src="/assets/images/resources/comet-2.jpg"
-                                        alt="">
-                                </div>
-                                <div class="we-comment">
-                                    <div class="coment-head">
-                                        <h5><a href="time-line.html" title="">{{reply.firstName}} {{reply.lastName}}</a></h5>
-                                        <span>1 month ago</span>
-                                        <a class="we-reply" href="#" title="Reply"><i
-                                                class="fa fa-reply"></i></a>
+                            <div *ngIf="reply.parentId === comment.id">
+                                <li>
+                                    <div class="comet-avatar">
+                                        <img src="/assets/images/resources/comet-2.jpg" alt="">
                                     </div>
-                                    <p>{{reply.text}}</p>
-                                </div>
-                            </li>
-                        </div>
+                                    <div class="we-comment">
+                                        <div class="coment-head">
+                                            <h5><a href="time-line.html" title="">{{reply.firstName}}
+                                                    {{reply.lastName}}</a></h5>
+                                            <span>1 month ago</span>
+                                            <a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a>
+                                        </div>
+                                        <p>{{reply.text}}</p>
+                                    </div>
+                                </li>
+                            </div>
                         </ul>
+                    </li>
+                    <li *ngIf="post.comments.length !== 0">
+                        <a href="#" title="" class="showmore underline">more comments</a>
+                    </li>
+                    <li class="post-comment">
+                        <app-post-comment [postId]="post.id" ></app-post-comment>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
-    
+
 </div>

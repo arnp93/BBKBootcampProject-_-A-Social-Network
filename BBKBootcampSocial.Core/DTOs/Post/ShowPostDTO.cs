@@ -12,7 +12,7 @@ namespace BBKBootcampSocial.Core.DTOs.Post
         public long? CanalId { get; set; }
         public DateTime DateTime { get; set; }
         public long? ParentId { get; set; }
-        public long? Id { get; set; }
+        public long Id { get; set; }
 
         public IEnumerable<CommentDTO> Comments{ get; set; }
     }

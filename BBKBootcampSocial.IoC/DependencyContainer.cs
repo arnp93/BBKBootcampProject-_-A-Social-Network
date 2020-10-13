@@ -15,6 +15,7 @@ namespace BBKBootcampSocial.IoC
             services.AddScoped<IMailSender, SendEmail>();
             services.AddScoped<IViewRenderService, RenderViewToString>();
             services.AddScoped<IPostService, PostService>();
+            services.AddScoped<ICommentService, CommentService>();
         }
     }
 }

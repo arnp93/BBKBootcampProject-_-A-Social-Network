@@ -107,7 +107,7 @@ namespace BBKBootcampSocial.Core.AllServices.Services
             {
                 ShowPosts.Add(new ShowPostDTO
                 {
-                    Comments = post.Comments != null ? post.Comments.Select(c => new CommentDTO
+                    Comments = post.Comments.Select(c => new CommentDTO
                     {
                         Id = c.Id,
                         FirstName = userService.GetUserById(c.UserId).Result.FirstName,
@@ -118,8 +118,19 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                         ProfileImage = null,
                         UserId = post.UserId,
                         ParentId  = c.ParentId,
-                        Replies = mapper.Map<ICollection<Comment>, List<CommentDTO>>(c.Replies)
-                    }): null,
+                        Replies = c.Replies.Select(r => new CommentDTO
+                        {
+                            Id = r.Id,
+                            FirstName = userService.GetUserById(r.UserId).Result.FirstName,
+                            LastName = userService.GetUserById(r.UserId).Result.LastName,
+                            Text = r.Text,
+                            LikeCount = 0,
+                            PostId = post.Id,
+                            ProfileImage = null,
+                            UserId = post.UserId,
+                            ParentId = r.ParentId
+                        })
+                    }),
                     PostText = post.PostText,
                     DateTime = post.CreateDate,
                     FileName = post.FileName,
@@ -128,7 +139,6 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                     CanalId = null,
                     ParentId = null
             });
-
             }
 
             //List<Post> posts = repository.GetEntitiesQuery().Where(p => p.UserId == userId)

@@ -1,0 +1,11 @@
+    <li class="post-comment">
+        <div class="post-comt-box">
+            <form [formGroup]="commentForm" (submit)="newCommentSubmit()">
+                <textarea formControlName="text" placeholder="Post your comment"></textarea>
+                <div class="add-smiles" style="margin-top: 11px;margin-right: 5px;">
+                    <br>
+                    <button style="background-color:cadetblue ;height: 35px;" type="submit">Post</button>
+                </div>
+            </form>
+        </div>
+    </li>

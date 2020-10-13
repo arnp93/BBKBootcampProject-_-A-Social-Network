@@ -9,6 +9,7 @@ import { PostResultResponse } from '../DTOs/Post/PostResultResponse';
 })
 export class PostService {
 
+  private posts : BehaviorSubject<PostResultResponse> = new BehaviorSubject<PostResultResponse>(null);
   constructor(private http: HttpClient) { }
 
   addNewPost(post: FormData):Observable<PostDTO>{
@@ -17,5 +18,9 @@ export class PostService {
 
   getPostsByUserId() : Observable<PostResultResponse>{
     return this.http.get<PostResultResponse>("/api/post/user-posts"); 
+  }
+
+  setPosts(postResult : PostResultResponse){
+    this.posts.next(postResult);
   }
 }

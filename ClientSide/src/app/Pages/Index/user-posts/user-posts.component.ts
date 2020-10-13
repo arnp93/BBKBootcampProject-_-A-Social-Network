@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { PostService } from '../../../Services/post.service';
 import { ShowPostDTO } from '../../../DTOs/Post/ShowPostDTO';
 import { AuthServiceService } from '../../../Services/auth-service.service';
@@ -12,18 +12,17 @@ import { DomainName } from '../../../Utilities/PathTools';
 })
 export class UserPostsComponent implements OnInit {
 
+
   public URL : string = DomainName;
   public posts: ShowPostDTO[];
   public thisUser: UserDTO;
   constructor(private postService: PostService, private authService: AuthServiceService) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
     this.postService.getPostsByUserId().subscribe(res => {
       if(res.status === "Success"){
-        this.posts = res.data;
-      }
-      console.log(this.posts);
-      
+        this.posts = res.data.reverse();
+      }      
     });
     this.authService.getCurrentUser().subscribe(res => {
       this.thisUser = res;

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PostService } from '../../../Services/post.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-new-post',
@@ -8,10 +9,10 @@ import { PostService } from '../../../Services/post.service';
   styleUrls: ['./add-new-post.component.css']
 })
 export class AddNewPostComponent implements OnInit {
-  
-  public selectedFile : File = null;
+
+  public selectedFile: File = null;
   public PostForm: FormGroup;
-  constructor(private postService: PostService) { }
+  constructor(private postService: PostService, private router: Router) { }
 
   ngOnInit(): void {
     this.PostForm = new FormGroup({
@@ -23,17 +24,21 @@ export class AddNewPostComponent implements OnInit {
   }
 
   addPhoto(event) {
-     this.selectedFile = <File>event.target.files[0];
+    this.selectedFile = <File>event.target.files[0];
   }
   postSubmit(): void {
-    const formData : FormData = new FormData();
-    formData.append("FileName",this.selectedFile,this.selectedFile.name);
-    formData.append("PostText",this.PostForm.controls.postText.value);
+    const formData: FormData = new FormData();
+    if (this.selectedFile != null)
+      formData.append("FileName", this.selectedFile, this.selectedFile.name);
+
+    formData.append("PostText", this.PostForm.controls.postText.value);
 
     this.postService.addNewPost(formData).subscribe(res => {
-      console.log(res);
+      // this.router.navigateByUrl('/user-posts-component', { skipLocationChange: true }).then(() => {
+      //   this.router.navigate(['/index']);
+      // });
 
-    })
+    });
   }
 
 }

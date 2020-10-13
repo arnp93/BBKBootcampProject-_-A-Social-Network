@@ -39,12 +39,13 @@ namespace BBKBootcampSocial.Web
 
             #region AutoMapper Configurations
 
-            var autoMap = services.AddAutoMapper(configuration =>
+            services.AddAutoMapper(configuration =>
             {
                 configuration.CreateMap<RegisterUserDTO,User>();
                 configuration.CreateMap<PostDTO, Post>();
                 configuration.CreateMap<Post, ShowPostDTO>();
                 configuration.CreateMap<Comment, CommentDTO>();
+                configuration.CreateMap<NewCommentDTO, Comment>();
 
             }, typeof(Startup));
 

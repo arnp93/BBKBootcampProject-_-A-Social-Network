@@ -13,6 +13,6 @@ namespace BBKBootcampSocial.Core.DTOs.Comment
         public long Id { get; set; }
         public long PostId { get; set; }
         public long? ParentId { get; set; }
-        public ICollection<CommentDTO> Replies { get; set; }
+        public IEnumerable<CommentDTO> Replies { get; set; }
     }
 }
