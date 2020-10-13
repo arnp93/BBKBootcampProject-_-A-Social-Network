@@ -1,7 +1,7 @@
 ﻿using System.Net.Mail;
-using BBKBootcampSocial.Core.IServices;
+using BBKBootcampSocial.Core.AllServices.IServices;
 
-namespace BBKBootcampSocial.Core.Services
+namespace BBKBootcampSocial.Core.AllServices.Services
 {
     public class SendEmail : IMailSender
     {

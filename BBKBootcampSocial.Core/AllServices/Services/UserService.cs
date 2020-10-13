@@ -1,5 +1,4 @@
 ﻿using System;
-using BBKBootcampSocial.Core.IServices;
 using BBKBootcampSocial.DataLayer.Implementations;
 using System.Threading.Tasks;
 using BBKBootcampSocial.DataLayer.Interfaces;
@@ -7,10 +6,11 @@ using BBKBootcampSocial.Domains.User;
 using BBKBootcampSocial.Core.DTOs.Account;
 using AutoMapper;
 using System.Linq;
+using BBKBootcampSocial.Core.AllServices.IServices;
 using BBKBootcampSocial.Core.Security;
 using BBKBootcampSocial.Core.Utilities.Convertors;
 
-namespace BBKBootcampSocial.Core.Services
+namespace BBKBootcampSocial.Core.AllServices.Services
 {
     public class UserService : IUserService
     {

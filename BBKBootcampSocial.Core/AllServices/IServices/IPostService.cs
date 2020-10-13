@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using BBKBootcampSocial.Core.DTOs.Post;
 
-namespace BBKBootcampSocial.Core.IServices
+namespace BBKBootcampSocial.Core.AllServices.IServices
 {
     public interface IPostService
     {

@@ -1,5 +1,4 @@
-﻿using BBKBootcampSocial.Core.IServices;
-using System;
+﻿using System;
 using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -9,10 +8,12 @@ using BBKBootcampSocial.DataLayer.Implementations;
 using BBKBootcampSocial.Core.DTOs.Post;
 using System.Collections.Generic;
 using System.Linq;
+using BBKBootcampSocial.Core.AllServices.IServices;
 using Microsoft.EntityFrameworkCore;
 using BBKBootcampSocial.Core.DTOs.Comment;
+using BBKBootcampSocial.Domains.Comment;
 
-namespace BBKBootcampSocial.Core.Services
+namespace BBKBootcampSocial.Core.AllServices.Services
 {
     public class PostService : IPostService
     {
@@ -100,7 +101,7 @@ namespace BBKBootcampSocial.Core.Services
             List<ShowPostDTO> ShowPosts = new List<ShowPostDTO>();
 
             List<Post> posts = repository.GetEntitiesQuery().Where(p => p.UserId == userId)
-                .Include(p => p.Comments).ToList();
+                .Include(p => p.Comments).ThenInclude(c => c.Replies).ToList();
 
             foreach (var post in posts)
             {
@@ -116,7 +117,8 @@ namespace BBKBootcampSocial.Core.Services
                         PostId = post.Id,
                         ProfileImage = null,
                         UserId = post.UserId,
-                        ParentId = c.ParentId
+                        ParentId  = c.ParentId,
+                        Replies = mapper.Map<ICollection<Comment>, List<CommentDTO>>(c.Replies)
                     }): null,
                     PostText = post.PostText,
                     DateTime = post.CreateDate,

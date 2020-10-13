@@ -1,5 +1,5 @@
-﻿using BBKBootcampSocial.Core.IServices;
-using BBKBootcampSocial.Core.Services;
+﻿using BBKBootcampSocial.Core.AllServices.IServices;
+using BBKBootcampSocial.Core.AllServices.Services;
 using BBKBootcampSocial.Core.Utilities.Convertors;
 using Microsoft.Extensions.DependencyInjection;
 

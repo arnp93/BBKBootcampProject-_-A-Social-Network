@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using BBKBootcampSocial.Core.IServices;
+using BBKBootcampSocial.Core.AllServices.IServices;
 using BBKBootcampSocial.Core.DTOs.Account;
 using BBKBootcampSocial.Core.Utilities;
 using BBKBootcampSocial.Core.Utilities.Identity;

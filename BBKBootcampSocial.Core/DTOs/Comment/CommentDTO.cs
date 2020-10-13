@@ -1,4 +1,6 @@
-﻿namespace BBKBootcampSocial.Core.DTOs.Comment
+﻿using System.Collections.Generic;
+
+namespace BBKBootcampSocial.Core.DTOs.Comment
 {
     public class CommentDTO
     {
@@ -9,9 +11,8 @@
         public string Text { get; set; }
         public int LikeCount { get; set; }
         public long Id { get; set; }
-
         public long PostId { get; set; }
-
         public long? ParentId { get; set; }
+        public ICollection<CommentDTO> Replies { get; set; }
     }
 }

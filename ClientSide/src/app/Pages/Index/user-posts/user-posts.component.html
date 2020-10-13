@@ -113,7 +113,7 @@
                         </div>
                     </div>
                     
-                        <ul *ngFor="let reply of post.comments">
+                        <ul *ngFor="let reply of comment.replies">
                             <div *ngIf="reply.parentId === comment.id" >
                             <li>
                                 <div class="comet-avatar">

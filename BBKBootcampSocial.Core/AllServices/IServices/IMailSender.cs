@@ -1,4 +1,4 @@
-﻿namespace BBKBootcampSocial.Core.IServices
+﻿namespace BBKBootcampSocial.Core.AllServices.IServices
 {
     public interface IMailSender
     {

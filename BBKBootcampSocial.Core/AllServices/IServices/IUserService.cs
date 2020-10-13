@@ -2,7 +2,7 @@
 using BBKBootcampSocial.Core.DTOs.Account;
 using BBKBootcampSocial.Domains.User;
 
-namespace BBKBootcampSocial.Core.IServices
+namespace BBKBootcampSocial.Core.AllServices.IServices
 {
     public interface IUserService
     {

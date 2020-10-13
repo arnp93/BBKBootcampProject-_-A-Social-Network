@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using BBKBootcampSocial.Core.IServices;
-using BBKBootcampSocial.Core.Utilities;
+﻿using BBKBootcampSocial.Core.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using BBKBootcampSocial.Core.AllServices.IServices;
 using BBKBootcampSocial.Core.DTOs.Post;
 using BBKBootcampSocial.Core.Utilities.Identity;
 
