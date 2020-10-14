@@ -14,6 +14,7 @@ export class ShortcutsComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  
   logout() {
     this.cookieService.delete("BBKBootcampCookie");
     this.authService.setCurrentUser(null);

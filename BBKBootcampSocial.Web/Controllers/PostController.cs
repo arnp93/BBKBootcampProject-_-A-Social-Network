@@ -9,7 +9,7 @@ using BBKBootcampSocial.Core.DTOs.Comment;
 
 namespace BBKBootcampSocial.Web.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class PostController : BaseController
     {
         #region Constructor

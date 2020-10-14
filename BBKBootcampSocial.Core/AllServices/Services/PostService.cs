@@ -11,7 +11,6 @@ using System.Linq;
 using BBKBootcampSocial.Core.AllServices.IServices;
 using Microsoft.EntityFrameworkCore;
 using BBKBootcampSocial.Core.DTOs.Comment;
-using BBKBootcampSocial.Domains.Comment;
 
 namespace BBKBootcampSocial.Core.AllServices.Services
 {

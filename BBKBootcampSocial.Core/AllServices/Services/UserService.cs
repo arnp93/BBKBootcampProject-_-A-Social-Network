@@ -9,6 +9,7 @@ using System.Linq;
 using BBKBootcampSocial.Core.AllServices.IServices;
 using BBKBootcampSocial.Core.Security;
 using BBKBootcampSocial.Core.Utilities.Convertors;
+using BBKBootcampSocial.Domains.Access;
 
 namespace BBKBootcampSocial.Core.AllServices.Services
 {
@@ -46,6 +47,8 @@ namespace BBKBootcampSocial.Core.AllServices.Services
 
             #endregion
 
+            #region Save User in Database
+
             User User = mapper.Map<User>(user);
             User.Password = PasswordHelper.EncodePasswordMd5(User.Password);
             if (await IsEmailExist(User.Email))
@@ -58,10 +61,28 @@ namespace BBKBootcampSocial.Core.AllServices.Services
             await repository.AddEntity(User);
             await unitOfWork.SaveChanges();
 
+            #endregion
+
+            #region Add Users Role
+
+            var repostoryForRoles = await unitOfWork.GetRepository<GenericRepository<UserRole>, UserRole>();
+            await repostoryForRoles.AddEntity(new UserRole
+            {
+                IsDelete = false,
+                RoleId = 2,
+                UserId = User.Id
+            });
+            await unitOfWork.SaveChanges();
+
+            #endregion
+
+            #region Send Active Email
 
             string body = await viewRenderService.RenderToStringAsync("Email/ActivateAccount", User);
             mailSender.Send(user.Email, "BBK Bootcamp Social Network - Activate your Account", body);
             return RegisterUserResult.Success;
+
+            #endregion
 
         }
 
