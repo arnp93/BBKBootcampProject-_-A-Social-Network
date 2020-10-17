@@ -1,6 +1,6 @@
 <div class="theme-layout">
 	<app-responsive-menu></app-responsive-menu>
-	<div class="topbar stick" >
+	<div class="topbar stick">
 		<!-- log Section -->
 		<div class="logo">
 			<a title="" href="newsfeed.html"><img src="/assets/images/logo.png" alt=""></a>
@@ -26,7 +26,117 @@
 								</aside>
 							</div><!-- sidebar -->
 							<div class="col-lg-6">
-								<app-user-posts></app-user-posts>
+								<app-add-new-post (newPost)="getNewPost($event)"></app-add-new-post>
+								<!-- add post new box -->
+							
+								<div class="loadMore">
+										<!-------------------------------START new post------------------------------ -->
+								<div class="central-meta item" *ngFor="let newPost of newPosts.reverse()">
+									<div class="user-post">
+										<div class="friend-info">
+											<figure>
+												<img src="/assets/images/resources/friend-avatar9.jpg" alt="">
+											</figure>
+											<div class="friend-name">
+												<ins><a href="time-line.html" title="">{{thisUser.firstName}}
+														{{thisUser.lastName}}</a></ins>
+												<span>{{newPost.dateTime}}</span>
+											</div>
+											<div class="post-meta">
+												<p>
+													{{newPost.postText}}
+												</p>
+												<img src="{{URL}}/PostFiles/{{newPost.fileName}}" alt=""
+													*ngIf="newPost.fileName != null">
+												<div class="we-video-info">
+													<ul>
+														<li>
+															<span class="views" data-toggle="tooltip" title="views">
+																<i class="fa fa-eye"></i>
+																<ins>1.2k</ins>
+															</span>
+														</li>
+														<li>
+															<span class="comment" data-toggle="tooltip"
+																title="Comments">
+																<i class="fa fa-comments-o"></i>
+																<ins>0</ins>
+															</span>
+														</li>
+														<li>
+															<span class="like" data-toggle="tooltip" title="like">
+																<i class="ti-heart"></i>
+																<ins>52</ins>
+															</span>
+														</li>
+														<li class="social-media">
+															<div class="menu">
+																<div class="btn trigger"><i class="fa fa-share-alt"></i>
+																</div>
+																<div class="rotater">
+																	<div class="btn btn-icon"><a href="#" title=""><i
+																				class="fa fa-html5"></i></a>
+																	</div>
+																</div>
+																<div class="rotater">
+																	<div class="btn btn-icon"><a href="#" title=""><i
+																				class="fa fa-facebook"></i></a>
+																	</div>
+																</div>
+																<div class="rotater">
+																	<div class="btn btn-icon"><a href="#" title=""><i
+																				class="fa fa-google-plus"></i></a>
+																	</div>
+																</div>
+																<div class="rotater">
+																	<div class="btn btn-icon"><a href="#" title=""><i
+																				class="fa fa-twitter"></i></a>
+																	</div>
+																</div>
+																<div class="rotater">
+																	<div class="btn btn-icon"><a href="#" title=""><i
+																				class="fa fa-css3"></i></a>
+																	</div>
+																</div>
+																<div class="rotater">
+																	<div class="btn btn-icon"><a href="#" title=""><i
+																				class="fa fa-instagram"></i></a>
+																	</div>
+																</div>
+																<div class="rotater">
+																	<div class="btn btn-icon"><a href="#" title=""><i
+																				class="fa fa-dribbble"></i></a>
+																	</div>
+																</div>
+																<div class="rotater">
+																	<div class="btn btn-icon"><a href="#" title=""><i
+																				class="fa fa-pinterest"></i></a>
+																	</div>
+																</div>
+
+															</div>
+														</li>
+													</ul>
+												</div>
+												<div class="description">
+
+												</div>
+											</div>
+										</div>
+										<div class="coment-area">
+											<ul class="we-comet">
+												<!-- <li class="post-comment">
+													<app-post-comment [postId]="newPost.id"></app-post-comment>
+												</li> -->
+											</ul>
+										</div>
+									</div>
+
+								</div>
+								<!-------------------------------END new post------------------------------ -->
+
+									<app-user-posts></app-user-posts>
+								</div>
 								<!-- user posts -->
 							</div><!-- centerl meta -->
 							<div class="col-lg-3">

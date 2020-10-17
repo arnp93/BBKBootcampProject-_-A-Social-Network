@@ -35,6 +35,7 @@ namespace BBKBootcampSocial.Core.AllServices.Services
             await repository.AddEntity(cm);
 
             await unitOfWork.SaveChanges();
+            comment.Id = cm.Id;
 
             return comment;
         }

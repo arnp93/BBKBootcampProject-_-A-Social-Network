@@ -6,6 +6,7 @@ using BBKBootcampSocial.Core.DTOs.Post;
 using BBKBootcampSocial.Core.Utilities.Identity;
 using Microsoft.AspNetCore.Authorization;
 using BBKBootcampSocial.Core.DTOs.Comment;
+using BBKBootcampSocial.Domains.User;
 
 namespace BBKBootcampSocial.Web.Controllers
 {
@@ -16,10 +17,13 @@ namespace BBKBootcampSocial.Web.Controllers
 
         private readonly IPostService postService;
         private readonly ICommentService commentService;
-        public PostController(IPostService postService, ICommentService commentService)
+        private readonly IUserService userService;
+
+        public PostController(IPostService postService, ICommentService commentService, IUserService userService)
         {
             this.postService = postService;
             this.commentService = commentService;
+            this.userService = userService;
         }
 
         #endregion
@@ -54,8 +58,17 @@ namespace BBKBootcampSocial.Web.Controllers
             if (!ModelState.IsValid)
                 return JsonResponseStatus.Error();
             long userId = User.GetUserId();
-            await commentService.AddComment(new NewCommentDTO {Text = comment.Text, PostId = comment.PostId,UserId = userId });
-            return JsonResponseStatus.Success();
+            NewCommentDTO newComment = await commentService.AddComment(new NewCommentDTO {Text = comment.Text, PostId = comment.PostId,UserId = userId });
+            User user = userService.GetUserById(userId).Result;
+            return JsonResponseStatus.Success(new CommentDTO
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                ParentId = comment.PostId,
+                Text = comment.Text,
+                UserId = user.Id,
+                Id = newComment.Id
+            });
         }
 
         #endregion

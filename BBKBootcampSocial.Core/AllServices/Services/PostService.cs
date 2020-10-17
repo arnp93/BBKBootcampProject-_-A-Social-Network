@@ -134,8 +134,8 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                             ProfileImage = null,
                             UserId = post.UserId,
                             ParentId = r.ParentId
-                        })
-                    }),
+                        }).Take(2)
+                    }).Take(3),
                     PostText = post.PostText,
                     DateTime = post.CreateDate,
                     FileName = post.FileName,
