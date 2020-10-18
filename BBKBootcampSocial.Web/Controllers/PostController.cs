@@ -6,11 +6,12 @@ using BBKBootcampSocial.Core.DTOs.Post;
 using BBKBootcampSocial.Core.Utilities.Identity;
 using Microsoft.AspNetCore.Authorization;
 using BBKBootcampSocial.Core.DTOs.Comment;
+using BBKBootcampSocial.Core.Paging;
 using BBKBootcampSocial.Domains.User;
 
 namespace BBKBootcampSocial.Web.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class PostController : BaseController
     {
         #region Constructor
@@ -48,6 +49,13 @@ namespace BBKBootcampSocial.Web.Controllers
             return JsonResponseStatus.Success(await postService.PostsOfUser(userId));
         }
 
+        [HttpPost("load-posts")]
+        public async Task<IActionResult> LoadMorePosts([FromForm]int currentPage)
+        {
+            long userId = User.GetUserId();
+
+            return JsonResponseStatus.Success(await postService.LoadMorePosts(currentPage,userId));
+        }
         #endregion
 
         #region Comments Properties

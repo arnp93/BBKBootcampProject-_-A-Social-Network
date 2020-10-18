@@ -11,6 +11,7 @@ using System.Linq;
 using BBKBootcampSocial.Core.AllServices.IServices;
 using Microsoft.EntityFrameworkCore;
 using BBKBootcampSocial.Core.DTOs.Comment;
+using BBKBootcampSocial.Core.Paging;
 
 namespace BBKBootcampSocial.Core.AllServices.Services
 {
@@ -106,7 +107,7 @@ namespace BBKBootcampSocial.Core.AllServices.Services
             List<ShowPostDTO> ShowPosts = new List<ShowPostDTO>();
 
             List<Post> posts = repository.GetEntitiesQuery().Where(p => p.UserId == userId)
-                .Include(p => p.Comments).ThenInclude(c => c.Replies).ToList();
+                .Include(p => p.Comments).ThenInclude(c => c.Replies).OrderByDescending(p => p.Id).Take(10).ToList();
 
             foreach (var post in posts)
             {
@@ -145,6 +146,8 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                     ParentId = null
                 });
             }
+
+
             return ShowPosts;
 
             //List<Post> posts = repository.GetEntitiesQuery().Where(p => p.UserId == userId)
@@ -156,6 +159,13 @@ namespace BBKBootcampSocial.Core.AllServices.Services
             //    })).ToList();
 
             //return mapper.Map<List<ShowPostDTO>>(posts);
+        }
+
+        public async Task<List<Post>> LoadMorePosts(int currentPage, long userId)
+        {
+            var repository = await unitOfWork.GetRepository<GenericRepository<Post>, Post>();
+            BasePaging paging = Pager.Build(currentPage,10);
+            return repository.GetEntitiesQuery().Where(p => p.UserId == userId).OrderByDescending(p => p.Id).Skip(paging.SkipPages).Take(paging.TakePages).Include(p => p.Comments).ThenInclude(c => c.Replies).ToList(); ;
         }
 
         #endregion

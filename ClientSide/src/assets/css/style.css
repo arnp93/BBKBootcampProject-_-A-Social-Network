@@ -4520,17 +4520,7 @@ canvas {
 }
 
 .btn-view.btn-load-more {
-    background: #fff;
-    border: medium none;
-    border-radius: 100%;
-    color: transparent;
-    display: block;
-    height: 50px;
-    margin: 30px auto 0;
-    position: relative;
-    width: 50px;
-    transition: all 0.2s linear 0s;
-    z-index: 77;
+display: none;
 }
 
 .central-meta button.btn-view {

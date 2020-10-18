@@ -36,7 +36,7 @@ export class PostCommentComponent implements OnInit {
 
     this.commentService.postComment(newComment).subscribe(res =>{
       console.log(res);
-     this.test = res;
+    //  this.test = res;
      this.router.navigateByUrl('/user-posts-component', { skipLocationChange: true }).then(() => {
       this.router.navigate(['/index']);
     });

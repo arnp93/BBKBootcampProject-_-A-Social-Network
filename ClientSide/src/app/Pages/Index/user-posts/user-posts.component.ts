@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { PostService } from '../../../Services/post.service';
 import { ShowPostDTO } from '../../../DTOs/Post/ShowPostDTO';
 import { AuthServiceService } from '../../../Services/auth-service.service';
@@ -17,7 +17,7 @@ import { CommentDTO } from '../../../DTOs/CommentDTOs/CommentDTO';
 })
 export class UserPostsComponent implements OnInit {
 
-
+  @Output() public lastPostId = new EventEmitter();
   public URL: string = DomainName;
   public posts: ShowPostDTO[];
   public thisUser: UserDTO;
@@ -28,8 +28,8 @@ export class UserPostsComponent implements OnInit {
   ngOnInit(): void {
     this.postService.getPostsByUserId().subscribe(res => {
       if (res.status === "Success") {
-        this.posts = res.data.reverse();
-
+        this.posts = res.data;
+        this.lastPostId.emit(res.data[res.data.length - 1].id);
       }
     });
     this.authService.getCurrentUser().subscribe(res => {
@@ -53,13 +53,14 @@ export class UserPostsComponent implements OnInit {
     );
 
     this.commentService.postComment(newComment).subscribe(res => {
-      
-      if(res.status === "Success"){
+
+      if (res.status === "Success") {
         this.newComments.push(res.data)
       }
-      
+
     });
   }
+
 
 
 }
