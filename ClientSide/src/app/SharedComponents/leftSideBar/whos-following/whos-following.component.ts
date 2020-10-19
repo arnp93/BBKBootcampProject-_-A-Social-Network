@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthServiceService } from '../../../Services/auth-service.service';
 
 @Component({
   selector: 'app-whos-following',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WhosFollowingComponent implements OnInit {
 
-  constructor() { }
+  constructor(private authService : AuthServiceService) { }
 
   ngOnInit(): void {
   }

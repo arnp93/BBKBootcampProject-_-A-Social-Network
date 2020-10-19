@@ -6,6 +6,7 @@ import { ShowPostDTO } from 'src/app/DTOs/Post/ShowPostDTO';
 import { PostService } from 'src/app/Services/post.service';
 import { DomainName } from 'src/app/Utilities/PathTools';
 import { CommentService } from '../../../Services/comment.service';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-all-users-posts',
@@ -18,6 +19,7 @@ export class AllUsersPostsComponent implements OnInit {
   public URL: string = DomainName;
   public newComments: CommentDTO[] = [];
   public commentForm: FormGroup;
+  public userId : number;
   constructor(private postService : PostService,private commentService : CommentService) { }
 
   ngOnInit(): void {
@@ -49,5 +51,8 @@ export class AllUsersPostsComponent implements OnInit {
       }
     });
   }
+  viewProfile(event){
+    console.log(event.target.parentNode.parentNode.childNodes[0].value);
 
+  }
 }

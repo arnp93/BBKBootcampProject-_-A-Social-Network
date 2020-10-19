@@ -33,7 +33,9 @@ export class IndexComponent implements OnInit {
 
     this.authService.getCurrentUser().subscribe(res => {
       this.thisUser = res;
-    })
+    });
+
+    document.getElementsByName("user-setting")[0].style.display = "none";
 
     this.authService.checkAuth().subscribe(res => {
       if (res.status === 'Success') {

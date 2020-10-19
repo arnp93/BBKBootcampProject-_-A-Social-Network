@@ -1860,7 +1860,7 @@ for some reason nth-child(1) is always busy and elements starting from 2 */
     font-size: 15px;
     font-weight: 600;
     padding-bottom: 5px;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
     display: inline-block;
     margin-bottom: 0;
     color: #2a2a2a;
