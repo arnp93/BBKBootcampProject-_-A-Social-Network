@@ -55,7 +55,8 @@ export class UserPostsComponent implements OnInit {
     this.commentService.postComment(newComment).subscribe(res => {
 
       if (res.status === "Success") {
-        this.newComments.push(res.data)
+        this.newComments.push(res.data);
+        this.commentForm.reset();
       }
 
     });

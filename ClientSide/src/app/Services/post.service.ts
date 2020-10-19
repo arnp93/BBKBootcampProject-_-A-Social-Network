@@ -20,6 +20,10 @@ export class PostService {
     return this.http.get<PostResultResponse>("/api/post/user-posts");
   }
 
+  getAllPosts():Observable<PostResultResponse>{
+    return this.http.get<PostResultResponse>("/api/post/all-posts");
+  }
+
   setPosts(postResult: PostResultResponse) {
     this.posts.next(postResult);
   }

@@ -1,59 +1,3 @@
-<div class="feature-photo">
-	<figure><img src="/assets/images/resources/timeline-1.jpg" alt=""></figure>
-	<div class="add-btn">
-		<span>1205 followers</span>
-		<a href="#" title="" data-ripple="">Add Friend</a>
-	</div>
-	<form class="edit-phto">
-		<i class="fa fa-camera-retro"></i>
-		<label class="fileContainer">
-			Edit Cover Photo
-		<input type="file">
-		</label>
-	</form>
-	<div class="container-fluid">
-		<div class="row merged">
-			<div class="col-lg-2 col-sm-3">
-				<div class="user-avatar">
-					<figure>
-						<img src="/assets/images/resources/friend-avatar9.jpg" alt="">
-						<form class="edit-phto">
-							<i class="fa fa-camera-retro"></i>
-							<label class="fileContainer">
-								Edit Display Photo
-								<input type="file">
-							</label>
-						</form>
-					</figure>
-				</div>
-			</div>
-			<div class="col-lg-10 col-sm-9">
-				<div class="timeline-info">
-					<ul>
-						<li class="admin-name">
-						  <h5>Janice Griffith</h5>
-						  <span>Group Admin</span>
-						</li>
-						<li>
-							<a class="active" href="time-line.html" title="" data-ripple="">time line</a>
-							<a class="" href="timeline-photos.html" title="" data-ripple="">Photos</a>
-							<a class="" href="timeline-videos.html" title="" data-ripple="">Videos</a>
-							<a class="" href="timeline-friends.html" title="" data-ripple="">Friends</a>
-							<a class="" href="timeline-groups.html" title="" data-ripple="">Groups</a>
-							<a class="" href="about.html" title="" data-ripple="">about</a>
-							<a class="" href="#" title="" data-ripple="">more</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-
-
-
-
 <div id="mainpage" class="theme-layout">
 
 	<app-responsive-menu></app-responsive-menu>
@@ -66,9 +10,49 @@
 		<app-menu></app-menu>
 	</div>
 	<!-- topbar -->
+
+
+
+	<!-- Cover Section -->
 	<section>
 		<div class="gap gray-bg">
 			<div class="container-fluid">
+				<div class="feature-photo">
+					<figure><img src="/assets/images/resources/timeline-1.jpg" alt=""></figure>
+					<div class="add-btn">
+						<span>1205 followers</span>
+						<a href="#" title="" data-ripple="">Add Friend</a>
+					</div>
+					<form class="edit-phto">
+						<i class="fa fa-camera-retro"></i>
+						<label class="fileContainer">
+							Edit Cover Photo
+							<input type="file">
+						</label>
+					</form>
+					<div class="container-fluid">
+						<div class="row merged">
+							<div class="col-lg-2 col-sm-3">
+								<div class="user-avatar">
+									<figure>
+										<img src="/assets/images/resources/friend-avatar9.jpg" alt="">
+										<form class="edit-phto">
+											<i class="fa fa-camera-retro"></i>
+											<label class="fileContainer">
+												Edit Display Photo
+												<input type="file">
+											</label>
+										</form>
+									</figure>
+								</div>
+							</div>
+							<div class="col-lg-10 col-sm-9">
+
+								<h5 style="font-weight: bold;">{{thisUser.firstName}} {{thisUser.lastName}}</h5>
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="row" id="page-contents">
@@ -85,117 +69,125 @@
 							<div class="col-lg-6">
 								<app-add-new-post (newPost)="getNewPost($event)"></app-add-new-post>
 								<!-- add post new box -->
-							
+
 								<div class="loadMore">
-										<!-------------------------------START new post------------------------------ -->
-								<div class="central-meta item" *ngFor="let newPost of newPosts.reverse()" id="{{newPost.id}}">
-									<div class="user-post">
-										<div class="friend-info">
-											<figure>
-												<img src="/assets/images/resources/friend-avatar9.jpg" alt="">
-											</figure>
-											<div class="friend-name">
-												<ins><a href="time-line.html" title="">{{thisUser.firstName}}
-														{{thisUser.lastName}}</a></ins>
-												<span>{{newPost.dateTime}}</span>
-											</div>
-											<div class="post-meta">
-												<p>
-													{{newPost.postText}}
-												</p>
-												<img src="{{URL}}/PostFiles/{{newPost.fileName}}" alt=""
-													*ngIf="newPost.fileName != null">
-												<div class="we-video-info">
-													<ul>
-														<li>
-															<span class="views" data-toggle="tooltip" title="views">
-																<i class="fa fa-eye"></i>
-																<ins>1.2k</ins>
-															</span>
-														</li>
-														<li>
-															<span class="comment" data-toggle="tooltip"
-																title="Comments">
-																<i class="fa fa-comments-o"></i>
-																<ins>0</ins>
-															</span>
-														</li>
-														<li>
-															<span class="like" data-toggle="tooltip" title="like">
-																<i class="ti-heart"></i>
-																<ins>52</ins>
-															</span>
-														</li>
-														<li class="social-media">
-															<div class="menu">
-																<div class="btn trigger"><i class="fa fa-share-alt"></i>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i
-																				class="fa fa-html5"></i></a>
-																	</div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i
-																				class="fa fa-facebook"></i></a>
-																	</div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i
-																				class="fa fa-google-plus"></i></a>
-																	</div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i
-																				class="fa fa-twitter"></i></a>
-																	</div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i
-																				class="fa fa-css3"></i></a>
-																	</div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i
-																				class="fa fa-instagram"></i></a>
-																	</div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i
-																				class="fa fa-dribbble"></i></a>
-																	</div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i
-																				class="fa fa-pinterest"></i></a>
-																	</div>
-																</div>
-
-															</div>
-														</li>
-													</ul>
+									<!-------------------------------START new post------------------------------ -->
+									<div class="central-meta item" *ngFor="let newPost of newPosts.reverse()"
+										id="{{newPost.id}}">
+										<div class="user-post">
+											<div class="friend-info">
+												<figure>
+													<img src="/assets/images/resources/friend-avatar9.jpg" alt="">
+												</figure>
+												<div class="friend-name">
+													<ins><a href="time-line.html" title="">{{thisUser.firstName}}
+															{{thisUser.lastName}}</a></ins>
+													<span>{{newPost.dateTime}}</span>
 												</div>
-												<div class="description">
+												<div class="post-meta">
+													<p>
+														{{newPost.postText}}
+													</p>
+													<img src="{{URL}}/PostFiles/{{newPost.fileName}}" alt=""
+														*ngIf="newPost.fileName != null">
+													<div class="we-video-info">
+														<ul>
+															<li>
+																<span class="views" data-toggle="tooltip" title="views">
+																	<i class="fa fa-eye"></i>
+																	<ins>1.2k</ins>
+																</span>
+															</li>
+															<li>
+																<span class="comment" data-toggle="tooltip"
+																	title="Comments">
+																	<i class="fa fa-comments-o"></i>
+																	<ins>0</ins>
+																</span>
+															</li>
+															<li>
+																<span class="like" data-toggle="tooltip" title="like">
+																	<i class="ti-heart"></i>
+																	<ins>52</ins>
+																</span>
+															</li>
+															<li class="social-media">
+																<div class="menu">
+																	<div class="btn trigger"><i
+																			class="fa fa-share-alt"></i>
+																	</div>
+																	<div class="rotater">
+																		<div class="btn btn-icon"><a href="#"
+																				title=""><i class="fa fa-html5"></i></a>
+																		</div>
+																	</div>
+																	<div class="rotater">
+																		<div class="btn btn-icon"><a href="#"
+																				title=""><i
+																					class="fa fa-facebook"></i></a>
+																		</div>
+																	</div>
+																	<div class="rotater">
+																		<div class="btn btn-icon"><a href="#"
+																				title=""><i
+																					class="fa fa-google-plus"></i></a>
+																		</div>
+																	</div>
+																	<div class="rotater">
+																		<div class="btn btn-icon"><a href="#"
+																				title=""><i
+																					class="fa fa-twitter"></i></a>
+																		</div>
+																	</div>
+																	<div class="rotater">
+																		<div class="btn btn-icon"><a href="#"
+																				title=""><i class="fa fa-css3"></i></a>
+																		</div>
+																	</div>
+																	<div class="rotater">
+																		<div class="btn btn-icon"><a href="#"
+																				title=""><i
+																					class="fa fa-instagram"></i></a>
+																		</div>
+																	</div>
+																	<div class="rotater">
+																		<div class="btn btn-icon"><a href="#"
+																				title=""><i
+																					class="fa fa-dribbble"></i></a>
+																		</div>
+																	</div>
+																	<div class="rotater">
+																		<div class="btn btn-icon"><a href="#"
+																				title=""><i
+																					class="fa fa-pinterest"></i></a>
+																		</div>
+																	</div>
 
+																</div>
+															</li>
+														</ul>
+													</div>
+													<div class="description">
+
+													</div>
 												</div>
 											</div>
-										</div>
-										<div class="coment-area">
-											<ul class="we-comet">
-												<!-- <li class="post-comment">
+											<div class="coment-area">
+												<ul class="we-comet">
+													<!-- <li class="post-comment">
 													<app-post-comment [postId]="newPost.id"></app-post-comment>
 												</li> -->
-											</ul>
+												</ul>
+											</div>
 										</div>
-									</div>
 
-								</div>
-								<!-------------------------------END new post------------------------------ -->
+									</div>
+									<!-------------------------------END new post------------------------------ -->
 
 									<app-user-posts (lastPostId)="lastPostId=$event"></app-user-posts>
 
 									<!-------------------------- Load More Posts -------------------------->
-									<div class="central-meta item" *ngFor="let post of posts" id="{{post.id}}" >
+									<div class="central-meta item" *ngFor="let post of posts" id="{{post.id}}">
 										<div class="user-post">
 											<div class="friend-info">
 												<figure>
@@ -235,55 +227,62 @@
 															</li>
 															<li class="social-media">
 																<div class="menu">
-																	<div class="btn trigger"><i class="fa fa-share-alt"></i>
+																	<div class="btn trigger"><i
+																			class="fa fa-share-alt"></i>
 																	</div>
 																	<div class="rotater">
-																		<div class="btn btn-icon"><a href="#" title=""><i
-																					class="fa fa-html5"></i></a>
+																		<div class="btn btn-icon"><a href="#"
+																				title=""><i class="fa fa-html5"></i></a>
 																		</div>
 																	</div>
 																	<div class="rotater">
-																		<div class="btn btn-icon"><a href="#" title=""><i
+																		<div class="btn btn-icon"><a href="#"
+																				title=""><i
 																					class="fa fa-facebook"></i></a>
 																		</div>
 																	</div>
 																	<div class="rotater">
-																		<div class="btn btn-icon"><a href="#" title=""><i
+																		<div class="btn btn-icon"><a href="#"
+																				title=""><i
 																					class="fa fa-google-plus"></i></a>
 																		</div>
 																	</div>
 																	<div class="rotater">
-																		<div class="btn btn-icon"><a href="#" title=""><i
+																		<div class="btn btn-icon"><a href="#"
+																				title=""><i
 																					class="fa fa-twitter"></i></a>
 																		</div>
 																	</div>
 																	<div class="rotater">
-																		<div class="btn btn-icon"><a href="#" title=""><i
-																					class="fa fa-css3"></i></a>
+																		<div class="btn btn-icon"><a href="#"
+																				title=""><i class="fa fa-css3"></i></a>
 																		</div>
 																	</div>
 																	<div class="rotater">
-																		<div class="btn btn-icon"><a href="#" title=""><i
+																		<div class="btn btn-icon"><a href="#"
+																				title=""><i
 																					class="fa fa-instagram"></i></a>
 																		</div>
 																	</div>
 																	<div class="rotater">
-																		<div class="btn btn-icon"><a href="#" title=""><i
+																		<div class="btn btn-icon"><a href="#"
+																				title=""><i
 																					class="fa fa-dribbble"></i></a>
 																		</div>
 																	</div>
 																	<div class="rotater">
-																		<div class="btn btn-icon"><a href="#" title=""><i
+																		<div class="btn btn-icon"><a href="#"
+																				title=""><i
 																					class="fa fa-pinterest"></i></a>
 																		</div>
 																	</div>
-	
+
 																</div>
 															</li>
 														</ul>
 													</div>
 													<div class="description">
-	
+
 													</div>
 												</div>
 											</div>
@@ -295,13 +294,13 @@
 												</ul>
 											</div>
 										</div>
-	
+
 									</div>
 									<!-------------------------- End Load New Post -------------------------->
 								</div>
-								<form (submit)="loadMorePosts()" >
-							 <button id="load-more" type="submit" >Load More</button> 
-							</form>
+								<form (submit)="loadMorePosts()">
+									<button id="load-more" type="submit">Load More</button>
+								</form>
 								<!-- user posts -->
 							</div><!-- centerl meta -->
 							<div class="col-lg-3">
@@ -313,6 +312,9 @@
 			</div>
 		</div>
 	</section>
+	<!-- End Cover Section -->
+
+	
 
 	<app-footer></app-footer>
 </div>

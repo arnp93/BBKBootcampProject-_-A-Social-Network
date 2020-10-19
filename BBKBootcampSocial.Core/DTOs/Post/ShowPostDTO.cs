@@ -1,4 +1,5 @@
-﻿using BBKBootcampSocial.Core.DTOs.Comment;
+﻿using BBKBootcampSocial.Core.DTOs.Account;
+using BBKBootcampSocial.Core.DTOs.Comment;
 using System;
 using System.Collections.Generic;
 
@@ -13,6 +14,8 @@ namespace BBKBootcampSocial.Core.DTOs.Post
         public DateTime DateTime { get; set; }
         public long? ParentId { get; set; }
         public long Id { get; set; }
+
+        public LoginUserInfoDTO User { get; set; }
 
         public IEnumerable<CommentDTO> Comments{ get; set; }
     }

@@ -33,6 +33,7 @@ namespace BBKBootcampSocial.Domains.User
         [Required(ErrorMessage = "Introduce tu contraseña")]
         [MinLength(9,ErrorMessage = "Ese campo no puede tener menos de 9 caracteres")]
         [MaxLength(150, ErrorMessage = "Ese campo no puede tener mas de 150 caracteres")]
+        public string ProfilePic { get; set; }
         public string Password { get; set; }
         public string Facebook { get; set; }
         public string LinkdIn { get; set; }

@@ -25,6 +25,8 @@ import { UserPostsComponent } from './Pages/Index/user-posts/user-posts.componen
 import { RightSideBarComponent } from './SharedComponents/right-side-bar/right-side-bar.component';
 import { SettingsComponent } from './SharedComponents/settings/settings.component';
 import { PostCommentComponent } from './Pages/Index/post-comment/post-comment.component';
+import { NewFeedsComponent } from './Pages/NewsFeed/new-feeds/new-feeds.component';
+import { AllUsersPostsComponent } from './Pages/NewsFeed/all-users-posts/all-users-posts.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,9 @@ import { PostCommentComponent } from './Pages/Index/post-comment/post-comment.co
     UserPostsComponent,
     RightSideBarComponent,
     SettingsComponent,
-    PostCommentComponent
+    PostCommentComponent,
+    NewFeedsComponent,
+    AllUsersPostsComponent
   ],
   imports: [
     BrowserModule,

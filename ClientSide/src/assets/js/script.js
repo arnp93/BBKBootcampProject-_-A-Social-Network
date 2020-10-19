@@ -1,4 +1,4 @@
-jQuery(document).ready(function($) {
+function loadPage(){
 	
 	"use strict";
 	
@@ -399,7 +399,7 @@ jQuery(".post-comt-box textarea").on("keydown", function(event) {
 	
 
 
-});//document ready end
+};//document ready end
 
 
 

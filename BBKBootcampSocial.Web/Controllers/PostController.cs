@@ -49,6 +49,12 @@ namespace BBKBootcampSocial.Web.Controllers
             return JsonResponseStatus.Success(await postService.PostsOfUser(userId));
         }
 
+        [HttpGet("all-posts")]
+        public async Task<IActionResult> GetAllPosts()
+        {
+            return JsonResponseStatus.Success(await postService.GetAllPosts());
+        }
+
         [HttpPost("load-posts")]
         public async Task<IActionResult> LoadMorePosts([FromForm]int currentPage)
         {
@@ -75,7 +81,8 @@ namespace BBKBootcampSocial.Web.Controllers
                 ParentId = comment.PostId,
                 Text = comment.Text,
                 UserId = user.Id,
-                Id = newComment.Id
+                Id = newComment.Id,
+                PostId = comment.PostId
             });
         }
 

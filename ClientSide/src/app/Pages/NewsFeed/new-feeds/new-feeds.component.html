@@ -1,0 +1,65 @@
+<div id="mainpage" class="theme-layout">
+
+	<app-responsive-menu></app-responsive-menu>
+	<div class="topbar stick">
+		<!-- log Section -->
+		<div class="logo">
+			<a title="" href="newsfeed.html"><img src="/assets/images/logo.png" alt=""></a>
+		</div>
+		<!-- menu section -->
+		<app-menu></app-menu>
+	</div>
+	<!-- topbar -->
+
+
+
+	<!-- Cover Section -->
+	<section>
+		<div class="gap gray-bg">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="row" id="page-contents">
+							<div class="col-lg-3">
+								<aside class="sidebar static">
+									<app-shortcuts></app-shortcuts>
+									<!-- Shortcuts -->
+									<app-recent-activities></app-recent-activities>
+									<!-- recent activites -->
+									<app-whos-following></app-whos-following>
+									<!-- who's following -->
+								</aside>
+							</div><!-- sidebar -->
+							<div class="col-lg-6">
+								<!-- add post new box -->
+
+								<div class="loadMore">
+
+									<app-all-users-posts></app-all-users-posts>
+
+									<!-------------------------- Load More Posts -------------------------->
+									
+									<!-------------------------- End Load New Post -------------------------->
+								</div>
+								<form (submit)="loadMorePosts()">
+									<button id="load-more" type="submit">Load More</button>
+								</form>
+								<!-- user posts -->
+							</div><!-- centerl meta -->
+							<div class="col-lg-3">
+								<app-right-side-bar></app-right-side-bar>
+							</div><!-- sidebar -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Cover Section -->
+
+	
+
+	<app-footer></app-footer>
+</div>
+<app-settings></app-settings>
+<!-- settings panel -->

@@ -12,6 +12,7 @@ using BBKBootcampSocial.Core.AllServices.IServices;
 using Microsoft.EntityFrameworkCore;
 using BBKBootcampSocial.Core.DTOs.Comment;
 using BBKBootcampSocial.Core.Paging;
+using BBKBootcampSocial.Core.DTOs.Account;
 
 namespace BBKBootcampSocial.Core.AllServices.Services
 {
@@ -166,6 +167,57 @@ namespace BBKBootcampSocial.Core.AllServices.Services
             var repository = await unitOfWork.GetRepository<GenericRepository<Post>, Post>();
             BasePaging paging = Pager.Build(currentPage,10);
             return repository.GetEntitiesQuery().Where(p => p.UserId == userId).OrderByDescending(p => p.Id).Skip(paging.SkipPages).Take(paging.TakePages).Include(p => p.Comments).ThenInclude(c => c.Replies).ToList(); ;
+        }
+
+        public async Task<List<ShowPostDTO>> GetAllPosts()
+        {
+            var repository = await unitOfWork.GetRepository<GenericRepository<Post>, Post>();
+
+            List<ShowPostDTO> ShowPosts = new List<ShowPostDTO>();
+
+            List<Post> posts = repository.GetEntitiesQuery().Include(p => p.User).Include(p => p.Comments).ThenInclude(c => c.Replies).OrderByDescending(p => p.Id).Take(10).ToList();
+
+            foreach (var post in posts)
+            {
+                ShowPosts.Add(new ShowPostDTO
+                {
+                    Comments = post.Comments.Select(c => new CommentDTO
+                    {
+                        Id = c.Id,
+                        FirstName = userService.GetUserById(c.UserId).Result.FirstName,
+                        LastName = userService.GetUserById(c.UserId).Result.LastName,
+                        Text = c.Text,
+                        LikeCount = 0,
+                        PostId = post.Id,
+                        ProfileImage = null,
+                        UserId = post.UserId,
+                        ParentId = c.ParentId,
+                        Replies = c.Replies.Select(r => new CommentDTO
+                        {
+                            Id = r.Id,
+                            FirstName = userService.GetUserById(r.UserId).Result.FirstName,
+                            LastName = userService.GetUserById(r.UserId).Result.LastName,
+                            Text = r.Text,
+                            LikeCount = 0,
+                            PostId = post.Id,
+                            ProfileImage = null,
+                            UserId = post.UserId,
+                            ParentId = r.ParentId
+                        }).Take(2)
+                    }).Take(3),
+                    PostText = post.PostText,
+                    DateTime = post.CreateDate,
+                    FileName = post.FileName,
+                    Id = post.Id,
+                    UserId = post.UserId,
+                    CanalId = null,
+                    ParentId = null,
+                    User = mapper.Map<LoginUserInfoDTO>(post.User)
+                });
+            }
+
+
+            return ShowPosts;
         }
 
         #endregion

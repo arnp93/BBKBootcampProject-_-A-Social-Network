@@ -13,7 +13,8 @@ namespace BBKBootcampSocial.Core.AllServices.IServices
         Task<bool> DeletePost(PostDTO post);
         Task<PostDTO> EditPost(PostDTO post);
         Task<List<ShowPostDTO>> PostsOfUser(long userId);
-
         Task<List<Post>> LoadMorePosts(int currentPage, long userId);
+
+        Task<List<ShowPostDTO>> GetAllPosts();
     }
 }
