@@ -6,7 +6,7 @@ namespace BBKBootcampSocial.Core.DTOs.Comment
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string ProfileImage { get; set; }
+        public string ProfilePic { get; set; }
         public long UserId { get; set; }
         public string Text { get; set; }
         public int LikeCount { get; set; }

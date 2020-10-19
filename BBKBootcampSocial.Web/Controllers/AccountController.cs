@@ -56,6 +56,7 @@ namespace BBKBootcampSocial.Web.Controllers
                 {
                     FirstName = user.FirstName,
                     LastName = user.LastName,
+                    ProfilePic = user.ProfilePic,
                     UserId = user.Id
                 });
             
@@ -104,6 +105,7 @@ namespace BBKBootcampSocial.Web.Controllers
                             ExpireTime = 30,
                             FirstName = user.FirstName,
                             LastName = user.LastName,
+                            ProfilePic = user.ProfilePic,
                             UserId = user.Id
                         });
                 }

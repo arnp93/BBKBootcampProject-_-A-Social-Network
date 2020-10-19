@@ -3,7 +3,7 @@ export class CommentDTO {
         public id : number,
         public firstName: string,
         public lastName: string,
-        public profileImage: string,
+        public profilePic: string,
         public userId: number,
         public text: string,
         public likeCount: number,

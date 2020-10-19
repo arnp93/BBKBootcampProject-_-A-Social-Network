@@ -35,20 +35,22 @@
 							<div class="col-lg-2 col-sm-3">
 								<div class="user-avatar">
 									<figure>
-										<img src="/assets/images/resources/friend-avatar9.jpg" alt="">
-										<form class="edit-phto">
+										<img *ngIf="thisUser.profilePic === null && !isLoading" src="/assets/images/account.png" alt="">
+										<img *ngIf="isLoading" src="/assets/loadings/Pulse-1s-200px.gif" alt="">
+										<img style="min-height: 120px;min-width: 120px;" *ngIf="thisUser.profilePic !== null && !isLoading" [src]="URL+'/ProfilePictures/'+thisUser.profilePic" alt="">
+										
+										<form (submit)="uploadPic()" class="edit-phto">
 											<i class="fa fa-camera-retro"></i>
 											<label class="fileContainer">
 												Edit Display Photo
-												<input type="file">
+												<input (change)="addPic($event)" type="file">
 											</label>
 										</form>
 									</figure>
 								</div>
 							</div>
 							<div class="col-lg-10 col-sm-9">
-
-								<h5 style="font-weight: bold;">{{thisUser.firstName}} {{thisUser.lastName}}</h5>
+								<h5 style="font-weight: bold">{{thisUser.firstName}} {{thisUser.lastName}}</h5>
 							</div>
 						</div>
 					</div>
@@ -323,3 +325,6 @@
 
 <span id="loginForm"></span>
 <span id="registerForm"></span>
+
+<swal #profilePicError title="Oops" icon="error" [showCancelButton]="true" [focusCancel]="true">
+</swal>

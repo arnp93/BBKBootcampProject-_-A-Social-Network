@@ -3,7 +3,8 @@
         <div class="user-post">
             <div class="friend-info">
                 <figure>
-                    <img src="/assets/images/resources/friend-avatar9.jpg" alt="">
+                    <img *ngIf="post.user.profilePic === null" src="/assets/images/account.png" alt="">
+                    <img style="height: 50px;width: 50px;" *ngIf="post.user.profilePic !== null" [src]="URL+'/ProfilePictures/'+post.user.profilePic" alt="">
                 </figure>
                 <div class="friend-name">
                     <ins><a href="time-line.html" title="">{{post.user.firstName}} {{post.user.lastName}}</a></ins>
@@ -89,7 +90,7 @@
                     <li *ngFor="let newComment of newComments">
                         <div *ngIf="newComment.postId === post.id">
                             <div class="comet-avatar">
-                                <img [src]="URL + newComment.profileImage" alt="">
+                                <img [src]="URL + newComment.profilePic" alt="">
                             </div>
                             <div class="we-comment">
                                 <div class="coment-head">
@@ -107,7 +108,7 @@
                     <li *ngFor="let comment of post.comments">
                         <div *ngIf="comment.parentId === null">
                             <div class="comet-avatar">
-                                <img [src]="URL + comment.profileImage" alt="">
+                                <img [src]="URL + comment.profilePic" alt="">
                             </div>
                             <div class="we-comment">
                                 <div class="coment-head">

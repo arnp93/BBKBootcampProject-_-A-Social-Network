@@ -10,7 +10,6 @@ import { Interceptor } from './Utilities/Interceptor';
 import { LoginComponent } from './Pages/Login/login/login.component';
 import { NgxLoadingModule } from 'ngx-loading';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
-import { IndexComponent } from './Pages/Index/index/index.component';
 import { ResponsiveMenuComponent } from './SharedComponents/responsive-menu/responsive-menu.component';
 import { FooterComponent } from './SharedComponents/footer/footer.component';
 import { LoginErrorComponent } from './Pages/login-error/login-error.component';
@@ -27,6 +26,7 @@ import { SettingsComponent } from './SharedComponents/settings/settings.componen
 import { PostCommentComponent } from './Pages/Index/post-comment/post-comment.component';
 import { NewFeedsComponent } from './Pages/NewsFeed/new-feeds/new-feeds.component';
 import { AllUsersPostsComponent } from './Pages/NewsFeed/all-users-posts/all-users-posts.component';
+import { IndexComponent } from './Pages/Index/index/index.component';
 
 @NgModule({
   declarations: [

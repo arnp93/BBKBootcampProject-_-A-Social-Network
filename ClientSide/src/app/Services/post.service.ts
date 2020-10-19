@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { NewPostResponseDTO } from '../DTOs/Post/NewPostResponseDTO';
 import { PostResultResponse } from '../DTOs/Post/PostResultResponse';
+import { IResponseDTO } from '../DTOs/Common/IResponseDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -32,5 +33,9 @@ export class PostService {
     let params: HttpParams = new HttpParams().set("CurrentPage", currentPage.toString());
 
     return this.http.post<PostResultResponse>("/api/post/load-posts", params);
+  }
+
+  newProfilePicture(form : FormData) : Observable<IResponseDTO<string>>{
+    return this.http.post<IResponseDTO<string>>("/api/post/profile-pic", form);
   }
 }

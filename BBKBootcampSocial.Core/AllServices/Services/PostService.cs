@@ -13,6 +13,9 @@ using Microsoft.EntityFrameworkCore;
 using BBKBootcampSocial.Core.DTOs.Comment;
 using BBKBootcampSocial.Core.Paging;
 using BBKBootcampSocial.Core.DTOs.Account;
+using BBKBootcampSocial.Domains.Image;
+using BBKBootcampSocial.Domains.User;
+using Microsoft.AspNetCore.Http;
 
 namespace BBKBootcampSocial.Core.AllServices.Services
 {
@@ -122,7 +125,7 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                         Text = c.Text,
                         LikeCount = 0,
                         PostId = post.Id,
-                        ProfileImage = null,
+                        ProfilePic = userService.GetUserById(c.UserId).Result.ProfilePic,
                         UserId = post.UserId,
                         ParentId = c.ParentId,
                         Replies = c.Replies.Select(r => new CommentDTO
@@ -133,7 +136,7 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                             Text = r.Text,
                             LikeCount = 0,
                             PostId = post.Id,
-                            ProfileImage = null,
+                            ProfilePic = userService.GetUserById(r.UserId).Result.ProfilePic,
                             UserId = post.UserId,
                             ParentId = r.ParentId
                         }).Take(2)
@@ -189,7 +192,7 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                         Text = c.Text,
                         LikeCount = 0,
                         PostId = post.Id,
-                        ProfileImage = null,
+                        ProfilePic = null,
                         UserId = post.UserId,
                         ParentId = c.ParentId,
                         Replies = c.Replies.Select(r => new CommentDTO
@@ -200,7 +203,7 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                             Text = r.Text,
                             LikeCount = 0,
                             PostId = post.Id,
-                            ProfileImage = null,
+                            ProfilePic = null,
                             UserId = post.UserId,
                             ParentId = r.ParentId
                         }).Take(2)
@@ -218,6 +221,33 @@ namespace BBKBootcampSocial.Core.AllServices.Services
 
 
             return ShowPosts;
+        }
+
+        public async Task<string> ProfilePic(IFormFile picture,long userId)
+        {
+            var repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
+            if (picture != null)
+            {
+                User user = await repository.GetEntityById(userId);
+                if (user.ProfilePic != null)
+                {
+                  var imageRepository = await unitOfWork.GetRepository<GenericRepository<Image>, Image>();
+
+                  await imageRepository.AddEntity(new Image
+                  {
+                      ImageName = user.ProfilePic,
+                      UserId = user.Id
+                  });
+                }
+                string picName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(picture.FileName);
+                string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProfilePictures", picName);
+                await using var stream = new FileStream(imagePath, FileMode.Create);
+                await picture.CopyToAsync(stream);
+                user.ProfilePic = picName;
+                await unitOfWork.SaveChanges();
+                return picName;
+            }
+            return null;
         }
 
         #endregion

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using BBKBootcampSocial.Core.DTOs.Comment;
 using BBKBootcampSocial.Core.Paging;
 using BBKBootcampSocial.Domains.User;
+using Microsoft.AspNetCore.Http;
 
 namespace BBKBootcampSocial.Web.Controllers
 {
@@ -82,8 +83,23 @@ namespace BBKBootcampSocial.Web.Controllers
                 Text = comment.Text,
                 UserId = user.Id,
                 Id = newComment.Id,
+                ProfilePic = user.ProfilePic,
                 PostId = comment.PostId
             });
+        }
+
+        #endregion
+
+        #region Add/Change Profile Picture
+        [HttpPost("profile-pic")]
+        public async Task<IActionResult> ProfilePicture([FromForm] IFormFile pic)
+        {
+            long userId = User.GetUserId();
+            string name = await postService.ProfilePic(pic,userId);
+            if (name != null)
+                return JsonResponseStatus.Success(name);
+            else
+                return JsonResponseStatus.Error();
         }
 
         #endregion

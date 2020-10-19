@@ -1,8 +1,11 @@
-import { Component,EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PostService } from '../../../Services/post.service';
 import { Router } from '@angular/router';
 import { ShowPostDTO } from '../../../DTOs/Post/ShowPostDTO';
+import { UserDTO } from 'src/app/DTOs/Account/UserDTO';
+import { AuthServiceService } from '../../../Services/auth-service.service';
+import { DomainName } from 'src/app/Utilities/PathTools';
 
 @Component({
   selector: 'app-add-new-post',
@@ -11,10 +14,12 @@ import { ShowPostDTO } from '../../../DTOs/Post/ShowPostDTO';
 })
 export class AddNewPostComponent implements OnInit {
 
-  @Output() newPost : EventEmitter<ShowPostDTO> = new EventEmitter<ShowPostDTO>();
+  @Output() newPost: EventEmitter<ShowPostDTO> = new EventEmitter<ShowPostDTO>();
   public selectedFile: File = null;
+  public URL: string = DomainName;
   public PostForm: FormGroup;
-  constructor(private postService: PostService, private router: Router) { }
+  public thisUser: UserDTO;
+  constructor(private postService: PostService, private authService: AuthServiceService, private router: Router) { }
 
   ngOnInit(): void {
     this.PostForm = new FormGroup({
@@ -22,6 +27,9 @@ export class AddNewPostComponent implements OnInit {
         Validators.minLength(1),
         Validators.required
       ])
+    });
+    this.authService.getCurrentUser().subscribe(res => {
+      this.thisUser = res;
     });
   }
 
@@ -37,14 +45,14 @@ export class AddNewPostComponent implements OnInit {
     formData.append("PostText", this.PostForm.controls.postText.value);
 
     this.postService.addNewPost(formData).subscribe(res => {
-      if(res.status === "Success"){
+      if (res.status === "Success") {
         this.newPost.emit(res.data);
         this.PostForm.reset();
-      }else{
+      } else {
         alert("ha surgido algun problema en Add New Comment Component");
       }
-     
-     
+
+
 
     });
   }

@@ -51,7 +51,9 @@ Last change:  4/september/18
     src: url('../fonts/HoboStd.ttf'), url('../fonts/HoboStd.eot');
 }
 
-
+img{
+    overflow: hidden;
+}
 /*===============
 ***General Styling 
 ===============*/
@@ -1364,7 +1366,8 @@ form button {
     display: inline-block;
     margin-bottom: 0;
     vertical-align: middle;
-    width: 8%;
+    width: 40px;
+    height: 40px;
 }
 
 .friend-name {
