@@ -49,7 +49,7 @@ export class AddNewPostComponent implements OnInit {
         this.newPost.emit(res.data);
         this.PostForm.reset();
       } else {
-        alert("ha surgido algun problema en Add New Comment Component");
+        alert("ha surgido algun problema en Add New Comment");
       }
 
 

@@ -20,5 +20,30 @@ body {
 
 .link {
   cursor: pointer;
-  color: aqua;
+}
+
+.post-menu {
+  height: auto;
+  width: auto;
+  padding: 20px 0px;
+  background-color: white;
+  border: 2px solid lightgray;
+  z-index: 998;
+  margin-top: -30px;
+  display: none;
+}
+
+.post-menu ul {
+  list-style: none;
+  margin: 0px auto;
+  text-align: center;
+}
+
+.post-menu ul li {
+  margin-right: 38px;
+}
+
+.post-menu ul li:hover {
+  color: rgb(75, 78, 236);
+  font-weight: bold;
 }

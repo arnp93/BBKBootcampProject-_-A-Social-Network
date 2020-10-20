@@ -20,7 +20,10 @@ export class ShortcutsComponent implements OnInit {
   logout() {
     this.cookieService.delete("BBKBootcampCookie");
     this.authService.setCurrentUser(null);
-    this.router.navigate([""]);
+    this.authService.logOut();
+  
+    
+    // this.router.navigate([""]);
   }
 
   goToNewsFeed(){

@@ -10,6 +10,9 @@ using BBKBootcampSocial.Core.AllServices.IServices;
 using BBKBootcampSocial.Core.Security;
 using BBKBootcampSocial.Core.Utilities.Convertors;
 using BBKBootcampSocial.Domains.Access;
+using Microsoft.EntityFrameworkCore;
+using BBKBootcampSocial.Core.DTOs.Post;
+using BBKBootcampSocial.Core.DTOs.Comment;
 
 namespace BBKBootcampSocial.Core.AllServices.Services
 {
@@ -191,7 +194,35 @@ namespace BBKBootcampSocial.Core.AllServices.Services
              return repository.GetEntitiesQuery().Any(u => u.Email == email && u.Password == PasswordHelper.EncodePasswordMd5(password));
         }
 
-       
+        public async Task<LoginUserInfoDTO> ReturnUserByIdWithPosts(long userId)
+        {
+            var repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
+
+            User user = repository.GetEntitiesQuery().Where(u => u.Id == userId).Include(u => u.Posts)
+                .ThenInclude(p => p.Comments).ThenInclude(c => c.Replies).FirstOrDefault();
+
+            return new LoginUserInfoDTO
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                ProfilePic = user.ProfilePic,
+                UserId = user.Id,
+                Posts = user.Posts.Select(p => new ShowPostDTO
+                {
+                    Comments = p .Comments.Select(c => new CommentDTO
+                    {
+                        Id = c.Id,
+                        Text = c.Text,
+                        FirstName = GetUserById(c.UserId).Result.FirstName,
+                        LastName = GetUserById(c.UserId).Result.LastName,
+                        PostId = c.PostId
+                    }),
+                    FileName = p.FileName,
+                    Id = p.Id,
+                    PostText = p.PostText
+                })
+            };
+        }
 
         #endregion
     }

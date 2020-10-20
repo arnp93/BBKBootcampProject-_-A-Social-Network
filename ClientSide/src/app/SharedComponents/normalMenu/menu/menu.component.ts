@@ -16,6 +16,7 @@ export class MenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.getCurrentUser().subscribe(res => {
+     
       this.thisUser = res;
     });
   }

@@ -6,19 +6,22 @@
   <title>ClientSide</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/assets/css/main.min.css">
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/color.css">
   <link rel="stylesheet" href="/assets/css/responsive.css">
 
   <style>
-   #menu{
+    #menu {
       z-index: 1;
-    } 
-     #shoppingbag{
+    }
+
+    #shoppingbag {
       z-index: 1;
-    } 
-    #search-form{
+    }
+
+    #search-form {
       z-index: 2;
     }
   </style>
@@ -35,6 +38,27 @@
   <script src="/assets/js/main.min.js"></script>
   <script src="/assets/js/script.js"></script>
   <script src="/assets/js/map-init.js"></script>
+  <script>
+    function openPostMenu(e) {
+      var parent = e.parentNode;
+      if($(e).hasClass("fa fa-ellipsis-h")){
+        $(e).removeClass("fa fa-ellipsis-h");
+        $(e).addClass("fa fa-caret-square-o-left");
+      }else{
+        $(e).removeClass("fa fa-caret-square-o-left");
+        $(e).addClass("fa fa-ellipsis-h");
+        
+      }
+     var showState = $(parent).find(".post-menu").css("display");
+     if(showState === "block"){
+      $(parent).find(".post-menu").slideUp();
+      $(parent).find(".post-meta").slideDown();
+     }else{
+      $(parent).find(".post-menu").slideDown();
+      $(parent).find(".post-meta").slideUp();
+     }
+    }
+  </script>
 </body>
 
 </html>

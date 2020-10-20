@@ -11,6 +11,7 @@ using BBKBootcampSocial.Core.Utilities;
 using BBKBootcampSocial.Core.Utilities.Identity;
 using Microsoft.IdentityModel.Tokens;
 using BBKBootcampSocial.Domains.User;
+using Microsoft.AspNetCore.Authentication;
 
 namespace BBKBootcampSocial.Web.Controllers
 {
@@ -126,6 +127,31 @@ namespace BBKBootcampSocial.Web.Controllers
 
 
         }
+        #endregion
+
+        #region Return User
+        [HttpGet("view-profile/{userId}")]
+        public async Task<IActionResult> ReturnUser(long userId)
+        {
+            return JsonResponseStatus.Success(await UserService.ReturnUserByIdWithPosts(userId));
+        }
+
+        #endregion
+
+        #region Sign Out
+
+        [HttpGet("sign-out")]
+        public async Task<IActionResult> LogOut()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                await HttpContext.SignOutAsync();
+                return JsonResponseStatus.Success();
+            }
+
+            return JsonResponseStatus.Error();
+        }
+
         #endregion
     }
 }

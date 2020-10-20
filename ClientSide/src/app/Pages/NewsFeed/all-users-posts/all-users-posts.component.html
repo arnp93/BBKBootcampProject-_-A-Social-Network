@@ -1,15 +1,24 @@
 <div class="central-meta item" *ngFor="let post of posts" id="{{post.id}}">
     <div class="user-post">
+        <span class="fa fa-ellipsis-h pull-right link" onclick="openPostMenu(this)"></span>
         <div class="friend-info">
             <figure>
                 <img *ngIf="post.user.profilePic === null" src="/assets/images/account.png" alt="">
-                <img style="height: 50px;width: 50px;" *ngIf="post.user.profilePic !== null"
+                <img style="height: 50px;width: 50px;" *ngIf="post.user !== null && post.user.profilePic !== null"
                     [src]="URL+'/ProfilePictures/'+post.user.profilePic" alt="">
             </figure>
             <div class="friend-name">
                 <input type="hidden" value="{{post.userId}}">
-                    <ins><a (click)="viewProfile($event)" title="">{{post.user.firstName}} {{post.user.lastName}}</a></ins>
+                    <ins><a class="link" (click)="viewProfile($event)" title="">{{post.user.firstName}} {{post.user.lastName}}</a></ins>
                     <span>{{post.dateTime}}</span>
+            </div>
+            <div class="post-menu pull-right">
+                <ul>
+                    <li class="link">Add Friend</li>
+                    <li class="link">Edit Post</li>
+                    <li class="link">Delete Post</li>
+                    <li class="link">Block</li>
+                </ul>
             </div>
             <div class="post-meta">
                 <p>

@@ -6,7 +6,7 @@ import { ShowPostDTO } from 'src/app/DTOs/Post/ShowPostDTO';
 import { PostService } from 'src/app/Services/post.service';
 import { DomainName } from 'src/app/Utilities/PathTools';
 import { CommentService } from '../../../Services/comment.service';
-import { element } from 'protractor';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-all-users-posts',
@@ -15,16 +15,16 @@ import { element } from 'protractor';
 })
 export class AllUsersPostsComponent implements OnInit {
 
-  public posts:ShowPostDTO[] = [];
+  public posts: ShowPostDTO[] = [];
   public URL: string = DomainName;
   public newComments: CommentDTO[] = [];
   public commentForm: FormGroup;
-  public userId : number;
-  constructor(private postService : PostService,private commentService : CommentService) { }
+  public userId: number;
+  constructor(private postService: PostService, private commentService: CommentService, private router: Router) { }
 
   ngOnInit(): void {
     this.postService.getAllPosts().subscribe(res => {
-      if(res.status === "Success"){
+      if (res.status === "Success") {
         this.posts = res.data;
       }
     });
@@ -51,8 +51,10 @@ export class AllUsersPostsComponent implements OnInit {
       }
     });
   }
-  viewProfile(event){
-    console.log(event.target.parentNode.parentNode.childNodes[0].value);
-
+  viewProfile(event) {
+    const userId = event.target.parentNode.parentNode.childNodes[0].value;
+    this.router.navigate(['/view-profile',userId])
   }
+
+ 
 }

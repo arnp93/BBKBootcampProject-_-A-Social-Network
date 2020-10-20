@@ -11,7 +11,7 @@ import { CookieService } from 'ngx-cookie-service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit{
 
   @ViewChild('error') private error: SwalComponent;
   public loading = false;
@@ -22,14 +22,14 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.getCurrentUser().subscribe(res => {
-      if (res != null) {
+      if (res !== null) {
         this.route.navigate(["index"]);
       }
     });
     //delay
     setInterval(function () {
       document.getElementById("loginForm").style.display = "block";
-    }, 1500);
+    }, 2500);
 
     this.IsRegisteredNow = this.authService.getAlertOfNewRegister();
 
@@ -52,6 +52,7 @@ export class LoginComponent implements OnInit {
         this.CookieService.set("BBKBootcampCookie", res.data.token, res.data.expireTime * 60);
         this.loading = false;
         this.authService.setCurrentUser(res.data);
+        console.log(res.data);
         this.route.navigate(["/index"]);
       } else if (res.status === "NotFound") {
         this.loading = false;

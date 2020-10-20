@@ -1,40 +1,51 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ILoginUserAccount } from '../DTOs/Account/ILoginUserAccount';
 import { RegisterUserDTO } from '../DTOs/Account/RegisterUserDTO';
 import { UserDTO } from '../DTOs/Account/UserDTO';
 import { UserLoginDTO } from '../DTOs/Account/UserLoginDTO';
+import { IResponseDTO } from '../DTOs/Common/IResponseDTO';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthServiceService {
-  private IsRegisteredNow : boolean;
+  private IsRegisteredNow: boolean;
   private currentUser: BehaviorSubject<UserDTO> = new BehaviorSubject<UserDTO>(null);
+
   constructor(private http: HttpClient) { }
 
-  RegisterUser(user : RegisterUserDTO): Observable<any>{
+  RegisterUser(user: RegisterUserDTO): Observable<any> {
     return this.http.post<RegisterUserDTO>('/api/account/register', user);
   }
-  setAlertOfNewRegister():void{
+  setAlertOfNewRegister(): void {
     this.IsRegisteredNow = true;
   }
-  getAlertOfNewRegister():boolean{
+  getAlertOfNewRegister(): boolean {
     return this.IsRegisteredNow;
   }
-  LoginUser(login :UserLoginDTO): Observable<ILoginUserAccount>{
-    return this.http.post<any>('/api/account/login',login);
+  LoginUser(login: UserLoginDTO): Observable<ILoginUserAccount> {
+    return this.http.post<any>('/api/account/login', login);
   }
 
-  setCurrentUser(user : UserDTO) : void{
+  setCurrentUser(user: UserDTO): void {
     this.currentUser.next(user);
   }
-  getCurrentUser():Observable<UserDTO> {
+  getCurrentUser(): Observable<UserDTO> {
     return this.currentUser;
   }
 
-  checkAuth():Observable<ILoginUserAccount>{
+  checkAuth(): Observable<ILoginUserAccount> {
     return this.http.post<ILoginUserAccount>('/api/account/check-auth', null);
+  }
+
+  userProfile(userId: number): Observable<IResponseDTO<UserDTO>> {
+    return this.http.get<IResponseDTO<UserDTO>>('/api/account/view-profile/'+ userId);
+  }
+
+  logOut(){
+    this.http.get<IResponseDTO<UserDTO>>('/api/account/sign-out');
   }
 }

@@ -27,6 +27,7 @@ import { PostCommentComponent } from './Pages/Index/post-comment/post-comment.co
 import { NewFeedsComponent } from './Pages/NewsFeed/new-feeds/new-feeds.component';
 import { AllUsersPostsComponent } from './Pages/NewsFeed/all-users-posts/all-users-posts.component';
 import { IndexComponent } from './Pages/Index/index/index.component';
+import { ViewProfileComponent } from './Pages/view-profile/view-profile.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { IndexComponent } from './Pages/Index/index/index.component';
     SettingsComponent,
     PostCommentComponent,
     NewFeedsComponent,
-    AllUsersPostsComponent
+    AllUsersPostsComponent,
+    ViewProfileComponent
   ],
   imports: [
     BrowserModule,
