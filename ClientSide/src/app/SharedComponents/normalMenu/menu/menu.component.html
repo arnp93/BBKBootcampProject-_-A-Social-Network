@@ -79,8 +79,9 @@
                                 <span *ngIf="notification.typeOfNotification === 1">Te ha dejado un comentario </span>
                                 <i>{{notification.createDate}}</i>
                                 <div *ngIf="notification.typeOfNotification === 0">
-                                    <input class="btn-xs btn-success small btn-margin" type="button" value="Accept">
-                                    <input class="btn-xs btn-danger small btn-margin" type="button" value="Remove">
+                                    <input class="btn-xs btn-success small btn-margin" type="button" value="Accept" (click)="friendAcc(notification.userOriginId)">
+                                    <input *ngIf="accepted" class="btn-xs btn-success small btn-margin" type="button" value="Accept" (click)="firendReq(notification.userOriginId)">
+                                    <input *ngIf="accepted"class="btn-xs btn-danger small btn-margin" type="button" value="Remove">
                                 </div>
                                 <div *ngIf="notification.typeOfNotification === 1">
                                     <input class="btn-xs btn-success small btn-margin" type="button" value="View">

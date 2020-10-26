@@ -170,6 +170,12 @@ namespace BBKBootcampSocial.Web.Controllers
                 return JsonResponseStatus.NotFound();
         }
 
+        [HttpPost("accept-friend")]
+        public async Task<IActionResult> AcceptFriendRequest([FromBody]long origionUserId)
+        {
+            return JsonResponseStatus.Success();
+        }
+
         #endregion
     }
 }

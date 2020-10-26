@@ -52,4 +52,8 @@ export class AuthServiceService {
   logOut(){
     this.http.get<IResponseDTO<UserDTO>>('/api/account/sign-out');
   }
+
+  acceptFriendRequest(origionUserId : number) : Observable<IResponseDTO<UserDTO>>{
+    return this.http.post<IResponseDTO<UserDTO>>("/api/account/accept-friend", origionUserId);
+  }
 }
