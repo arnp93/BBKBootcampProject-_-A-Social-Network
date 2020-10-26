@@ -126,7 +126,7 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                         LikeCount = 0,
                         PostId = post.Id,
                         ProfilePic = userService.GetUserById(c.UserId).Result.ProfilePic,
-                        UserId = post.UserId,
+                        UserId = userService.GetUserById(c.UserId).Result.Id,
                         ParentId = c.ParentId,
                         Replies = c.Replies.Select(r => new CommentDTO
                         {
@@ -137,7 +137,7 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                             LikeCount = 0,
                             PostId = post.Id,
                             ProfilePic = userService.GetUserById(r.UserId).Result.ProfilePic,
-                            UserId = post.UserId,
+                            UserId = userService.GetUserById(r.UserId).Result.Id,
                             ParentId = r.ParentId
                         }).Take(2)
                     }).Take(3),
@@ -193,7 +193,7 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                         LikeCount = 0,
                         PostId = post.Id,
                         ProfilePic = userService.GetUserById(c.UserId).Result.ProfilePic,
-                        UserId = post.UserId,
+                        UserId = userService.GetUserById(c.UserId).Result.Id,
                         ParentId = c.ParentId,
                         Replies = c.Replies.Select(r => new CommentDTO
                         {

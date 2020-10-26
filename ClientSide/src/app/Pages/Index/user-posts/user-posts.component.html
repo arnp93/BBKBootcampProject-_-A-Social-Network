@@ -3,12 +3,12 @@
         <div class="user-post">
             <div class="friend-info">
                 <figure>
-                    <img *ngIf="thisUser.profilePic === null" src="/assets/images/account.png" alt="">
-                    <img style="height: 50px;width: 50px;" *ngIf="thisUser.profilePic !== null" [src]="URL+'/ProfilePictures/'+thisUser.profilePic" alt="">
+                    <img *ngIf="thisUser !== undefined && thisUser !== null && thisUser.profilePic === null" src="/assets/images/account.png" alt="">
+                    <img style="height: 50px;width: 50px;" *ngIf="thisUser !== undefined && thisUser !== null &&thisUser.profilePic !== null" [src]="URL+'/ProfilePictures/'+thisUser.profilePic" alt="">
 
                 </figure>
                 <div class="friend-name">
-                    <ins><a href="time-line.html" title="">{{thisUser.firstName}} {{thisUser.lastName}}</a></ins>
+                    <ins><a href="time-line.html" *ngIf="thisUser !== undefined && thisUser !== null" title="">{{thisUser.firstName}} {{thisUser.lastName}}</a></ins>
                     <span>{{post.dateTime}}</span>
                 </div>
                 <div class="post-meta">
@@ -95,7 +95,7 @@
                             </div>
                             <div class="we-comment">
                                 <div class="coment-head">
-                                    <h5><a href="time-line.html" title="">{{newComment.firstName}} {{newComment.lastName}}</a>
+                                    <h5><a (click)="viewProfile(newComment.userId)" title="">{{newComment.firstName}} {{newComment.lastName}}</a>
                                     </h5>
                                     <span>1 year ago</span>
                                     <a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a>
@@ -114,7 +114,7 @@
                             </div>
                             <div class="we-comment">
                                 <div class="coment-head">
-                                    <h5><a title="">{{comment.firstName}} {{comment.lastName}}</a>
+                                    <h5><a class="link" (click)="viewProfile(comment.userId)">{{comment.firstName}} {{comment.lastName}}</a>
                                     </h5>
                                     <span>1 year ago</span>
                                     <a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a>
@@ -131,7 +131,7 @@
                                     </div>
                                     <div class="we-comment">
                                         <div class="coment-head">
-                                            <h5><a href="time-line.html" title="">{{reply.firstName}}
+                                            <h5><a (click)="viewProfile(comment.userId)">{{reply.firstName}}
                                                     {{reply.lastName}}</a></h5>
                                             <span>1 month ago</span>
                                             <a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a>

@@ -6,13 +6,12 @@ using BBKBootcampSocial.Core.DTOs.Post;
 using BBKBootcampSocial.Core.Utilities.Identity;
 using Microsoft.AspNetCore.Authorization;
 using BBKBootcampSocial.Core.DTOs.Comment;
-using BBKBootcampSocial.Core.Paging;
 using BBKBootcampSocial.Domains.User;
 using Microsoft.AspNetCore.Http;
 
 namespace BBKBootcampSocial.Web.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class PostController : BaseController
     {
         #region Constructor
@@ -63,6 +62,7 @@ namespace BBKBootcampSocial.Web.Controllers
 
             return JsonResponseStatus.Success(await postService.LoadMorePosts(currentPage,userId));
         }
+
         #endregion
 
         #region Comments Properties
@@ -73,7 +73,7 @@ namespace BBKBootcampSocial.Web.Controllers
             if (!ModelState.IsValid)
                 return JsonResponseStatus.Error();
             long userId = User.GetUserId();
-            NewCommentDTO newComment = await commentService.AddComment(new NewCommentDTO {Text = comment.Text, PostId = comment.PostId,UserId = userId });
+            NewCommentDTO newComment = await commentService.AddComment(new NewCommentDTO {Text = comment.Text, PostId = comment.PostId,UserId = userId },userId);
             User user = userService.GetUserById(userId).Result;
             return JsonResponseStatus.Success(new CommentDTO
             {

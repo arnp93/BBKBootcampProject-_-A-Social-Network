@@ -66,68 +66,33 @@
         <li><a href="newsfeed.html" title="Home" data-ripple=""><i class="ti-home"></i></a></li>
         <li>
             <a href="#" title="Notification" data-ripple="">
-                <i class="ti-bell"></i><span>20</span>
+                <i class="ti-bell"></i><span *ngIf="notifications !== undefined && notifications !== null && notifications.length > 0">{{notifications.length}}</span>
             </a>
-            <div class="dropdowns">
-                <span>4 New Notifications</span>
+            <div class="dropdowns" *ngIf="thisUser != null &&thisUser.notifications !== undefined">
                 <ul class="drops-menu">
-                    <li>
-                        <a href="notifications.html" title="">
-                            <img src="/assets/images/resources/thumb-1.jpg" alt="">
+                    <li  *ngFor="let notification of thisUser.notifications">
+                        <a title="">
+                            <img width="40" height="40" [src]="URL + '/ProfilePictures/' + notification.user.profilePic" alt="">
                             <div class="mesg-meta">
-                                <h6>sarah Loren</h6>
-                                <span>Hi, how r u dear ...?</span>
-                                <i>2 min ago</i>
+                                <h6 (click)="viewProfile(notification.user.userId)" class="link">{{notification.user.firstName}} {{notification.user.lastName}}</h6>
+                                <span *ngIf="notification.typeOfNotification === 0">Has sent you a friend request</span>
+                                <span *ngIf="notification.typeOfNotification === 1">Te ha dejado un comentario </span>
+                                <i>{{notification.createDate}}</i>
+                                <div *ngIf="notification.typeOfNotification === 0">
+                                    <input class="btn-xs btn-success small btn-margin" type="button" value="Accept">
+                                    <input class="btn-xs btn-danger small btn-margin" type="button" value="Remove">
+                                </div>
+                                <div *ngIf="notification.typeOfNotification === 1">
+                                    <input class="btn-xs btn-success small btn-margin" type="button" value="View">
+                                </div>
                             </div>
                         </a>
                         <span class="tag green">New</span>
                     </li>
-                    <li>
-                        <a href="notifications.html" title="">
-                            <img src="/assets/images/resources/thumb-2.jpg" alt="">
-                            <div class="mesg-meta">
-                                <h6>Jhon doe</h6>
-                                <span>Hi, how r u dear ...?</span>
-                                <i>2 min ago</i>
-                            </div>
-                        </a>
-                        <span class="tag red">Reply</span>
-                    </li>
-                    <li>
-                        <a href="notifications.html" title="">
-                            <img src="/assets/images/resources/thumb-3.jpg" alt="">
-                            <div class="mesg-meta">
-                                <h6>Andrew</h6>
-                                <span>Hi, how r u dear ...?</span>
-                                <i>2 min ago</i>
-                            </div>
-                        </a>
-                        <span class="tag blue">Unseen</span>
-                    </li>
-                    <li>
-                        <a href="notifications.html" title="">
-                            <img src="/assets/images/resources/thumb-4.jpg" alt="">
-                            <div class="mesg-meta">
-                                <h6>Tom cruse</h6>
-                                <span>Hi, how r u dear ...?</span>
-                                <i>2 min ago</i>
-                            </div>
-                        </a>
-                        <span class="tag">New</span>
-                    </li>
-                    <li>
-                        <a href="notifications.html" title="">
-                            <img src="/assets/images/resources/thumb-5.jpg" alt="">
-                            <div class="mesg-meta">
-                                <h6>Amy</h6>
-                                <span>Hi, how r u dear ...?</span>
-                                <i>2 min ago</i>
-                            </div>
-                        </a>
-                        <span class="tag">New</span>
-                    </li>
+                  <span id="lastNotifications">
+                  </span>
                 </ul>
-                <a href="notifications.html" title="" class="more-mesg">view more</a>
+                <a *ngIf="thisUser.notifications !== undefined &&thisUser.notifications !== null && thisUser.notifications.length > 0" href="notifications.html" title="" class="more-mesg">view more</a>
             </div>
         </li>
         <li>
@@ -204,8 +169,8 @@
         </li>
     </ul>
     <div class="user-img">
-        <img style="height: 50px;width: 50px;" *ngIf="thisUser !== null && thisUser.profilePic === null" src="/assets/images/account.png" alt="">
-        <img style="max-height: 50px;max-width: 50px;" *ngIf="thisUser !== null &&thisUser.profilePic !== null" [src]="URL+'/ProfilePictures/'+thisUser.profilePic" alt="">
+        <img style="height: 50px;width: 50px;" *ngIf="thisUser !== undefined && thisUser !== null && thisUser.profilePic === null" src="/assets/images/account.png" alt="">
+        <img style="max-height: 50px;max-width: 50px;" *ngIf="thisUser !== undefined && thisUser !== null &&thisUser.profilePic !== null" [src]="URL+'/ProfilePictures/'+thisUser.profilePic" alt="">
         <span class="status f-online"></span>
         <div class="user-setting">
             <a href="#" title=""><span class="status f-online"></span>online</a>

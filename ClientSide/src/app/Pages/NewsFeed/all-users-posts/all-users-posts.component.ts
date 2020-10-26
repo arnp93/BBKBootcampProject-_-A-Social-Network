@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommentDTO } from 'src/app/DTOs/CommentDTOs/CommentDTO';
 import { SendCommentDTO } from 'src/app/DTOs/CommentDTOs/SendCommentDTO';
@@ -7,6 +7,9 @@ import { PostService } from 'src/app/Services/post.service';
 import { DomainName } from 'src/app/Utilities/PathTools';
 import { CommentService } from '../../../Services/comment.service';
 import { Router } from '@angular/router';
+import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
+import { UserDTO } from '../../../DTOs/Account/UserDTO';
+import { AuthServiceService } from '../../../Services/auth-service.service';
 
 @Component({
   selector: 'app-all-users-posts',
@@ -20,9 +23,16 @@ export class AllUsersPostsComponent implements OnInit {
   public newComments: CommentDTO[] = [];
   public commentForm: FormGroup;
   public userId: number;
-  constructor(private postService: PostService, private commentService: CommentService, private router: Router) { }
+  public thisUser: UserDTO
+
+  @ViewChild('commentError') private commentError: SwalComponent;
+
+  constructor(private postService: PostService, private authService: AuthServiceService, private commentService: CommentService, private router: Router) { }
 
   ngOnInit(): void {
+    this.authService.getCurrentUser().subscribe(res => {
+      this.thisUser = res;
+    })
     this.postService.getAllPosts().subscribe(res => {
       if (res.status === "Success") {
         this.posts = res.data;
@@ -48,13 +58,28 @@ export class AllUsersPostsComponent implements OnInit {
       if (res.status === "Success") {
         this.newComments.push(res.data)
         this.commentForm.reset();
+      } else {
+        this.commentError.text = 'Failed! Please try again later!';
+        this.commentError.fire();
       }
     });
   }
-  viewProfile(event) {
-    const userId = event.target.parentNode.parentNode.childNodes[0].value;
-    this.router.navigate(['/view-profile',userId])
+
+  viewProfile(userId : number) {
+    this.router.navigate(['/view-profile', userId])
   }
 
- 
+  friendRequest(event, userId: number) {
+        this.authService.friendRequest(userId).subscribe(res => {
+      if (res.status === "Success") {
+        console.log("Sucessss");
+        if (event.target.innerText === "Add Friend")
+          event.target.innerText = "Cancel Request";
+        else
+          event.target.innerText = "Add Friend";
+      }
+    });
+  }
+
+
 }

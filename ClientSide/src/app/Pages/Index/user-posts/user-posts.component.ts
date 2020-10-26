@@ -32,9 +32,12 @@ export class UserPostsComponent implements OnInit {
         this.lastPostId.emit(res.data[res.data.length - 1].id);
       }
     });
+    
     this.authService.getCurrentUser().subscribe(res => {
       this.thisUser = res;
     });
+      
+
 
     this.commentForm = new FormGroup({
       text: new FormControl(null, [
@@ -62,6 +65,8 @@ export class UserPostsComponent implements OnInit {
     });
   }
 
-
+  viewProfile(userId : number) {
+    this.router.navigate(['/view-profile', userId])
+  }
 
 }

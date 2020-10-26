@@ -17,7 +17,7 @@ export class ViewProfileComponent implements OnInit {
   public URL = DomainName;
   private userId: number;
   private thisUserId: number;
-  public user: UserDTO = new UserDTO(null, 0, "", "", "", 0, null);
+  public user: UserDTO = new UserDTO(null, 0, "", "", "", 0, null,[]);
   public newComments: CommentDTO[] = [];
   public commentForm: FormGroup;
   constructor(private activatedRoute: ActivatedRoute, private authService: AuthServiceService,private commentService:CommentService, private router: Router) { }
@@ -26,9 +26,9 @@ export class ViewProfileComponent implements OnInit {
 
     this.authService.getCurrentUser().subscribe(res => {
       if (res !== null)
-        this.thisUserId = res.userId;
+      this.thisUserId = res.userId;
     });
-
+    
     this.activatedRoute.params.subscribe(param => {
       this.userId = parseInt(param.userId);
     });
@@ -38,7 +38,9 @@ export class ViewProfileComponent implements OnInit {
     };
 
     this.authService.userProfile(this.userId).subscribe(res => {
-      this.user = res.data;
+      if(res.status === "Success"){
+        this.user = res.data;
+      }
     });
 
     this.commentForm = new FormGroup({
@@ -47,6 +49,8 @@ export class ViewProfileComponent implements OnInit {
       ]),
       postId: new FormControl
     });
+
+  window.scrollTo(0,0);
   }
 
   newCommentSubmit(postId) {
@@ -62,6 +66,14 @@ export class ViewProfileComponent implements OnInit {
         this.commentForm.reset();
       }
     });
+  }
+
+  
+  viewProfile(userId : number) {
+    // refresh component
+    this.router.navigateByUrl('/view-profile', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/view-profile',userId]);
+  });
   }
 
 }

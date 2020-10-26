@@ -5,6 +5,9 @@ using AutoMapper;
 using BBKBootcampSocial.DataLayer.Interfaces;
 using BBKBootcampSocial.DataLayer.Implementations;
 using BBKBootcampSocial.Domains.Comment;
+using BBKBootcampSocial.Domains.Common_Entities;
+using BBKBootcampSocial.Domains.User;
+using BBKBootcampSocial.Domains.Post;
 
 namespace BBKBootcampSocial.Core.AllServices.Services
 {
@@ -26,9 +29,26 @@ namespace BBKBootcampSocial.Core.AllServices.Services
 
         #region Properties
 
-        public async Task<NewCommentDTO> AddComment(NewCommentDTO comment)
+        public async Task<NewCommentDTO> AddComment(NewCommentDTO comment,long userId)
         {
             var repository = await unitOfWork.GetRepository<GenericRepository<Comment>, Comment>();
+            var notificationRepository = await unitOfWork.GetRepository<GenericRepository<Notification>, Notification>();
+
+            if (comment.UserId !=  userId)
+            {
+                await notificationRepository.AddEntity(
+                    new Notification
+                    {
+                        UserOriginId = comment.UserId,
+                        UserDestinationId = await GetUserIdByPostId(comment.PostId),
+                        IsRead = false,
+                        IsDelete = false,
+                        TypeOfNotification = TypeOfNotification.Comment
+                    }
+                );
+            }
+        
+
 
             Comment cm = mapper.Map<Comment>(comment);
 
@@ -38,6 +58,17 @@ namespace BBKBootcampSocial.Core.AllServices.Services
             comment.Id = cm.Id;
 
             return comment;
+        }
+
+        #endregion
+
+        #region Tools
+
+        public async Task<long> GetUserIdByPostId(long postId)
+        {
+            var postRepository = await unitOfWork.GetRepository<GenericRepository<Post>, Post>();
+
+            return postRepository.GetEntityById(postId).Result.UserId;
         }
 
         #endregion

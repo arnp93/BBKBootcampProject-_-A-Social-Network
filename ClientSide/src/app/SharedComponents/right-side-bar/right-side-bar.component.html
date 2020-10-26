@@ -3,28 +3,30 @@
             <h4  class="widget-title"> Your page</h4>
             <div class="your-page">
                 <figure>
-                    <a href="#" title=""><img
-                            src="/assets/images/resources/friend-avatar9.jpg" alt=""></a>
+                    <a *ngIf="thisUser !== null && thisUser.profilePic !== null" title=""><img
+                            [src]="URL + '/ProfilePictures/' + thisUser.profilePic" alt="profile picture"></a>
+                            <a *ngIf="thisUser === null && thisUser.profilePic === null" title=""><img
+                                src="/src/assets/images/account.png" alt="profile picture"></a>
                 </figure>
                 <div class="page-meta">
-                    <a (click)="goToProfile()" class="link" >My page</a>
-                    <span><i class="ti-comment"></i><a href="insight.html" title="">Messages
+                    <a (click)="goToProfile()" class="link" >{{thisUser.firstName}} {{thisUser.lastName}}</a>
+                    <span><i class="ti-comment"></i><a class="link" title="">Messages
                             <em>9</em></a></span>
-                    <span><i class="ti-bell"></i><a href="insight.html"
-                            title="">Notifications <em>2</em></a></span>
+                    <span><i class="ti-bell"></i><a class="link"
+                            title="">Notifications <em>{{thisUser.notifications.length}}</em></a></span>
                 </div>
                 <div class="page-likes">
-                    <ul class="nav nav-tabs likes-btn">
+                    <!-- <ul class="nav nav-tabs likes-btn">
                         <li class="nav-item"><a class="active" href="#link1"
                                 data-toggle="tab">likes</a></li>
                         <li class="nav-item"><a class="" href="#link2"
                                 data-toggle="tab">views</a></li>
-                    </ul>
+                    </ul> -->
                     <!-- Tab panes -->
                     <div class="tab-content">
                         <div class="tab-pane active fade show " id="link1">
-                            <span><i class="ti-heart"></i>884</span>
-                            <a href="#" title="weekly-likes">35 new likes this week</a>
+                            <!-- <span><i class="ti-heart"></i>884</span> -->
+                            <a class="link" >New Friends</a>
                             <div class="users-thumb-list">
                                 <a href="#" title="Anderw" data-toggle="tooltip">
                                     <img src="/assets/images/resources/userlist-1.jpg"

@@ -58,7 +58,8 @@ namespace BBKBootcampSocial.Web.Controllers
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     ProfilePic = user.ProfilePic,
-                    UserId = user.Id
+                    UserId = user.Id,
+                    Notifications = await UserService.GetNotificationsOfUser(user.Id)
                 });
             
             }
@@ -100,15 +101,17 @@ namespace BBKBootcampSocial.Web.Controllers
                         );
 
                         var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-                        return JsonResponseStatus.Success(new LoginUserInfoDTO
+                        var test = new LoginUserInfoDTO
                         {
                             Token = tokenString,
                             ExpireTime = 30,
                             FirstName = user.FirstName,
                             LastName = user.LastName,
                             ProfilePic = user.ProfilePic,
-                            UserId = user.Id
-                        });
+                            UserId = user.Id,
+                            Notifications = await UserService.GetNotificationsOfUser(user.Id)
+                        };
+                        return JsonResponseStatus.Success(test);
                 }
             }
             return JsonResponseStatus.Error();
@@ -150,6 +153,21 @@ namespace BBKBootcampSocial.Web.Controllers
             }
 
             return JsonResponseStatus.Error();
+        }
+
+        #endregion
+
+        #region Add Friend Request / Remove Friend Request
+
+        [HttpPost("friend-request")]
+        public async Task<IActionResult> FriendRequest([FromBody]long userId)
+        {
+            long currentUserId = User.GetUserId();
+            bool isSuccess = await UserService.AddFriend(userId, currentUserId);
+            if (isSuccess)
+                return JsonResponseStatus.Success();
+            else
+                return JsonResponseStatus.NotFound();
         }
 
         #endregion

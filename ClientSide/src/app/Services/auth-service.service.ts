@@ -33,7 +33,7 @@ export class AuthServiceService {
   setCurrentUser(user: UserDTO): void {
     this.currentUser.next(user);
   }
-  getCurrentUser(): Observable<UserDTO> {
+  getCurrentUser(): BehaviorSubject<UserDTO> {
     return this.currentUser;
   }
 
@@ -43,6 +43,10 @@ export class AuthServiceService {
 
   userProfile(userId: number): Observable<IResponseDTO<UserDTO>> {
     return this.http.get<IResponseDTO<UserDTO>>('/api/account/view-profile/'+ userId);
+  }
+
+  friendRequest(userId: number): Observable<IResponseDTO<any>>{
+    return this.http.post<IResponseDTO<any>>("/api/account/friend-request", userId);
   }
 
   logOut(){

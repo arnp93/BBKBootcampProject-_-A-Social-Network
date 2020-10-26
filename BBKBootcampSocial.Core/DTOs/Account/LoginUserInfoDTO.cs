@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using BBKBootcampSocial.Core.DTOs.Notification;
 using BBKBootcampSocial.Core.DTOs.Post;
 
 namespace BBKBootcampSocial.Core.DTOs.Account
@@ -12,5 +13,6 @@ namespace BBKBootcampSocial.Core.DTOs.Account
         public string ProfilePic { get; set; }
         public long UserId { get; set; }
         public IEnumerable<ShowPostDTO> Posts { get; set; }
+        public List<NotificationDTO> Notifications{ get; set; }
     }
 }

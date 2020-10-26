@@ -31,6 +31,7 @@ export class AddNewPostComponent implements OnInit {
     this.authService.getCurrentUser().subscribe(res => {
       this.thisUser = res;
     });
+ 
   }
 
   addPhoto(event) {
@@ -49,11 +50,9 @@ export class AddNewPostComponent implements OnInit {
         this.newPost.emit(res.data);
         this.PostForm.reset();
       } else {
-        alert("ha surgido algun problema en Add New Comment");
+        console.error("Error with Add new Comment!!!");
+        
       }
-
-
-
     });
   }
 

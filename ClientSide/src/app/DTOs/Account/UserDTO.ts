@@ -1,4 +1,5 @@
 import { ShowPostDTO } from '../Post/ShowPostDTO';
+import { NotificationDTO } from '../Notification/NotificationDTO';
 export class UserDTO{
     constructor(
         public token : string,
@@ -7,6 +8,7 @@ export class UserDTO{
         public lastName : string,
         public profilePic : string,
         public userId: number,
-        public posts:ShowPostDTO[]
+        public posts:ShowPostDTO[],
+        public notifications : NotificationDTO[]
     ){}
 }

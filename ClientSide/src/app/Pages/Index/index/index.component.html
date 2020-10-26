@@ -1,11 +1,11 @@
-<div id="mainpage" class="theme-layout">
+<div id="mainpage" class="theme-layout" *ngIf="thisUser !== null">
 
 	<app-responsive-menu></app-responsive-menu>
 	<div class="topbar stick">
 		<!-- log Section -->
 		<div class="logo">
 			<!-- <a title="" href="newsfeed.html"><img src="/assets/images/logo.png" alt=""></a> -->
-			<h3 style="color: red;">Beta</h3>
+			<h3 style="color: red;font-weight: bolder;">Beta</h3>
 		</div>
 		<!-- menu section -->
 		<app-menu></app-menu>
@@ -36,9 +36,9 @@
 							<div class="col-lg-2 col-sm-3">
 								<div class="user-avatar">
 									<figure>
-										<img *ngIf="thisUser !== null && thisUser.profilePic === null && !isLoading" src="/assets/images/account.png" alt="">
+										<img *ngIf="thisUser !== undefined && thisUser !== null && thisUser.profilePic === null && !isLoading" src="/assets/images/account.png" alt="">
 										<img *ngIf="isLoading" src="/assets/loadings/Pulse-1s-200px.gif" alt="">
-										<img style="min-height: 120px;min-width: 120px;" *ngIf="thisUser !== null &&thisUser.profilePic !== null && !isLoading" [src]="URL+'/ProfilePictures/'+thisUser.profilePic" alt="">
+										<img style="min-height: 120px;min-width: 120px;" *ngIf="thisUser !== undefined && thisUser !== null &&thisUser.profilePic !== null && !isLoading" [src]="URL+'/ProfilePictures/'+thisUser.profilePic" alt="">
 										
 										<form (submit)="uploadPic()" class="edit-phto">
 											<i class="fa fa-camera-retro"></i>
@@ -51,7 +51,7 @@
 								</div>
 							</div>
 							<div class="col-lg-10 col-sm-9">
-								<h5 *ngIf="thisUser !== null " style="font-weight: bold">{{thisUser.firstName}} {{thisUser.lastName}}</h5>
+								<h5 *ngIf="thisUser !== undefined && thisUser !== null " style="font-weight: bold">{{thisUser.firstName}} {{thisUser.lastName}}</h5>
 							</div>
 						</div>
 					</div>

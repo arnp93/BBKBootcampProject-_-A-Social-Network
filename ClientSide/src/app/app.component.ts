@@ -27,7 +27,7 @@ export class AppComponent {
     loadPage();
     this.authService.checkAuth().subscribe(res => {
       if (res.status === 'Success') {
-        const currentUser = new UserDTO(res.data.token, res.data.expireTime, res.data.firstName, res.data.lastName,res.data.profilePic, res.data.userId,null);
+        const currentUser = new UserDTO(res.data.token, res.data.expireTime, res.data.firstName, res.data.lastName,res.data.profilePic, res.data.userId,null,res.data.notifications);
         this.authService.setCurrentUser(currentUser);
       }
     });

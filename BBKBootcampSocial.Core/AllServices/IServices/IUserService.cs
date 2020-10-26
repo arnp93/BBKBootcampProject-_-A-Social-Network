@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using BBKBootcampSocial.Core.DTOs.Account;
+using BBKBootcampSocial.Core.DTOs.Notification;
 using BBKBootcampSocial.Domains.User;
 
 namespace BBKBootcampSocial.Core.AllServices.IServices
@@ -16,5 +18,7 @@ namespace BBKBootcampSocial.Core.AllServices.IServices
         Task<bool> IsUserActive(string email);
         Task<bool> ActiveAccount(string activeCode);
         Task<LoginUserInfoDTO> ReturnUserByIdWithPosts(long userId);
+        Task<bool> AddFriend(long userId,long currentUserId);
+        Task<List<NotificationDTO>> GetNotificationsOfUser(long userId);
     }
 }

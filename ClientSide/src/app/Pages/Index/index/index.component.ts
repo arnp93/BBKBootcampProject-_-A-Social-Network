@@ -32,16 +32,16 @@ export class IndexComponent implements OnInit {
   ngOnInit(): void {
 
     this.authService.getCurrentUser().subscribe(res => {
+      this.thisUser = res;
       if(res === null){
         this.route.navigate([""]);
       }
-      this.thisUser = res;
-    });
-
-    // document.getElementsByName("user-setting")[0].style.display = "none";
+    })
+    
+     
     this.authService.checkAuth().subscribe(res => {
       if (res.status === 'Success') {
-        const currentUser = new UserDTO(res.data.token, res.data.expireTime, res.data.firstName, res.data.lastName, res.data.profilePic, res.data.userId,null);
+        const currentUser = new UserDTO(res.data.token, res.data.expireTime, res.data.firstName, res.data.lastName, res.data.profilePic, res.data.userId,null,res.data.notifications);
         this.authService.setCurrentUser(currentUser);
         this.thisUser = currentUser;
       }

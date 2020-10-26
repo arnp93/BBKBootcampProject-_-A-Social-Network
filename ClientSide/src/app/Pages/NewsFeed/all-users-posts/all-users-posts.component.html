@@ -1,6 +1,6 @@
 <div class="central-meta item" *ngFor="let post of posts" id="{{post.id}}">
     <div class="user-post">
-        <span class="fa fa-ellipsis-h pull-right link" onclick="openPostMenu(this)"></span>
+        <span class="fa fa-ellipsis-h pull-right link menu-icon" onclick="openPostMenu(this)"></span>
         <div class="friend-info">
             <figure>
                 <img *ngIf="post.user.profilePic === null" src="/assets/images/account.png" alt="">
@@ -8,16 +8,16 @@
                     [src]="URL+'/ProfilePictures/'+post.user.profilePic" alt="">
             </figure>
             <div class="friend-name">
-                <input type="hidden" value="{{post.userId}}">
-                    <ins><a class="link" (click)="viewProfile($event)" title="">{{post.user.firstName}} {{post.user.lastName}}</a></ins>
+                    <ins><a class="link" (click)="viewProfile(post.userId)" title="">{{post.user.firstName}} {{post.user.lastName}}</a></ins>
                     <span>{{post.dateTime}}</span>
             </div>
             <div class="post-menu pull-right">
                 <ul>
-                    <li class="link">Add Friend</li>
-                    <li class="link">Edit Post</li>
-                    <li class="link">Delete Post</li>
-                    <li class="link">Block</li>
+                    <li class="link" *ngIf="post.userId !== thisUser.userId" (click)="friendRequest($event,post.userId)">Add Friend</li>
+                    <li class="link" *ngIf="post.userId === thisUser.userId">Edit Post</li>
+                    <li class="link" *ngIf="post.userId === thisUser.userId">Delete Post</li>
+                    <li class="link" *ngIf="post.userId !== thisUser.userId">Block User</li>
+                    <li class="link" *ngIf="post.userId !== thisUser.userId">Report</li>
                 </ul>
             </div>
             <div class="post-meta">
@@ -121,7 +121,7 @@
                         </div>
                         <div class="we-comment">
                             <div class="coment-head">
-                                <h5><a href="time-line.html" title="">{{comment.firstName}} {{comment.lastName}}</a>
+                                <h5><a class="link" (click)="viewProfile(comment.userId)" title="">{{comment.firstName}} {{comment.lastName}}</a>
                                 </h5>
                                 <span>1 year ago</span>
                                 <a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a>
@@ -139,7 +139,7 @@
                                 </div>
                                 <div class="we-comment">
                                     <div class="coment-head">
-                                        <h5><a href="time-line.html" title="">{{reply.firstName}}
+                                        <h5><a class="link" (click)="viewProfile(reply.userId)" title="">{{reply.firstName}}
                                                 {{reply.lastName}}</a></h5>
                                         <span>1 month ago</span>
                                         <a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a>
@@ -168,3 +168,6 @@
         </div>
     </div>
 </div>
+
+<swal #commentError title="Oops" icon="error" [showCancelButton]="true" [focusCancel]="true">
+</swal>

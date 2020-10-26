@@ -4,7 +4,7 @@
 	<div class="topbar stick">
 		<!-- log Section -->
 		<div class="logo">
-			<a title="" href="newsfeed.html"><img src="/assets/images/logo.png" alt=""></a>
+			<h3 style="color: red;font-weight: bolder;">Beta</h3>
 		</div>
 		<!-- menu section -->
 		<app-menu></app-menu>
@@ -57,7 +57,7 @@
 
 								<div class="loadMore" *ngIf="user !== null && user.posts !== null">
 									<!-------------------------------START Posts------------------------------ -->
-									<div class="central-meta item" *ngFor="let post of user.posts.reverse()"
+									<div class="central-meta item" *ngFor="let post of user.posts"
 										id="{{post.id}}">
 										<div class="user-post">
 											<div class="friend-info">
@@ -190,7 +190,7 @@
 															</div>
 															<div class="we-comment">
 																<div class="coment-head">
-																	<h5><a href="time-line.html" title="">{{comment.firstName}}
+																	<h5><a (click)="viewProfile(comment.userId)" class="link">{{comment.firstName}}
 																			{{comment.lastName}}</a>
 																	</h5>
 																	<span>1 year ago</span>
@@ -201,7 +201,7 @@
 														</div>
 													</li>
 													<li *ngIf="post.comments.length !== 0">
-														<a class="showmore underline">more comments</a>
+														<a class="showmore underline link">more comments</a>
 													</li>
 													<li class="post-comment">
 														<div class="post-comt-box">
