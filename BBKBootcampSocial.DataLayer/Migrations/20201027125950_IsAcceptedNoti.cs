@@ -2,21 +2,22 @@
 
 namespace BBKBootcampSocial.DataLayer.Migrations
 {
-    public partial class addUserActivateCode : Migration
+    public partial class IsAcceptedNoti : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "ActiveCode",
-                table: "Users",
-                nullable: true);
+            migrationBuilder.AddColumn<bool>(
+                name: "IsAccepted",
+                table: "Notifications",
+                nullable: false,
+                defaultValue: false);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "ActiveCode",
-                table: "Users");
+                name: "IsAccepted",
+                table: "Notifications");
         }
     }
 }

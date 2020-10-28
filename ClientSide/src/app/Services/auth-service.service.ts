@@ -56,4 +56,12 @@ export class AuthServiceService {
   acceptFriendRequest(origionUserId : number) : Observable<IResponseDTO<UserDTO>>{
     return this.http.post<IResponseDTO<UserDTO>>("/api/account/accept-friend", origionUserId);
   }
+
+  deleteNotification(notificationId : number) :Observable<IResponseDTO<any>> {
+    return this.http.post<IResponseDTO<any>>("/api/account/delete-notification",notificationId);
+  }
+
+  getLatestusers() : Observable<IResponseDTO<UserDTO[]>>{
+    return this.http.get<IResponseDTO<UserDTO[]>>("/api/account/latest-users");
+  }
 }

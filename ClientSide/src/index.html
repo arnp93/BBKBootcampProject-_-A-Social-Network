@@ -24,6 +24,14 @@
     #search-form {
       z-index: 2;
     }
+
+    .editPostSection {
+      display: none;
+    }
+
+    .btnCancel {
+      margin-right: 2px;
+    }
   </style>
 
 </head>
@@ -53,6 +61,26 @@
         $(parent).find(".post-menu").slideDown();
       }
     }
+
+
+    function editPost(event) {
+      var parent = event.target.parentNode.parentNode.parentNode;
+      var editSec = $(parent).find(".editPostSection")[0];
+      $(editSec).slideDown();
+    }
+
+    function closeEditSec(btn) {
+      var parent = btn.parentNode.parentNode;
+      $(parent).slideUp();
+    }
+
+    // function test() {
+    //   var xmlHttp = new XMLHttpRequest();
+    //   xmlHttp.open("GET", "https://localhost:44317//api/account/view-profile/2");
+    //   xmlHttp.send();
+    //   alert();
+    // }
+
   </script>
 </body>
 

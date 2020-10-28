@@ -72,7 +72,6 @@ export class AllUsersPostsComponent implements OnInit {
   friendRequest(event, userId: number) {
         this.authService.friendRequest(userId).subscribe(res => {
       if (res.status === "Success") {
-        console.log("Sucessss");
         if (event.target.innerText === "Add Friend")
           event.target.innerText = "Cancel Request";
         else

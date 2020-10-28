@@ -75,7 +75,7 @@ namespace BBKBootcampSocial.Core.AllServices.Services
             await repostoryForRoles.AddEntity(new UserRole
             {
                 IsDelete = false,
-                RoleId = 2,
+                RoleId = 1,
                 UserId = User.Id
             });
             await unitOfWork.SaveChanges();
@@ -121,6 +121,18 @@ namespace BBKBootcampSocial.Core.AllServices.Services
             return LoginUserResult.UnknownError;
         }
 
+        public async Task<List<FriendDTO>> GetFriendListByUserId(long userId)
+        {
+            var repository = await unitOfWork.GetRepository<GenericRepository<UserFriend>, UserFriend>();
+            var userRepository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
+            return repository.GetEntitiesQuery().Where(fl => fl.UserId == userId).Select(f => new FriendDTO
+            {
+                UserId = f.FriendUserId,
+                UserName = userRepository.GetEntityById(f.FriendUserId).Result.FirstName + " " + userRepository.GetEntityById(f.FriendUserId).Result.LastName,
+                ProfilePicture = userRepository.GetEntityById(f.FriendUserId).Result.ProfilePic
+            }).ToList();
+        }
+
         #endregion
 
         #region Active Account
@@ -142,6 +154,74 @@ namespace BBKBootcampSocial.Core.AllServices.Services
 
             return false;
         }
+
+        #endregion
+
+        #region Manage Friend Request
+
+        public async Task<bool> AddFriend(long userId, long currentUserId)
+        {
+            var repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
+
+            var notificationRepository = await unitOfWork.GetRepository<GenericRepository<Notification>, Notification>();
+
+            if (repository.GetEntitiesQuery().Any(u => u.Id == userId))
+            {
+                if (notificationRepository.GetEntitiesQuery()
+                    .Any(n => n.UserDestinationId == userId && n.UserOriginId == currentUserId && n.IsDelete == false))
+                {
+                    Notification notification = notificationRepository.GetEntitiesQuery()
+                        .FirstOrDefault(n => n.UserDestinationId == userId && n.UserOriginId == currentUserId && n.IsDelete == false);
+                    notificationRepository.RemoveEntity(notification);
+                }
+                else
+                {
+                    await notificationRepository.AddEntity(new Notification
+                    {
+                        UserOriginId = currentUserId,
+                        UserDestinationId = userId,
+                        IsRead = false,
+                        IsDelete = false,
+                        IsAccepted = false,
+                        TypeOfNotification = TypeOfNotification.FriendRequest
+                    });
+                }
+                await unitOfWork.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public async Task AcceptFriend(long currentUserId, long originUserId)
+        {
+            var repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
+            var friendRepository = await unitOfWork.GetRepository<GenericRepository<UserFriend>, UserFriend>();
+            var notificationRepository = await unitOfWork.GetRepository<GenericRepository<Notification>, Notification>();
+
+            var notificationOfRequest = notificationRepository.GetEntitiesQuery().SingleOrDefault(n =>
+                n.UserDestinationId == currentUserId && n.UserOriginId == originUserId &&
+                n.TypeOfNotification == TypeOfNotification.FriendRequest && !n.IsDelete);
+
+            if (notificationOfRequest != null)
+                notificationOfRequest.IsAccepted = true;
+
+            User currentUser = await repository.GetEntityById(currentUserId);
+            await friendRepository.AddEntity(new UserFriend
+            {
+                FriendUserId = originUserId,
+                UserId = currentUserId,
+                IsDelete = false
+            });
+
+            repository.UpdateEntity(currentUser);
+            notificationRepository.UpdateEntity(notificationOfRequest);
+
+            await unitOfWork.SaveChanges();
+        }
+
 
         #endregion
 
@@ -229,62 +309,55 @@ namespace BBKBootcampSocial.Core.AllServices.Services
             };
         }
 
-        public async Task<bool> AddFriend(long userId, long currentUserId)
-        {
-            var repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
+        #endregion
 
-            var notificationRepository = await unitOfWork.GetRepository<GenericRepository<Notification>, Notification>();
-
-            if (repository.GetEntitiesQuery().Any(u => u.Id == userId))
-            {
-                if (notificationRepository.GetEntitiesQuery()
-                    .Any(n => n.UserDestinationId == userId && n.UserOriginId == currentUserId))
-                {
-                    Notification notification = notificationRepository.GetEntitiesQuery()
-                        .FirstOrDefault(n => n.UserDestinationId == userId && n.UserOriginId == currentUserId && n.IsDelete == false);
-                     notificationRepository.RemoveEntity(notification);
-                }
-                else
-                {
-                    await notificationRepository.AddEntity(new Notification
-                    {
-                        UserOriginId = currentUserId,
-                        UserDestinationId = userId,
-                        IsRead = false,
-                        IsDelete = false,
-                        TypeOfNotification = TypeOfNotification.FriendRequest
-                    });
-                }
-                await unitOfWork.SaveChanges();
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
+        #region Notifications 
         public async Task<List<NotificationDTO>> GetNotificationsOfUser(long userId)
         {
             var repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
             var notificationRepository = await unitOfWork.GetRepository<GenericRepository<Notification>, Notification>();
-          
-                return notificationRepository.GetEntitiesQuery().Where(n => n.UserDestinationId == userId && n.IsDelete == false)
-                    .Select(n =>
-                        new NotificationDTO
+
+
+            return notificationRepository.GetEntitiesQuery().Where(n => n.UserDestinationId == userId && n.IsDelete == false)
+                .Select(n =>
+                    new NotificationDTO
+                    {
+                        Id = n.Id,
+                        UserOriginId = n.UserOriginId,
+                        IsRead = n.IsRead,
+                        IsAccepted = n.IsAccepted,
+                        TypeOfNotification = n.TypeOfNotification,
+                        User = new LoginUserInfoDTO
                         {
-                            UserOriginId = n.UserOriginId,
-                            IsRead = n.IsRead,
-                            TypeOfNotification = n.TypeOfNotification,
-                            User = new LoginUserInfoDTO
-                            {
-                                UserId = n.UserOriginId,
-                                FirstName = repository.GetEntitiesQuery().FirstOrDefault(u => u.Id == n.UserOriginId).FirstName,
-                                LastName = repository.GetEntitiesQuery().FirstOrDefault(u => u.Id == n.UserOriginId).LastName,
-                                ProfilePic = repository.GetEntitiesQuery().FirstOrDefault(u => u.Id == n.UserOriginId).ProfilePic,
-                            },
-                            CreateDate = n.CreateDate.Day.ToString() + "/" + n.CreateDate.Month.ToString() + "/" + n.CreateDate.Year.ToString()
-                        }).ToList();
+                            UserId = n.UserOriginId,
+                            FirstName = repository.GetEntitiesQuery().FirstOrDefault(u => u.Id == n.UserOriginId).FirstName,
+                            LastName = repository.GetEntitiesQuery().FirstOrDefault(u => u.Id == n.UserOriginId).LastName,
+                            ProfilePic = repository.GetEntitiesQuery().FirstOrDefault(u => u.Id == n.UserOriginId).ProfilePic,
+                        },
+                        CreateDate = n.CreateDate.Day.ToString() + "/" + n.CreateDate.Month.ToString() + "/" + n.CreateDate.Year.ToString()
+                    }).ToList();
+        }
+
+        public async Task DeleteNotification(long notificationId)
+        {
+            var notificationRepository = await unitOfWork.GetRepository<GenericRepository<Notification>, Notification>();
+
+            await notificationRepository.RemoveEntity(notificationId);
+
+            await unitOfWork.SaveChanges();
+        }
+
+        public async Task<List<LoginUserInfoDTO>> GetLatestUsers()
+        {
+            var repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
+
+            return repository.GetEntitiesQuery().OrderByDescending(u => u.CreateDate).Select(u => new LoginUserInfoDTO
+            {
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                ProfilePic = u.ProfilePic,
+                UserId = u.Id
+            }).Take(5).ToList();
         }
 
         #endregion

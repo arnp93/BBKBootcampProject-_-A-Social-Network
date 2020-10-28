@@ -1,11 +1,13 @@
 import { UserDTO } from '../Account/UserDTO';
 import { TypeOfNotification } from './TypeOfNotification';
-export class NotificationDTO{
+export class NotificationDTO {
    constructor(
-    public userOriginId : number,
-    public isRead : boolean,
-    public createDate : string,
-    public typeOfNotification : TypeOfNotification,
-    public user : UserDTO
-   ){}
+      public id: number,
+      public userOriginId: number,
+      public isRead: boolean,
+      public isAccepted: boolean,
+      public createDate: string,
+      public typeOfNotification: TypeOfNotification,
+      public user: UserDTO
+   ) { }
 }

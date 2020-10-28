@@ -15,6 +15,7 @@ namespace BBKBootcampSocial.Core.DTOs.Post
         public long? ParentId { get; set; }
         public long Id { get; set; }
 
+
         public LoginUserInfoDTO User { get; set; }
 
         public IEnumerable<CommentDTO> Comments{ get; set; }

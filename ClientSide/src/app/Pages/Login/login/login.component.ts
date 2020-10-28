@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
       if (res !== null) {
         this.route.navigate(["index"]);
       }
-    })
+    });
 
 
     //delay
@@ -55,11 +55,14 @@ export class LoginComponent implements OnInit {
       if (res.status === "Success") {
         this.CookieService.set("BBKBootcampCookie", res.data.token, res.data.expireTime * 60);
         this.loading = false;
-
+        
         if (res.data.notifications === null || res.data.notifications === undefined)
           res.data.notifications = []
 
-        this.authService.setCurrentUser(res.data);
+        this.authService.setCurrentUser(res.data);  
+        
+        
+        
         this.route.navigate(["/index"]);
       } else if (res.status === "NotFound") {
         this.loading = false;

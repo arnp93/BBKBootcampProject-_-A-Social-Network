@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { NewPostResponseDTO } from '../DTOs/Post/NewPostResponseDTO';
 import { PostResultResponse } from '../DTOs/Post/PostResultResponse';
 import { IResponseDTO } from '../DTOs/Common/IResponseDTO';
+import { EditPostDTO } from '../DTOs/Post/EditPostDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -37,5 +38,10 @@ export class PostService {
 
   newProfilePicture(form : FormData) : Observable<IResponseDTO<string>>{
     return this.http.post<IResponseDTO<string>>("/api/post/profile-pic", form);
+  }
+
+  editPost(editPost : EditPostDTO) : Observable<IResponseDTO<any>>{
+    return this.http.post<IResponseDTO<any>>("/api/post/edit-post",editPost);
+    
   }
 }

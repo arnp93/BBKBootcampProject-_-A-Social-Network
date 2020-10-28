@@ -80,7 +80,8 @@
 										<div class="user-post">
 											<div class="friend-info">
 												<figure>
-													<img src="/assets/images/resources/friend-avatar9.jpg" alt="">
+													<img *ngIf="thisUser !== undefined && thisUser !== null && thisUser.profilePic === null" src="/assets/images/account.png" alt="">
+													<img style="height: 50px;width: 50px;" *ngIf="thisUser !== undefined && thisUser !== null &&thisUser.profilePic !== null" [src]="URL+'/ProfilePictures/'+thisUser.profilePic" alt="">
 												</figure>
 												<div class="friend-name">
 													<ins><a href="time-line.html" title="">{{thisUser.firstName}}

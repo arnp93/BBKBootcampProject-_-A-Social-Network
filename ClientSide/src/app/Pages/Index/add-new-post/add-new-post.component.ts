@@ -14,6 +14,7 @@ import { DomainName } from 'src/app/Utilities/PathTools';
 })
 export class AddNewPostComponent implements OnInit {
 
+  //new post will add to index.component
   @Output() newPost: EventEmitter<ShowPostDTO> = new EventEmitter<ShowPostDTO>();
   public selectedFile: File = null;
   public URL: string = DomainName;
@@ -47,6 +48,8 @@ export class AddNewPostComponent implements OnInit {
 
     this.postService.addNewPost(formData).subscribe(res => {
       if (res.status === "Success") {
+
+        //send new post to index.componnet
         this.newPost.emit(res.data);
         this.PostForm.reset();
       } else {

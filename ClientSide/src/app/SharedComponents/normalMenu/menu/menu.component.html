@@ -1,58 +1,13 @@
 <div class="top-area">
     <ul class="main-menu">
         <li>
-            <a href="#" title="">Home</a>
+            <a routerLink="/index" title="">Home</a>
             <ul>
-                <li><a href="index-2.html" title="">Home Social</a></li>
-                <li><a href="index2.html" title="">Home Social 2</a></li>
-                <li><a href="index-company.html" title="">Home Company</a></li>
-                <li><a href="landing.html" title="">Login page</a></li>
-                <li><a href="logout.html" title="">Logout Page</a></li>
-                <li><a href="newsfeed.html" title="">news feed</a></li>
+                <li><a routerLink="/news-feed" title="">news feed</a></li>
+                <li><a class="link" (click)="logout()" title="">Logout</a></li>
             </ul>
-        </li>
-        <li>
-            <a href="#" title="">timeline</a>
-            <ul>
-                <li><a href="time-line.html" title="">timeline</a></li>
-                <li><a href="timeline-friends.html" title="">timeline friends</a></li>
-                <li><a href="timeline-groups.html" title="">timeline groups</a></li>
-                <li><a href="timeline-pages.html" title="">timeline pages</a></li>
-                <li><a href="timeline-photos.html" title="">timeline photos</a></li>
-                <li><a href="timeline-videos.html" title="">timeline videos</a></li>
-                <li><a href="fav-page.html" title="">favourit page</a></li>
-                <li><a href="groups.html" title="">groups page</a></li>
-                <li><a href="page-likers.html" title="">Likes page</a></li>
-                <li><a href="people-nearby.html" title="">people nearby</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="#" title="">account settings</a>
-            <ul>
-                <li><a href="create-fav-page.html" title="">create fav page</a></li>
-                <li><a href="edit-account-setting.html" title="">edit account setting</a></li>
-                <li><a href="edit-interest.html" title="">edit-interest</a></li>
-                <li><a href="edit-password.html" title="">edit-password</a></li>
-                <li><a href="edit-profile-basic.html" title="">edit profile basics</a></li>
-                <li><a href="edit-work-eductation.html" title="">edit work educations</a></li>
-                <li><a href="messages.html" title="">message box</a></li>
-                <li><a href="inbox.html" title="">Inbox</a></li>
-                <li><a href="notifications.html" title="">notifications page</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="#" title="">more pages</a>
-            <ul>
-                <li><a href="404.html" title="">404 error page</a></li>
-                <li><a href="about.html" title="">about</a></li>
-                <li><a href="contact.html" title="">contact</a></li>
-                <li><a href="faq.html" title="">faq's page</a></li>
-                <li><a href="insights.html" title="">insights</a></li>
-                <li><a href="knowledge-base.html" title="">knowledge base</a></li>
-                <li><a href="widgets.html" title="">Widgts</a></li>
-            </ul>
-        </li>
     </ul>
+
     <ul class="setting-area">
         <li>
             <a href="#" title="Home" data-ripple=""><i class="ti-search"></i></a>
@@ -66,34 +21,54 @@
         <li><a href="newsfeed.html" title="Home" data-ripple=""><i class="ti-home"></i></a></li>
         <li>
             <a href="#" title="Notification" data-ripple="">
-                <i class="ti-bell"></i><span *ngIf="notifications !== undefined && notifications !== null && notifications.length > 0">{{notifications.length}}</span>
+                <i class="ti-bell"></i><span
+                    *ngIf="notifications !== undefined && notifications !== null && notifications.length > 0">{{thisUser.notifications.length}}</span>
             </a>
             <div class="dropdowns" *ngIf="thisUser != null &&thisUser.notifications !== undefined">
                 <ul class="drops-menu">
-                    <li  *ngFor="let notification of thisUser.notifications">
-                        <a title="">
-                            <img width="40" height="40" [src]="URL + '/ProfilePictures/' + notification.user.profilePic" alt="">
+                    <li *ngFor="let notification of thisUser.notifications">
+                        <a *ngIf="thisUser.notifications.length > 0">
+                            <img width="40" height="40" [src]="URL + '/ProfilePictures/' + notification.user.profilePic"
+                                alt="">
                             <div class="mesg-meta">
-                                <h6 (click)="viewProfile(notification.user.userId)" class="link">{{notification.user.firstName}} {{notification.user.lastName}}</h6>
-                                <span *ngIf="notification.typeOfNotification === 0">Has sent you a friend request</span>
+                                <h6 (click)="viewProfile(notification.user.userId)" class="link">
+                                    {{notification.user.firstName}} {{notification.user.lastName}}</h6>
+                                <span *ngIf="notification.typeOfNotification === 0 && !notification.isAccepted !accepted">Has sent
+                                    you a friend request</span>
+                                <span *ngIf="notification.typeOfNotification === 0 && notification.isAccepted">Accepted
+                                    Friend Request</span>
+                                <span *ngIf="notification.typeOfNotification === 0 && accepted">Accepted!</span>
                                 <span *ngIf="notification.typeOfNotification === 1">Te ha dejado un comentario </span>
                                 <i>{{notification.createDate}}</i>
-                                <div *ngIf="notification.typeOfNotification === 0">
-                                    <input class="btn-xs btn-success small btn-margin" type="button" value="Accept" (click)="friendAcc(notification.userOriginId)">
-                                    <input *ngIf="accepted" class="btn-xs btn-success small btn-margin" type="button" value="Accept" (click)="firendReq(notification.userOriginId)">
-                                    <input *ngIf="accepted"class="btn-xs btn-danger small btn-margin" type="button" value="Remove">
+                                <div>
+                                    <span *ngIf="notification.typeOfNotification === 0 && !notification.isAccepted">
+                                        <input *ngIf="!accepted" class="btn-xs btn-success small btn-margin"
+                                            type="button" value="Accept" (click)="friendAcc(notification.userOriginId)">
+                                        <input *ngIf="accepted" class="btn-xs btn-danger small btn-margin" type="button"
+                                            value="Delete Friend">
+                                    </span>
+                                    <input class="btn-xs btn-warning small btn-margin" type="button" value="Remove"
+                                        (click)="firendReqDelete(notification.id)">
                                 </div>
+
                                 <div *ngIf="notification.typeOfNotification === 1">
                                     <input class="btn-xs btn-success small btn-margin" type="button" value="View">
                                 </div>
                             </div>
                         </a>
+                        <a title="" *ngIf="thisUser.notifications.length === 0">
+
+                            <div class="mesg-meta">
+                                <h6>no notifications</h6>
+                            </div>
+                        </a>
                         <span class="tag green">New</span>
                     </li>
-                  <span id="lastNotifications">
-                  </span>
+                    <span id="lastNotifications">
+                    </span>
                 </ul>
-                <a *ngIf="thisUser.notifications !== undefined &&thisUser.notifications !== null && thisUser.notifications.length > 0" href="notifications.html" title="" class="more-mesg">view more</a>
+                <a *ngIf="thisUser.notifications !== undefined &&thisUser.notifications !== null && thisUser.notifications.length > 0"
+                    href="notifications.html" title="" class="more-mesg">view more</a>
             </div>
         </li>
         <li>
@@ -160,18 +135,14 @@
                 <a href="messages.html" title="" class="more-mesg">view more</a>
             </div>
         </li>
-        <li><a href="#" title="Languages" data-ripple=""><i class="fa fa-globe"></i></a>
-            <div class="dropdowns languages">
-                <a href="#" title=""><i class="ti-check"></i>English</a>
-                <a href="#" title="">Arabic</a>
-                <a href="#" title="">Dutch</a>
-                <a href="#" title="">French</a>
-            </div>
-        </li>
     </ul>
     <div class="user-img">
-        <img style="height: 50px;width: 50px;" *ngIf="thisUser !== undefined && thisUser !== null && thisUser.profilePic === null" src="/assets/images/account.png" alt="">
-        <img style="max-height: 50px;max-width: 50px;" *ngIf="thisUser !== undefined && thisUser !== null &&thisUser.profilePic !== null" [src]="URL+'/ProfilePictures/'+thisUser.profilePic" alt="">
+        <img style="height: 50px;width: 50px;"
+            *ngIf="thisUser !== undefined && thisUser !== null && thisUser.profilePic === null"
+            src="/assets/images/account.png" alt="">
+        <img style="max-height: 50px;max-width: 50px;"
+            *ngIf="thisUser !== undefined && thisUser !== null &&thisUser.profilePic !== null"
+            [src]="URL+'/ProfilePictures/'+thisUser.profilePic" alt="">
         <span class="status f-online"></span>
         <div class="user-setting">
             <a href="#" title=""><span class="status f-online"></span>online</a>
@@ -179,7 +150,6 @@
             <a href="#" title=""><span class="status f-off"></span>offline</a>
             <a (click)="goToProfile()" class="link" title=""><i class="ti-user"></i> view profile</a>
             <a href="#" title=""><i class="ti-pencil-alt"></i>edit profile</a>
-            <a href="#" title=""><i class="ti-target"></i>activity log</a>
             <a href="#" title=""><i class="ti-settings"></i>account setting</a>
             <a href="#" title=""><i class="ti-power-off"></i>log out</a>
         </div>

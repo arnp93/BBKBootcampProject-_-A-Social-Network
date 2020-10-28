@@ -250,6 +250,19 @@ namespace BBKBootcampSocial.Core.AllServices.Services
             return null;
         }
 
+        public async Task EditPost(EditPostDTO editPost)
+        {
+            var repository = await unitOfWork.GetRepository<GenericRepository<Post>, Post>();
+
+            var Post = await repository.GetEntityById(editPost.PostId);
+
+            Post.PostText = editPost.PostText;
+
+            repository.UpdateEntity(Post);
+
+            await unitOfWork.SaveChanges();
+        }
+
         #endregion
 
     }

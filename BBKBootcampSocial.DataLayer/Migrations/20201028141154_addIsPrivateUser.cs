@@ -2,22 +2,22 @@
 
 namespace BBKBootcampSocial.DataLayer.Migrations
 {
-    public partial class addUserIdToComments : Migration
+    public partial class addIsPrivateUser : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<long>(
-                name: "UserId",
-                table: "Comments",
+            migrationBuilder.AddColumn<bool>(
+                name: "IsPrivate",
+                table: "Users",
                 nullable: false,
-                defaultValue: 0L);
+                defaultValue: false);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "UserId",
-                table: "Comments");
+                name: "IsPrivate",
+                table: "Users");
         }
     }
 }

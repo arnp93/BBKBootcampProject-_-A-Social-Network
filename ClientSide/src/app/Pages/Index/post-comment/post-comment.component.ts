@@ -4,7 +4,7 @@ import { CommentService } from '../../../Services/comment.service';
 import { SendCommentDTO } from '../../../DTOs/CommentDTOs/SendCommentDTO';
 import { Router } from '@angular/router';
 import { CommentDTO } from 'src/app/DTOs/CommentDTOs/CommentDTO';
-import { ShowPostDTO } from '../../../DTOs/Post/ShowPostDTO';
+import { AuthServiceService } from '../../../Services/auth-service.service';
 
 @Component({
   selector: 'app-post-comment',
@@ -17,7 +17,7 @@ export class PostCommentComponent implements OnInit {
   @Input() postId: number;
   @Output() test : CommentDTO;
   public commentForm: FormGroup;
-  constructor(private commentService: CommentService, private router : Router) { }
+  constructor(private commentService: CommentService, private router : Router,private authService : AuthServiceService) { }
 
   ngOnInit(): void {
     this.commentForm = new FormGroup({

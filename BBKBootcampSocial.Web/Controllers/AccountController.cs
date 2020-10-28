@@ -59,9 +59,10 @@ namespace BBKBootcampSocial.Web.Controllers
                     LastName = user.LastName,
                     ProfilePic = user.ProfilePic,
                     UserId = user.Id,
-                    Notifications = await UserService.GetNotificationsOfUser(user.Id)
+                    Notifications = await UserService.GetNotificationsOfUser(user.Id),
+                    Friends = await UserService.GetFriendListByUserId(user.Id)
                 });
-            
+
             }
 
             return JsonResponseStatus.Error();
@@ -109,7 +110,8 @@ namespace BBKBootcampSocial.Web.Controllers
                             LastName = user.LastName,
                             ProfilePic = user.ProfilePic,
                             UserId = user.Id,
-                            Notifications = await UserService.GetNotificationsOfUser(user.Id)
+                            Notifications = await UserService.GetNotificationsOfUser(user.Id),
+                            Friends = await UserService.GetFriendListByUserId(user.Id)
                         };
                         return JsonResponseStatus.Success(test);
                 }
@@ -157,10 +159,10 @@ namespace BBKBootcampSocial.Web.Controllers
 
         #endregion
 
-        #region Add Friend Request / Remove Friend Request
+        #region Manage Friend Request
 
         [HttpPost("friend-request")]
-        public async Task<IActionResult> FriendRequest([FromBody]long userId)
+        public async Task<IActionResult> FriendRequest([FromBody] long userId)
         {
             long currentUserId = User.GetUserId();
             bool isSuccess = await UserService.AddFriend(userId, currentUserId);
@@ -171,9 +173,34 @@ namespace BBKBootcampSocial.Web.Controllers
         }
 
         [HttpPost("accept-friend")]
-        public async Task<IActionResult> AcceptFriendRequest([FromBody]long origionUserId)
+        public async Task<IActionResult> AcceptFriendRequest([FromBody] long originUserId)
         {
+            long currentUserId = User.GetUserId();
+            await UserService.AcceptFriend(currentUserId, originUserId);
+
             return JsonResponseStatus.Success();
+        }
+
+        #endregion
+
+        #region Manage notification
+
+        [HttpPost("delete-notification")]
+        public async Task<IActionResult> DeleteNotification([FromBody]long notificationId)
+        {
+            await UserService.DeleteNotification(notificationId);
+
+            return JsonResponseStatus.Success();
+        }
+
+        #endregion
+
+        #region Get latest Users
+
+        [HttpGet("latest-users")]
+        public async Task<IActionResult> GetLastestUsers()
+        {
+            return JsonResponseStatus.Success(await UserService.GetLatestUsers());
         }
 
         #endregion

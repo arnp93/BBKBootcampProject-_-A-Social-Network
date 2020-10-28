@@ -14,5 +14,6 @@ namespace BBKBootcampSocial.Core.DTOs.Account
         public long UserId { get; set; }
         public IEnumerable<ShowPostDTO> Posts { get; set; }
         public List<NotificationDTO> Notifications{ get; set; }
+        public List<FriendDTO> Friends { get; set; }
     }
 }

@@ -19,15 +19,20 @@ export class RegisterComponent implements OnInit {
   constructor(private authService: AuthServiceService, private route: Router) { }
 
   ngOnInit(): void {
-    var user = this.authService.getCurrentUser()
-      if (user != null) {
+    this.authService.getCurrentUser().subscribe(res => {
+      if (res != null) {
         this.route.navigate(["index"]);
       }
-  
-    //delay
-    setInterval(function () {
-      document.getElementById("registerForm").style.display = "block";
-    }, 1500);
+    })
+    
+
+    if (document.getElementById("registerForm") !== null && document.getElementById("registerForm") !== undefined) {
+      //delay
+      setInterval(function () {
+        document.getElementById("registerForm").style.display = "block";
+      }, 1500);
+    }
+
 
     //Form Group
     this.registerForm = new FormGroup({

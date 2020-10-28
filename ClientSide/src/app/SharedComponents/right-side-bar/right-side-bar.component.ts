@@ -24,4 +24,9 @@ export class RightSideBarComponent implements OnInit {
   goToProfile() {
     this.router.navigate(["/index"]);
   }
+
+  viewProfile(userId : number) {
+    this.router.navigate(['/view-profile', userId])
+  }
+  
 }

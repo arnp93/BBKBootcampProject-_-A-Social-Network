@@ -1,162 +1,187 @@
+<div class="central-meta item" *ngFor="let post of posts" id="{{post.id}}">
+    <div class="user-post">
+        <span class="fa fa-ellipsis-h pull-right link menu-icon" onclick="openPostMenu(this)"></span>
+        <div class="friend-info">
+            <figure>
+                <img *ngIf="thisUser !== undefined && thisUser !== null && thisUser.profilePic === null"
+                    src="/assets/images/account.png" alt="">
+                <img style="height: 50px;width: 50px;"
+                    *ngIf="thisUser !== undefined && thisUser !== null &&thisUser.profilePic !== null"
+                    [src]="URL+'/ProfilePictures/'+thisUser.profilePic" alt="">
 
-    <div class="central-meta item" *ngFor="let post of posts" id="{{post.id}}">
-        <div class="user-post">
-            <div class="friend-info">
-                <figure>
-                    <img *ngIf="thisUser !== undefined && thisUser !== null && thisUser.profilePic === null" src="/assets/images/account.png" alt="">
-                    <img style="height: 50px;width: 50px;" *ngIf="thisUser !== undefined && thisUser !== null &&thisUser.profilePic !== null" [src]="URL+'/ProfilePictures/'+thisUser.profilePic" alt="">
-
-                </figure>
-                <div class="friend-name">
-                    <ins><a href="time-line.html" *ngIf="thisUser !== undefined && thisUser !== null" title="">{{thisUser.firstName}} {{thisUser.lastName}}</a></ins>
-                    <span>{{post.dateTime}}</span>
-                </div>
-                <div class="post-meta">
-                    <p>
-                        {{post.postText}}
-                    </p>
-                    <img src="{{URL}}/PostFiles/{{post.fileName}}" alt="" *ngIf="post.fileName != null">
-                    <div class="we-video-info">
-                        <ul>
-                            <li>
-                                <span class="views" data-toggle="tooltip" title="views">
-                                    <i class="fa fa-eye"></i>
-                                    <ins>1.2k</ins>
-                                </span>
-                            </li>
-                            <li>
-                                <span class="comment" data-toggle="tooltip" title="Comments">
-                                    <i class="fa fa-comments-o"></i>
-                                    <ins>{{post.comments.length}}</ins>
-                                </span>
-                            </li>
-                            <li>
-                                <span class="like" data-toggle="tooltip" title="like">
-                                    <i class="ti-heart"></i>
-                                    <ins>52</ins>
-                                </span>
-                            </li>
-                            <li class="social-media">
-                                <div class="menu">
-                                    <div class="btn trigger"><i class="fa fa-share-alt"></i></div>
-                                    <div class="rotater">
-                                        <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-html5"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="rotater">
-                                        <div class="btn btn-icon"><a href="#" title=""><i
-                                                    class="fa fa-facebook"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="rotater">
-                                        <div class="btn btn-icon"><a href="#" title=""><i
-                                                    class="fa fa-google-plus"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="rotater">
-                                        <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-twitter"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="rotater">
-                                        <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-css3"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="rotater">
-                                        <div class="btn btn-icon"><a href="#" title=""><i
-                                                    class="fa fa-instagram"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="rotater">
-                                        <div class="btn btn-icon"><a href="#" title=""><i
-                                                    class="fa fa-dribbble"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="rotater">
-                                        <div class="btn btn-icon"><a href="#" title=""><i
-                                                    class="fa fa-pinterest"></i></a>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="description">
-
-                    </div>
-                </div>
+            </figure>
+            <div class="friend-name">
+                <ins><a href="time-line.html" *ngIf="thisUser !== undefined && thisUser !== null"
+                        title="">{{thisUser.firstName}} {{thisUser.lastName}}</a></ins>
+                <span>{{post.dateTime}}</span>
             </div>
-            <div class="coment-area">
-                <ul class="we-comet" *ngIf="newComments.length > 0">
-                    <li *ngFor="let newComment of newComments">
-                        <div >
-                            <div class="comet-avatar">
-                                <img src="/assets/images/resources/photo1.jpg" alt="">
-                            </div>
-                            <div class="we-comment">
-                                <div class="coment-head">
-                                    <h5><a (click)="viewProfile(newComment.userId)" title="">{{newComment.firstName}} {{newComment.lastName}}</a>
-                                    </h5>
-                                    <span>1 year ago</span>
-                                    <a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a>
-                                </div>
-                                <p>{{newComment.text}}</p>
-                            </div>
-                        </div>
-                    </li>
+            <div class="post-menu pull-right">
+                <ul>
+                    <li class="link" onclick="editPost(event)" *ngIf="post.userId === thisUser.userId">Edit Post</li>
+                    <li class="link" *ngIf="post.userId === thisUser.userId">Delete Post</li>
                 </ul>
-                <ul class="we-comet">
-                    <li *ngFor="let comment of post.comments">
-                        <div *ngIf="comment.parentId === null">
-                            <div class="comet-avatar">
-                                <img *ngIf="comment.profilePic === null" src="/assets/images/account.png" alt="">
-                                <img style="height: 50px;width: 50px;" *ngIf="comment.profilePic !== null" [src]="URL+'/ProfilePictures/'+ comment.profilePic" alt="">
-                            </div>
-                            <div class="we-comment">
-                                <div class="coment-head">
-                                    <h5><a class="link" (click)="viewProfile(comment.userId)">{{comment.firstName}} {{comment.lastName}}</a>
-                                    </h5>
-                                    <span>1 year ago</span>
-                                    <a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a>
-                                </div>
-                                <p>{{comment.text}}</p>
-                            </div>
-                        </div>
+            </div>
+            <div class="post-meta">
+                <p>
+                    {{post.postText}}
+                </p>
 
-                        <ul *ngFor="let reply of comment.replies">
-                            <div *ngIf="reply.parentId === comment.id">
-                                <li>
-                                    <div class="comet-avatar">
-                                        <img src="/assets/images/resources/comet-2.jpg" alt="">
+                <div class="editPostSection">
+                    <form [formGroup]="editPostForm" (submit)="postSubmit($event,post.id)">
+                        <textarea class="control" style="border: 1px solid black;"
+                            placeholder="Write here..."></textarea>
+                        <br>
+                        <input type="submit" class="btn btn-info pull-right" value="Edit">
+                        &nbsp;&nbsp;
+                        <input type="button" onclick="closeEditSec(this)" class="btn btn-danger btnCancel pull-right"
+                            value="Cancel">
+                    </form>
+                </div>
+
+                <img src="{{URL}}/PostFiles/{{post.fileName}}" alt="" *ngIf="post.fileName != null">
+                <div class="we-video-info">
+                    <ul>
+                        <li>
+                            <span class="views" data-toggle="tooltip" title="views">
+                                <i class="fa fa-eye"></i>
+                                <ins>1.2k</ins>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="comment" data-toggle="tooltip" title="Comments">
+                                <i class="fa fa-comments-o"></i>
+                                <ins>{{post.comments.length}}</ins>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="like" data-toggle="tooltip" title="like">
+                                <i class="ti-heart"></i>
+                                <ins>52</ins>
+                            </span>
+                        </li>
+                        <li class="social-media">
+                            <div class="menu">
+                                <div class="btn trigger"><i class="fa fa-share-alt"></i></div>
+                                <div class="rotater">
+                                    <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-html5"></i></a>
                                     </div>
-                                    <div class="we-comment">
-                                        <div class="coment-head">
-                                            <h5><a (click)="viewProfile(comment.userId)">{{reply.firstName}}
-                                                    {{reply.lastName}}</a></h5>
-                                            <span>1 month ago</span>
-                                            <a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a>
-                                        </div>
-                                        <p>{{reply.text}}</p>
+                                </div>
+                                <div class="rotater">
+                                    <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-facebook"></i></a>
                                     </div>
-                                </li>
+                                </div>
+                                <div class="rotater">
+                                    <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-google-plus"></i></a>
+                                    </div>
+                                </div>
+                                <div class="rotater">
+                                    <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-twitter"></i></a>
+                                    </div>
+                                </div>
+                                <div class="rotater">
+                                    <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-css3"></i></a>
+                                    </div>
+                                </div>
+                                <div class="rotater">
+                                    <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-instagram"></i></a>
+                                    </div>
+                                </div>
+                                <div class="rotater">
+                                    <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-dribbble"></i></a>
+                                    </div>
+                                </div>
+                                <div class="rotater">
+                                    <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-pinterest"></i></a>
+                                    </div>
+                                </div>
+
                             </div>
-                        </ul>
-                    </li>
-                    <li *ngIf="post.comments.length !== 0">
-                        <a class="showmore underline">more comments</a>
-                    </li>
-                    <li class="post-comment">
-                            <div class="post-comt-box">
-                                <form [formGroup]="commentForm" (submit)="newCommentSubmit(post.id)">
-                                    <textarea formControlName="text" placeholder="Post your comment"></textarea>
-                                    <div class="add-smiles" style="margin-top: 11px;margin-right: 5px;">
-                                        <br>
-                                        <button style="background-color:cadetblue ;height: 35px;" type="submit">Post</button>
-                                    </div>
-                                </form>
-                            </div>
-                    </li>
-                </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="description">
+
+                </div>
             </div>
         </div>
+        <div class="coment-area">
+            <ul class="we-comet" *ngIf="newComments.length > 0">
+                <li *ngFor="let newComment of newComments">
+                    <div>
+                        <div class="comet-avatar">
+                            <img src="/assets/images/resources/photo1.jpg" alt="">
+                        </div>
+                        <div class="we-comment">
+                            <div class="coment-head">
+                                <h5><a (click)="viewProfile(newComment.userId)" title="">{{newComment.firstName}}
+                                        {{newComment.lastName}}</a>
+                                </h5>
+                                <span>1 year ago</span>
+                                <a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a>
+                            </div>
+                            <p>{{newComment.text}}</p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <ul class="we-comet">
+                <li *ngFor="let comment of post.comments">
+                    <div *ngIf="comment.parentId === null">
+                        <div class="comet-avatar">
+                            <img *ngIf="comment.profilePic === null" src="/assets/images/account.png" alt="">
+                            <img style="height: 50px;width: 50px;" *ngIf="comment.profilePic !== null"
+                                [src]="URL+'/ProfilePictures/'+ comment.profilePic" alt="">
+                        </div>
+                        <div class="we-comment">
+                            <div class="coment-head">
+                                <h5><a class="link" (click)="viewProfile(comment.userId)">{{comment.firstName}}
+                                        {{comment.lastName}}</a>
+                                </h5>
+                                <span>1 year ago</span>
+                                <a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a>
+                            </div>
+                            <p>{{comment.text}}</p>
+                        </div>
+                    </div>
+
+                    <ul *ngFor="let reply of comment.replies">
+                        <div *ngIf="reply.parentId === comment.id">
+                            <li>
+                                <div class="comet-avatar">
+                                    <img src="/assets/images/resources/comet-2.jpg" alt="">
+                                </div>
+                                <div class="we-comment">
+                                    <div class="coment-head">
+                                        <h5><a (click)="viewProfile(comment.userId)">{{reply.firstName}}
+                                                {{reply.lastName}}</a></h5>
+                                        <span>1 month ago</span>
+                                        <a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a>
+                                    </div>
+                                    <p>{{reply.text}}</p>
+                                </div>
+                            </li>
+                        </div>
+                    </ul>
+                </li>
+                <li *ngIf="post.comments.length !== 0">
+                    <a class="showmore underline">more comments</a>
+                </li>
+                <li class="post-comment">
+                    <div class="post-comt-box">
+                        <form [formGroup]="commentForm" (submit)="newCommentSubmit(post.id)">
+                            <textarea formControlName="text" placeholder="Post your comment"></textarea>
+                            <div class="add-smiles" style="margin-top: 11px;margin-right: 5px;">
+                                <br>
+                                <button style="background-color:cadetblue ;height: 35px;" type="submit">Post</button>
+                            </div>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
+</div>
+
+<swal #editProfileError text="Error in edit post... Please try again later" title="Oops" icon="error"
+    [showCancelButton]="true" [focusCancel]="true">
+</swal>

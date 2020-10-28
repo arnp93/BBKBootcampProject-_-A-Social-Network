@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BBKBootcampSocial.DataLayer.Migrations
 {
     [DbContext(typeof(BBKDatabaseContext))]
-    [Migration("20201019084805_fixPicBug")]
-    partial class fixPicBug
+    [Migration("20201028141154_addIsPrivateUser")]
+    partial class addIsPrivateUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -284,6 +284,42 @@ namespace BBKBootcampSocial.DataLayer.Migrations
                     b.ToTable("Stories");
                 });
 
+            modelBuilder.Entity("BBKBootcampSocial.Domains.User.Notification", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsAccepted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("TypeOfNotification")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("UserDestinationId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserOriginId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("BBKBootcampSocial.Domains.User.User", b =>
                 {
                     b.Property<long>("Id")
@@ -316,9 +352,6 @@ namespace BBKBootcampSocial.DataLayer.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<long?>("FriendId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Instagram")
                         .HasColumnType("nvarchar(max)");
 
@@ -329,6 +362,9 @@ namespace BBKBootcampSocial.DataLayer.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPrivate")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
@@ -363,9 +399,36 @@ namespace BBKBootcampSocial.DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FriendId");
-
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("BBKBootcampSocial.Domains.User.UserFriend", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("FriendUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserFriends");
                 });
 
             modelBuilder.Entity("BBKBootcampSocial.Domains.Access.UserRole", b =>
@@ -442,11 +505,13 @@ namespace BBKBootcampSocial.DataLayer.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BBKBootcampSocial.Domains.User.User", b =>
+            modelBuilder.Entity("BBKBootcampSocial.Domains.User.UserFriend", b =>
                 {
-                    b.HasOne("BBKBootcampSocial.Domains.User.User", null)
-                        .WithMany("Users")
-                        .HasForeignKey("FriendId");
+                    b.HasOne("BBKBootcampSocial.Domains.User.User", "User")
+                        .WithMany("UserFriends")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -4,6 +4,7 @@ import { AuthServiceService } from 'src/app/Services/auth-service.service';
 import { DomainName } from 'src/app/Utilities/PathTools';
 import { Router } from '@angular/router';
 import { NotificationDTO } from '../../../DTOs/Notification/NotificationDTO';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-menu',
@@ -18,7 +19,7 @@ export class MenuComponent implements OnInit {
   public lastNotifications: NotificationDTO[] = [];
   public accepted: boolean = false;
 
-  constructor(private authService: AuthServiceService, private router: Router) { }
+  constructor(private authService: AuthServiceService, private router: Router, private cookieService: CookieService) { }
 
   ngOnInit(): void {
     this.authService.getCurrentUser().subscribe(res => {
@@ -31,6 +32,7 @@ export class MenuComponent implements OnInit {
       this.lastNotifications = this.thisUser.notifications.filter(n => n.isRead === true);
 
   }
+
   goToProfile() {
     this.router.navigate(["/index"]);
   }
@@ -41,14 +43,24 @@ export class MenuComponent implements OnInit {
 
   friendAcc(userOriginId: number) {
     this.authService.acceptFriendRequest(userOriginId).subscribe(res => {
-      if(res.status === "Success"){
+      if (res.status === "Success") {
         this.accepted = true;
       }
 
     });
   }
 
-  firendReq(userOriginId: number) {
+  logout() {
+    this.cookieService.delete("BBKBootcampCookie");
+    this.authService.setCurrentUser(null);
+    this.authService.logOut();
+    this.router.navigate([""]);
+  }
 
+  firendReqDelete(notificationId: number) {
+    this.authService.deleteNotification(notificationId).subscribe(res => {
+      if (res.status === "Success")
+        this.thisUser.notifications = this.thisUser.notifications.filter(n => n.id !== notificationId);
+    });
   }
 }

@@ -55,6 +55,19 @@ namespace BBKBootcampSocial.Web.Controllers
             return JsonResponseStatus.Success(await postService.GetAllPosts());
         }
 
+        [HttpPost("edit-post")]
+        public async Task<IActionResult> EditPost([FromBody] EditPostDTO newPost)
+        {
+            if (ModelState.IsValid)
+            {
+                await postService.EditPost(newPost);
+                return JsonResponseStatus.Success();
+            }
+
+            return JsonResponseStatus.Error();
+
+        }
+
         [HttpPost("load-posts")]
         public async Task<IActionResult> LoadMorePosts([FromForm]int currentPage)
         {

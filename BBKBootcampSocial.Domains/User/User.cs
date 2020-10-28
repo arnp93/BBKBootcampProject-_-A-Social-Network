@@ -45,9 +45,7 @@ namespace BBKBootcampSocial.Domains.User
         public string BanReason { get; set; }
         public int TimesOfReports { get; set; }
         public string Description { get; set; }
-
-        public long? FriendId { get; set; }
-
+        public bool IsPrivate { get; set; }
 
         #endregion
 
@@ -57,10 +55,8 @@ namespace BBKBootcampSocial.Domains.User
         public virtual ICollection<Post.Story> Stories { get; set; }
         public virtual ICollection<Image.Image> Images { get; set; }
         public virtual ICollection<UserRole> UserRoles { get; set; }
-        [ForeignKey("FriendId")]
-        public virtual ICollection<User> Users{ get; set; }
-
-        public ICollection<CanalUser> Canals { get; set; }
+        public virtual ICollection<UserFriend> UserFriends { get; set; }
+        public virtual ICollection<CanalUser> Canals { get; set; }
 
         #endregion
 

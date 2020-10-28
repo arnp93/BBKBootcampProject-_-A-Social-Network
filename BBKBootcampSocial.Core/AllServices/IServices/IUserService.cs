@@ -20,5 +20,9 @@ namespace BBKBootcampSocial.Core.AllServices.IServices
         Task<LoginUserInfoDTO> ReturnUserByIdWithPosts(long userId);
         Task<bool> AddFriend(long userId,long currentUserId);
         Task<List<NotificationDTO>> GetNotificationsOfUser(long userId);
+        Task AcceptFriend(long currentUserId, long originUserId);
+        Task<List<FriendDTO>> GetFriendListByUserId(long userId);
+        Task DeleteNotification(long notificationId);
+        Task<List<LoginUserInfoDTO>> GetLatestUsers();
     }
 }

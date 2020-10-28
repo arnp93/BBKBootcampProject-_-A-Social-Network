@@ -29,6 +29,7 @@ namespace BBKBootcampSocial.DataLayer
         public DbSet<Canal> Canals { get; set; }
         public DbSet<CanalUser> CanalUsers { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<UserFriend> UserFriends { get; set; }
         #endregion
 
         #region disable cascading delete in database

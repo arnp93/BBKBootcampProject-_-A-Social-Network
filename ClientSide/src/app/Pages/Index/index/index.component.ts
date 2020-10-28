@@ -38,10 +38,9 @@ export class IndexComponent implements OnInit {
       }
     })
     
-     
     this.authService.checkAuth().subscribe(res => {
       if (res.status === 'Success') {
-        const currentUser = new UserDTO(res.data.token, res.data.expireTime, res.data.firstName, res.data.lastName, res.data.profilePic, res.data.userId,null,res.data.notifications);
+        const currentUser = new UserDTO(res.data.token, res.data.expireTime, res.data.firstName, res.data.lastName, res.data.profilePic, res.data.userId,null,res.data.notifications,res.data.friends);
         this.authService.setCurrentUser(currentUser);
         this.thisUser = currentUser;
       }
@@ -98,6 +97,8 @@ export class IndexComponent implements OnInit {
     const formData: FormData = new FormData();
     if (this.selectProfilePic != null)
       formData.append("pic", this.selectProfilePic, this.selectProfilePic.name);
+
+    
 
     this.postService.newProfilePicture(formData).subscribe(res => {
       if (res.status === "Success") {
