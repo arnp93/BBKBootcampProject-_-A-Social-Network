@@ -10,8 +10,10 @@
                 [src]="URL+'/ProfilePictures/'+user.profilePic" alt="">
             </figure>
             <div class="friend-meta">
-                <h4><a href="time-line.html" title="">{{user.firstName}} {{user.lastName}}</a></h4>
-                <a href="#" title="" class="underline">Add Friend</a>
+                <h4 class="link"><a (click)="viewProfile(user.userId)" title="">{{user.firstName}} {{user.lastName}}</a></h4>
+
+                <!-- <h4><a href="time-line.html" title="">{{user.firstName}} {{user.lastName}}</a></h4> -->
+                <!-- <a href="#" title="" class="underline">Add Friend</a> -->
             </div>
         </li>
 

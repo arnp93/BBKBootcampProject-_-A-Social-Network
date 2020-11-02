@@ -16,6 +16,10 @@ namespace BBKBootcampSocial.Core.AllServices.IServices
         Task<List<Post>> LoadMorePosts(int currentPage, long userId);
         Task<List<ShowPostDTO>> GetAllPosts();
         Task<string> ProfilePic(IFormFile picture,long userId);
+        Task<string> CoverPic(IFormFile picture, long userId);
         Task EditPost(EditPostDTO editPost);
+
+        Task<LikeDTO> AddOrRemoveLike(long postId, long userId);
+
     }
 }

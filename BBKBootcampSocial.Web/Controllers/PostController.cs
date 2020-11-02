@@ -103,19 +103,41 @@ namespace BBKBootcampSocial.Web.Controllers
 
         #endregion
 
-        #region Add/Change Profile Picture
+        #region Add/Change Profile Picture / Cover Picture
         [HttpPost("profile-pic")]
         public async Task<IActionResult> ProfilePicture([FromForm] IFormFile pic)
         {
             long userId = User.GetUserId();
-            string name = await postService.ProfilePic(pic,userId);
-            if (name != null)
-                return JsonResponseStatus.Success(name);
+            string pictureName = await postService.ProfilePic(pic,userId);
+            if (pictureName != null)
+                return JsonResponseStatus.Success(pictureName);
+            else
+                return JsonResponseStatus.Error();
+        }
+
+        [HttpPost("cover-pic")]
+        public async Task<IActionResult> CoverPicture([FromForm] IFormFile pic)
+        {
+            long userId = User.GetUserId();
+            string pictureName = await postService.CoverPic(pic, userId);
+            if (pictureName != null)
+                return JsonResponseStatus.Success(pictureName);
             else
                 return JsonResponseStatus.Error();
         }
 
         #endregion
 
+        #region Likes Section
+
+        [HttpPost("like")]
+        public async Task<IActionResult> AddOrRemoveLike([FromBody]long postId)
+        {
+            long userId = User.GetUserId();
+            var like = await postService.AddOrRemoveLike(postId, userId);
+            return JsonResponseStatus.Success(like);
+        }
+
+        #endregion
     }
 }

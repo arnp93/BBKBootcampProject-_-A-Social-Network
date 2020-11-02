@@ -69,6 +69,8 @@ export class UserPostsComponent implements OnInit {
     this.commentService.postComment(newComment).subscribe(res => {
 
       if (res.status === "Success") {
+        res.data.profilePic = this.thisUser.profilePic;
+        console.log(res.data.profilePic);
         this.newComments.push(res.data);
         this.commentForm.reset();
       }
@@ -86,7 +88,7 @@ export class UserPostsComponent implements OnInit {
 
     this.postService.editPost(new EditPostDTO(newPostText, postId)).subscribe(res => {
       if (res.status === "Success") {
-        document.getElementById("editPostSection").style.display = "none";
+        event.target.parentNode.style.display = "none";
         event.target.parentNode.parentNode.firstChild.innerHTML = newPostText;
       } else {
         this.editError.fire();

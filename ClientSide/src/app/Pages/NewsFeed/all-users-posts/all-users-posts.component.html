@@ -8,12 +8,20 @@
                     [src]="URL+'/ProfilePictures/'+post.user.profilePic" alt="">
             </figure>
             <div class="friend-name">
-                    <ins><a class="link" (click)="viewProfile(post.userId)" title="">{{post.user.firstName}} {{post.user.lastName}}</a></ins>
-                    <span>{{post.dateTime}}</span>
+                <ins><a class="link" (click)="viewProfile(post.userId)" title="">{{post.user.firstName}}
+                        {{post.user.lastName}}</a></ins>
+                <span>{{post.dateTime}}</span>
             </div>
             <div class="post-menu pull-right">
-                <ul>
-                    <li class="link" *ngIf="post.userId !== thisUser.userId" (click)="friendRequest($event,post.userId)">Add Friend</li>
+                <ul *ngIf="post !== null">
+                    <li class="link"
+                        *ngIf="post.userId !== thisUser.userId && !friendsIds.includes(post.userId) && !activeNotificationsIds.includes(post.userId)"
+                        (click)="friendRequest($event,post.userId)">Add Friend</li>
+                    <li class="link" *ngIf="post.userId !== thisUser.userId && friendsIds.includes(post.userId)"
+                        (click)="removeFriend($event,post.userId)">Remove Friend</li>
+                    <li class="link"
+                        *ngIf="post.userId !== thisUser.userId && !friendsIds.includes(post.userId) && activeNotificationsIds.includes(post.userId)"
+                        (click)="removeRequest($event,post.userId)">Cancel Request</li>
                     <li class="link" *ngIf="post.userId === thisUser.userId">Edit Post</li>
                     <li class="link" *ngIf="post.userId === thisUser.userId">Delete Post</li>
                     <li class="link" *ngIf="post.userId !== thisUser.userId">Block User</li>
@@ -40,9 +48,9 @@
                             </span>
                         </li>
                         <li>
-                            <span class="like" data-toggle="tooltip" title="like">
+                            <span (click)="like(post.id)" class="like" data-toggle="tooltip" title="like">
                                 <i class="ti-heart"></i>
-                                <ins>52</ins>
+                                <ins>{{post.likes.length + test}}</ins>
                             </span>
                         </li>
                         <li class="social-media">
@@ -96,8 +104,9 @@
                     <div *ngIf="newComment.postId === post.id">
                         <div class="comet-avatar">
                             <img *ngIf="newComment.profilePic === null" src="/assets/images/account.png" alt="">
-                            <img style="height: 50px;width: 50px;" *ngIf="newComment.profilePic !== null" [src]="URL+'/ProfilePictures/'+newComment.profilePic" alt="">
-               
+                            <img style="height: 50px;width: 50px;" *ngIf="newComment.profilePic !== null"
+                                [src]="URL+'/ProfilePictures/'+newComment.profilePic" alt="">
+
                         </div>
                         <div class="we-comment">
                             <div class="coment-head">
@@ -117,11 +126,13 @@
                     <div *ngIf="comment.parentId === null">
                         <div class="comet-avatar">
                             <img *ngIf="comment.profilePic === null" src="/assets/images/account.png" alt="">
-                            <img style="height: 50px;width: 50px;" *ngIf="comment.profilePic !== null" [src]="URL+'/ProfilePictures/'+comment.profilePic" alt="">
+                            <img style="height: 50px;width: 50px;" *ngIf="comment.profilePic !== null"
+                                [src]="URL+'/ProfilePictures/'+comment.profilePic" alt="">
                         </div>
                         <div class="we-comment">
                             <div class="coment-head">
-                                <h5><a class="link" (click)="viewProfile(comment.userId)" title="">{{comment.firstName}} {{comment.lastName}}</a>
+                                <h5><a class="link" (click)="viewProfile(comment.userId)" title="">{{comment.firstName}}
+                                        {{comment.lastName}}</a>
                                 </h5>
                                 <span>1 year ago</span>
                                 <a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a>
@@ -135,11 +146,13 @@
                             <li>
                                 <div class="comet-avatar">
                                     <img *ngIf="reply.profilePic === null" src="/assets/images/account.png" alt="">
-                                    <img style="height: 50px;width: 50px;" *ngIf="reply.profilePic !== null" [src]="URL+'/ProfilePictures/'+reply.profilePic" alt="">
+                                    <img style="height: 50px;width: 50px;" *ngIf="reply.profilePic !== null"
+                                        [src]="URL+'/ProfilePictures/'+reply.profilePic" alt="">
                                 </div>
                                 <div class="we-comment">
                                     <div class="coment-head">
-                                        <h5><a class="link" (click)="viewProfile(reply.userId)" title="">{{reply.firstName}}
+                                        <h5><a class="link" (click)="viewProfile(reply.userId)"
+                                                title="">{{reply.firstName}}
                                                 {{reply.lastName}}</a></h5>
                                         <span>1 month ago</span>
                                         <a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a>

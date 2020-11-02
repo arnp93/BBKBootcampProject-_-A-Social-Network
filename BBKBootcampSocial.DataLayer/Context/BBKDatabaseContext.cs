@@ -21,6 +21,7 @@ namespace BBKBootcampSocial.DataLayer
 
         public DbSet<User> Users { get; set; }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<Like> Likes { get; set; }
         public DbSet<Story> Stories { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Comment> Comments { get; set; }
@@ -36,6 +37,9 @@ namespace BBKBootcampSocial.DataLayer
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            //modelBuilder.Entity<Like>().HasQueryFilter(l => !l.IsDelete);
+
             var cascades = modelBuilder.Model.GetEntityTypes()
                 .SelectMany(t => t.GetForeignKeys())
                 .Where(fk => fk.IsOwnership && fk.DeleteBehavior == DeleteBehavior.Cascade);

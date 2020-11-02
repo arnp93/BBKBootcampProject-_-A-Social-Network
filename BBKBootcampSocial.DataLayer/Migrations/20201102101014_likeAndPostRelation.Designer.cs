@@ -4,14 +4,16 @@ using BBKBootcampSocial.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BBKBootcampSocial.DataLayer.Migrations
 {
     [DbContext(typeof(BBKDatabaseContext))]
-    partial class BBKDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20201102101014_likeAndPostRelation")]
+    partial class likeAndPostRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

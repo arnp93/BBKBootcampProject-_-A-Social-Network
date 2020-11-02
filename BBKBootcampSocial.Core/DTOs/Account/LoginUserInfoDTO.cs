@@ -11,6 +11,7 @@ namespace BBKBootcampSocial.Core.DTOs.Account
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string ProfilePic { get; set; }
+        public string CoverPic { get; set; }
         public long UserId { get; set; }
         public IEnumerable<ShowPostDTO> Posts { get; set; }
         public List<NotificationDTO> Notifications{ get; set; }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -21,6 +22,7 @@ namespace BBKBootcampSocial.Core.AllServices.Services
 {
     public class PostService : IPostService
     {
+
         #region Constructor
 
         private IUnitOfWork unitOfWork;
@@ -32,10 +34,9 @@ namespace BBKBootcampSocial.Core.AllServices.Services
             this.mapper = mapper;
             this.userService = userService;
         }
-
         #endregion
 
-        #region Properties
+        #region Post Properties
 
         public async Task<ShowPostDTO> SavePost(long userId, PostDTO post)
         {
@@ -168,7 +169,7 @@ namespace BBKBootcampSocial.Core.AllServices.Services
         public async Task<List<Post>> LoadMorePosts(int currentPage, long userId)
         {
             var repository = await unitOfWork.GetRepository<GenericRepository<Post>, Post>();
-            BasePaging paging = Pager.Build(currentPage,10);
+            BasePaging paging = Pager.Build(currentPage, 10);
             return repository.GetEntitiesQuery().Where(p => p.UserId == userId).OrderByDescending(p => p.Id).Skip(paging.SkipPages).Take(paging.TakePages).Include(p => p.Comments).ThenInclude(c => c.Replies).ToList(); ;
         }
 
@@ -178,10 +179,17 @@ namespace BBKBootcampSocial.Core.AllServices.Services
 
             List<ShowPostDTO> ShowPosts = new List<ShowPostDTO>();
 
-            List<Post> posts = repository.GetEntitiesQuery().Include(p => p.User).Include(p => p.Comments).ThenInclude(c => c.Replies).OrderByDescending(p => p.Id).Take(10).ToList();
+            List<Post> posts = repository.GetEntitiesQuery().Include(p => p.User).Include(p => p.Likes).Include(p => p.Comments).ThenInclude(c => c.Replies).OrderByDescending(p => p.Id).Take(10).ToList();
+
+            //IEnumerable<Post> posts = repository.GetEntitiesQuery().Include(p => p.User).Include(p => p.Comments).Select(p => new
+            //{
+            //    p,
+            //    Likes = p.Likes.Where(l => !l.IsDelete)
+            //}).AsEnumerable().Select(p => p.p).OrderByDescending(p => p.Id).Take(10);
 
             foreach (var post in posts)
             {
+                
                 ShowPosts.Add(new ShowPostDTO
                 {
                     Comments = post.Comments.Select(c => new CommentDTO
@@ -208,6 +216,14 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                             ParentId = r.ParentId
                         }).Take(2)
                     }).Take(3),
+                    Likes = post.Likes.Where(l => !l.IsDelete).Select(pl => new LikeDTO
+                    {
+                        UserId = pl.UserId,
+                        FirstName = userService.GetUserById(pl.UserId).Result.FirstName,
+                        LastName = userService.GetUserById(pl.UserId).Result.LastName,
+                        ProfilePic = userService.GetUserById(pl.UserId).Result.ProfilePic,
+                        //IsDelete = pl.IsDelete
+                    }).ToList(),
                     PostText = post.PostText,
                     DateTime = post.CreateDate,
                     FileName = post.FileName,
@@ -223,7 +239,7 @@ namespace BBKBootcampSocial.Core.AllServices.Services
             return ShowPosts;
         }
 
-        public async Task<string> ProfilePic(IFormFile picture,long userId)
+        public async Task<string> ProfilePic(IFormFile picture, long userId)
         {
             var repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
             if (picture != null)
@@ -231,21 +247,48 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                 User user = await repository.GetEntityById(userId);
                 if (user.ProfilePic != null)
                 {
-                  var imageRepository = await unitOfWork.GetRepository<GenericRepository<Image>, Image>();
+                    var imageRepository = await unitOfWork.GetRepository<GenericRepository<Image>, Image>();
 
-                  await imageRepository.AddEntity(new Image
-                  {
-                      ImageName = user.ProfilePic,
-                      UserId = user.Id
-                  });
+                    await imageRepository.AddEntity(new Image
+                    {
+                        ImageName = user.ProfilePic,
+                        UserId = user.Id
+                    });
                 }
-                string picName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(picture.FileName);
-                string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProfilePictures", picName);
+                string pictureName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(picture.FileName);
+                string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProfilePictures", pictureName);
                 await using var stream = new FileStream(imagePath, FileMode.Create);
                 await picture.CopyToAsync(stream);
-                user.ProfilePic = picName;
+                user.ProfilePic = pictureName;
+                repository.UpdateEntity(user);
                 await unitOfWork.SaveChanges();
-                return picName;
+                return pictureName;
+            }
+            return null;
+        }
+
+        public async Task<string> CoverPic(IFormFile picture, long userId)
+        {
+            var repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
+            if (picture != null)
+            {
+                User user = await repository.GetEntityById(userId);
+                if (user.CoverPic != null)
+                {
+                    string deletePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/CoverPictures", user.CoverPic);
+                    if (File.Exists(deletePath))
+                    {
+                        File.Delete(deletePath);
+                    }
+                }
+                string pictureName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(picture.FileName);
+                string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/CoverPictures", pictureName);
+                await using var stream = new FileStream(imagePath, FileMode.Create);
+                await picture.CopyToAsync(stream);
+                user.CoverPic = pictureName;
+                repository.UpdateEntity(user);
+                await unitOfWork.SaveChanges();
+                return pictureName;
             }
             return null;
         }
@@ -254,13 +297,71 @@ namespace BBKBootcampSocial.Core.AllServices.Services
         {
             var repository = await unitOfWork.GetRepository<GenericRepository<Post>, Post>();
 
-            var Post = await repository.GetEntityById(editPost.PostId);
+            var post = await repository.GetEntityById(editPost.PostId);
 
-            Post.PostText = editPost.PostText;
+            post.PostText = editPost.PostText;
 
-            repository.UpdateEntity(Post);
+            repository.UpdateEntity(post);
 
             await unitOfWork.SaveChanges();
+        }
+
+
+        #endregion
+
+        #region Like Properties
+        public async Task<LikeDTO> AddOrRemoveLike(long postId, long userId)
+        {
+            var repository = await unitOfWork.GetRepository<GenericRepository<Like>, Like>();
+            var postRepository = await unitOfWork.GetRepository<GenericRepository<Post>, Post>();
+
+            Post post = postRepository.GetEntitiesQuery().Where(p => p.Id == postId).Include(p => p.Likes).FirstOrDefault();
+
+            if (post != null && !post.IsDelete)
+            {
+                if (post.Likes.Any(l => l.UserId == userId && !l.IsDelete))
+                {
+                    Like like = repository.GetEntitiesQuery().Single(l => l.UserId == userId && l.PostId == postId);
+
+                    repository.RemoveEntity(like);
+                    await unitOfWork.SaveChanges();
+                    return null;
+                }
+                if (post.Likes.Any(l => l.UserId == userId && l.IsDelete))
+                {
+                    Like like = repository.GetEntitiesQuery().Single(l => l.UserId == userId && l.PostId == postId);
+                    like.IsDelete = false;
+                    repository.UpdateEntity(like);
+                    await unitOfWork.SaveChanges();
+                    return new LikeDTO
+                    {
+                        UserId = userId,
+                        FirstName = userService.GetUserById(userId).Result.FirstName,
+                        LastName = userService.GetUserById(userId).Result.LastName,
+                        ProfilePic = userService.GetUserById(userId).Result.ProfilePic
+                    };
+                }
+
+                await repository.AddEntity(new Like
+                    {
+                        UserId = userId,
+                        PostId = postId
+                    });
+                
+              
+
+                await unitOfWork.SaveChanges();
+
+                return new LikeDTO
+                {
+                    UserId = userId,
+                    FirstName = userService.GetUserById(userId).Result.FirstName,
+                    LastName = userService.GetUserById(userId).Result.LastName,
+                    ProfilePic = userService.GetUserById(userId).Result.ProfilePic
+                };
+            }
+
+            return null;
         }
 
         #endregion

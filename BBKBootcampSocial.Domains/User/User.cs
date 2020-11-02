@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using BBKBootcampSocial.Domains.Access;
-using System.ComponentModel.DataAnnotations.Schema;
 using BBKBootcampSocial.Domains.Canal;
 
 namespace BBKBootcampSocial.Domains.User
@@ -35,6 +34,7 @@ namespace BBKBootcampSocial.Domains.User
         [MaxLength(150, ErrorMessage = "Ese campo no puede tener mas de 150 caracteres")]
         public string Password { get; set; }
         public string ProfilePic { get; set; }
+        public string CoverPic { get; set; }
         public string Facebook { get; set; }
         public string LinkdIn { get; set; }
         public string Instagram { get; set; }

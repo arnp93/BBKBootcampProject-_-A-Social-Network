@@ -8,6 +8,7 @@ export class UserDTO{
         public firstName : string,
         public lastName : string,
         public profilePic : string,
+        public coverPic : string,
         public userId: number,
         public posts:ShowPostDTO[],
         public notifications : NotificationDTO[],

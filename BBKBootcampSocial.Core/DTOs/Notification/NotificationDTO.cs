@@ -11,6 +11,7 @@ namespace BBKBootcampSocial.Core.DTOs.Notification
         public bool IsRead { get; set; }
         public string CreateDate { get; set; }
         public bool IsAccepted { get; set; }
+        public long UserDestinationId{ get; set; }
         public TypeOfNotification TypeOfNotification { get; set; }
         public LoginUserInfoDTO User { get; set; }
     }

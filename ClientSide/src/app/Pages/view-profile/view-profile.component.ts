@@ -14,12 +14,16 @@ import { CommentService } from '../../Services/comment.service';
   styleUrls: ['./view-profile.component.css']
 })
 export class ViewProfileComponent implements OnInit {
+  //#region public variable for using in view
   public URL = DomainName;
   private userId: number;
   private thisUserId: number;
-  public user: UserDTO = new UserDTO(null, 0, "", "", "", 0, null,[],[]);
+  public user: UserDTO = new UserDTO(null, 0, "", "","","", 0, null,[],[]);
   public newComments: CommentDTO[] = [];
   public commentForm: FormGroup;
+   //for check if user is in friends list (manage Add Friend and Remove Friend in posts menu)
+   public friendsIds: number[] = [];
+
   constructor(private activatedRoute: ActivatedRoute, private authService: AuthServiceService,private commentService:CommentService, private router: Router) { }
 
   ngOnInit(): void {
@@ -27,7 +31,13 @@ export class ViewProfileComponent implements OnInit {
     this.authService.getCurrentUser().subscribe(res => {
       if (res !== null)
       this.thisUserId = res.userId;
+      if (res !== null && res.friends !== null) {
+        for (let i = 0; i < res.friends.length; i++) {
+          this.friendsIds.push(res.friends[i].userId);
+        }
+      }
     });
+
     
     this.activatedRoute.params.subscribe(param => {
       this.userId = parseInt(param.userId);
@@ -74,6 +84,17 @@ export class ViewProfileComponent implements OnInit {
     this.router.navigateByUrl('/view-profile', { skipLocationChange: true }).then(() => {
       this.router.navigate(['/view-profile',userId]);
   });
+  }
+
+  friendRequest(event,userId : number ){
+    this.authService.friendRequest(userId).subscribe(res => {
+      if (res.status === "Success") {
+        if (event.target.innerText === "Add Friend")
+          event.target.innerText = "Cancel Request";
+        else
+          event.target.innerText = "Add Friend";
+      }
+    });
   }
 
 }

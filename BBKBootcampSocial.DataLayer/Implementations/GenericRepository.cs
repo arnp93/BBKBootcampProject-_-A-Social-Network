@@ -14,7 +14,6 @@ namespace BBKBootcampSocial.DataLayer.Implementations
         private BBKDatabaseContext context;
         private DbSet<TEntity> dbset;
 
-
         public GenericRepository(BBKDatabaseContext context)
         {
             this.context = context;

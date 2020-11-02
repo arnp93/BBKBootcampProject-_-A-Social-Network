@@ -61,8 +61,6 @@ export class LoginComponent implements OnInit {
 
         this.authService.setCurrentUser(res.data);  
         
-        
-        
         this.route.navigate(["/index"]);
       } else if (res.status === "NotFound") {
         this.loading = false;

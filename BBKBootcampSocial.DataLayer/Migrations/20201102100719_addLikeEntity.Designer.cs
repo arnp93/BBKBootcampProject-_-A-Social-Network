@@ -4,14 +4,16 @@ using BBKBootcampSocial.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BBKBootcampSocial.DataLayer.Migrations
 {
     [DbContext(typeof(BBKDatabaseContext))]
-    partial class BBKDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20201102100719_addLikeEntity")]
+    partial class addLikeEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -217,21 +219,19 @@ namespace BBKBootcampSocial.DataLayer.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<long>("DestinationUserId")
+                        .HasColumnType("bigint");
+
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
-                    b.Property<long>("PostId")
+                    b.Property<long>("OriginUserId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("PostId");
 
                     b.ToTable("Likes");
                 });
@@ -509,15 +509,6 @@ namespace BBKBootcampSocial.DataLayer.Migrations
                     b.HasOne("BBKBootcampSocial.Domains.User.User", "User")
                         .WithMany("Images")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("BBKBootcampSocial.Domains.Post.Like", b =>
-                {
-                    b.HasOne("BBKBootcampSocial.Domains.Post.Post", "Post")
-                        .WithMany("Likes")
-                        .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

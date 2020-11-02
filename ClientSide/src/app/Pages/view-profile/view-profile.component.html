@@ -21,7 +21,8 @@
 					<figure><img src="/assets/images/resources/timeline-1.jpg" alt=""></figure>
 					<div class="add-btn">
 						<span>1205 followers</span>
-						<a href="#" title="" data-ripple="">Add Friend</a>
+						<a class="btn btn-success" *ngIf="user !== null && !friendsIds.includes(user.userId)" (click)="friendRequest($event,user.userId)">Add Friend</a>
+						<a class="btn btn-danger" *ngIf="user !== null && friendsIds.includes(user.userId)" (click)="friendRequest($event,user.userId)">Remove Friend</a>
 					</div>
 					<div class="container-fluid" *ngIf="user !== null">
 						<div class="row merged">
@@ -30,7 +31,6 @@
 									<figure>
 										<img *ngIf="user !==null && user.profilePic === null " src="/assets/images/account.png" alt="">
 										<img style="min-height: 120px;min-width: 120px;" *ngIf="user !== null && user.profilePic !== null " [src]="URL+'/ProfilePictures/'+user.profilePic" alt="">
-									
 									</figure>
 								</div>
 							</div>

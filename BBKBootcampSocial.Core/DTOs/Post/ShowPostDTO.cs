@@ -19,5 +19,6 @@ namespace BBKBootcampSocial.Core.DTOs.Post
         public LoginUserInfoDTO User { get; set; }
 
         public IEnumerable<CommentDTO> Comments{ get; set; }
+        public IEnumerable<LikeDTO> Likes{ get; set; }
     }
 }

@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ShowPostDTO } from 'src/app/DTOs/Post/ShowPostDTO';
 import { PostService } from 'src/app/Services/post.service';
-import { DomainName } from 'src/app/Utilities/PathTools';
 
 @Component({
   selector: 'app-new-feeds',

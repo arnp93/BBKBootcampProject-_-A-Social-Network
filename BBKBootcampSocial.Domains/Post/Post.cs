@@ -19,6 +19,7 @@ namespace BBKBootcampSocial.Domains.Post
 
         public virtual User.User User { get; set; }
         public virtual ICollection<Comment.Comment> Comments { get; set; }
+        public ICollection<Like> Likes { get; set; }
         [ForeignKey("CanalId")]
         public Canal.Canal Canal { get; set; }
 

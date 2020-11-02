@@ -58,6 +58,7 @@ namespace BBKBootcampSocial.Web.Controllers
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     ProfilePic = user.ProfilePic,
+                    CoverPic = user.CoverPic,
                     UserId = user.Id,
                     Notifications = await UserService.GetNotificationsOfUser(user.Id),
                     Friends = await UserService.GetFriendListByUserId(user.Id)
@@ -109,6 +110,7 @@ namespace BBKBootcampSocial.Web.Controllers
                             FirstName = user.FirstName,
                             LastName = user.LastName,
                             ProfilePic = user.ProfilePic,
+                            CoverPic = user.CoverPic,
                             UserId = user.Id,
                             Notifications = await UserService.GetNotificationsOfUser(user.Id),
                             Friends = await UserService.GetFriendListByUserId(user.Id)

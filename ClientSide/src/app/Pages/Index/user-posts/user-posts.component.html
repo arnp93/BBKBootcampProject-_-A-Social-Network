@@ -109,7 +109,8 @@
                 <li *ngFor="let newComment of newComments">
                     <div>
                         <div class="comet-avatar">
-                            <img src="/assets/images/resources/photo1.jpg" alt="">
+                            <img *ngIf="newComment.profilePic === null" src="/assets/images/account.png" alt="">
+                            <img style="height: 50px;width: 50px;" *ngIf="newComment.profilePic !== null" [src]="URL+'/ProfilePictures/'+newComment.profilePic" alt="">
                         </div>
                         <div class="we-comment">
                             <div class="coment-head">

@@ -15,7 +15,7 @@ export class MenuComponent implements OnInit {
   public URL: string = DomainName;
   public thisUser: UserDTO;
   public date: number = parseInt(Date.now.toString());
-  public notifications: NotificationDTO[] = [];
+  public unreadNotifications: NotificationDTO[] = [];
   public lastNotifications: NotificationDTO[] = [];
   public accepted: boolean = false;
 
@@ -24,12 +24,13 @@ export class MenuComponent implements OnInit {
   ngOnInit(): void {
     this.authService.getCurrentUser().subscribe(res => {
       this.thisUser = res;
+      
     });
 
     if (this.thisUser !== undefined && this.thisUser !== null && this.thisUser.notifications !== undefined && this.thisUser.notifications !== null)
-      this.notifications = this.thisUser.notifications.filter(n => n.isRead === false)
+      this.unreadNotifications = this.thisUser.notifications.filter(n => !n.isRead && !n.isDelete && n.userDestinationId === this.thisUser.userId && n.userOriginId !== this.thisUser.userId)
     if (this.thisUser !== undefined && this.thisUser !== null)
-      this.lastNotifications = this.thisUser.notifications.filter(n => n.isRead === true);
+      this.lastNotifications = this.thisUser.notifications.filter(n => n.isRead);
 
   }
 
@@ -57,10 +58,12 @@ export class MenuComponent implements OnInit {
     this.router.navigate([""]);
   }
 
-  firendReqDelete(notificationId: number) {
+  removeNotification(notificationId: number) {
     this.authService.deleteNotification(notificationId).subscribe(res => {
-      if (res.status === "Success")
-        this.thisUser.notifications = this.thisUser.notifications.filter(n => n.id !== notificationId);
+      if (res.status === "Success"){
+        this.thisUser.notifications = this.unreadNotifications.filter(n => n.id !== notificationId);
+        this.unreadNotifications = this.unreadNotifications.filter(n => n.id !== notificationId);
+      }
     });
   }
 }

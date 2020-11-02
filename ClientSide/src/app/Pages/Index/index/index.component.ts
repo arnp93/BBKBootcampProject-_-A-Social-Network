@@ -22,6 +22,7 @@ export class IndexComponent implements OnInit {
   public newPosts: ShowPostDTO[] = [];
   public posts: ShowPostDTO[] = [];
   public selectProfilePic: File = null;
+  public selectedCoverPicture: File = null;
   public newProfilePic: string = null;
   public isLoading = false;
 
@@ -33,14 +34,14 @@ export class IndexComponent implements OnInit {
 
     this.authService.getCurrentUser().subscribe(res => {
       this.thisUser = res;
-      if(res === null){
+      if (res === null) {
         this.route.navigate([""]);
       }
     })
-    
+
     this.authService.checkAuth().subscribe(res => {
       if (res.status === 'Success') {
-        const currentUser = new UserDTO(res.data.token, res.data.expireTime, res.data.firstName, res.data.lastName, res.data.profilePic, res.data.userId,null,res.data.notifications,res.data.friends);
+        const currentUser = new UserDTO(res.data.token, res.data.expireTime, res.data.firstName, res.data.lastName, res.data.profilePic,res.data.coverPic, res.data.userId, null, res.data.notifications, res.data.friends);
         this.authService.setCurrentUser(currentUser);
         this.thisUser = currentUser;
       }
@@ -92,22 +93,45 @@ export class IndexComponent implements OnInit {
     this.uploadPic();
     this.isLoading = false;
   }
+  addCoverPic(event) {
+    this.isLoading = true;
+    this.selectedCoverPicture = <File>event.target.files[0];
+    this.uploadNewCoverPic();
+    this.isLoading = false;
+  }
 
   uploadPic() {
     const formData: FormData = new FormData();
     if (this.selectProfilePic != null)
       formData.append("pic", this.selectProfilePic, this.selectProfilePic.name);
 
-    
+
 
     this.postService.newProfilePicture(formData).subscribe(res => {
       if (res.status === "Success") {
         this.newProfilePic = res.data;
         this.thisUser.profilePic = res.data;
       } else {
-        this.emailExist.text = "Ha surgido algun problema! Porfavor Intentalo más tarde";
+        this.emailExist.text = "Error! Please try again later";
         this.emailExist.fire();
       }
     });
+  }
+
+  uploadNewCoverPic() {
+    const formData = new FormData();
+    if (this.selectedCoverPicture !== null)
+      formData.append("pic", this.selectedCoverPicture, this.selectedCoverPicture.name);
+
+      this.postService.newCoverPicture(formData).subscribe(res => {
+        if(res.status === "Success"){
+          this.thisUser.coverPic = res.data;
+        }else{
+          this.emailExist.text = "Error! Please try again later";
+          this.emailExist.fire();
+          
+        }
+      });
+
   }
 }

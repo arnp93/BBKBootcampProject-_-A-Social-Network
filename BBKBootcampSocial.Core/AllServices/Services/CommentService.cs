@@ -34,17 +34,21 @@ namespace BBKBootcampSocial.Core.AllServices.Services
             var repository = await unitOfWork.GetRepository<GenericRepository<Comment>, Comment>();
             var notificationRepository = await unitOfWork.GetRepository<GenericRepository<Notification>, Notification>();
 
+            if (comment.UserId != userId)
+            {
                 await notificationRepository.AddEntity(
                     new Notification
                     {
                         UserOriginId = comment.UserId,
                         UserDestinationId = await GetUserIdByPostId(comment.PostId),
                         IsRead = false,
-                        IsAccepted=false,
+                        IsAccepted = false,
                         IsDelete = false,
                         TypeOfNotification = TypeOfNotification.Comment
                     }
                 );
+            }
+             
       
         
 

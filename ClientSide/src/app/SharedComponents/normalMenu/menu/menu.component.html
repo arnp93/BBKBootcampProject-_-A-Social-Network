@@ -22,11 +22,11 @@
         <li>
             <a href="#" title="Notification" data-ripple="">
                 <i class="ti-bell"></i><span
-                    *ngIf="notifications !== undefined && notifications !== null && notifications.length > 0">{{thisUser.notifications.length}}</span>
+                    *ngIf="unreadNotifications !== undefined && unreadNotifications !== null && unreadNotifications.length > 0">{{unreadNotifications.length}}</span>
             </a>
             <div class="dropdowns" *ngIf="thisUser != null &&thisUser.notifications !== undefined">
                 <ul class="drops-menu">
-                    <li *ngFor="let notification of thisUser.notifications">
+                    <li *ngFor="let notification of unreadNotifications">
                         <a *ngIf="thisUser.notifications.length > 0">
                             <img width="40" height="40" [src]="URL + '/ProfilePictures/' + notification.user.profilePic"
                                 alt="">
@@ -48,7 +48,7 @@
                                             value="Delete Friend">
                                     </span>
                                     <input class="btn-xs btn-warning small btn-margin" type="button" value="Remove"
-                                        (click)="firendReqDelete(notification.id)">
+                                        (click)="removeNotification(notification.id)">
                                 </div>
 
                                 <div *ngIf="notification.typeOfNotification === 1">

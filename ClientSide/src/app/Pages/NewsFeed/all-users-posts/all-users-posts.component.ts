@@ -23,7 +23,13 @@ export class AllUsersPostsComponent implements OnInit {
   public newComments: CommentDTO[] = [];
   public commentForm: FormGroup;
   public userId: number;
-  public thisUser: UserDTO
+ 
+
+  //for check if user is in friends list (manage Add Friend and Remove Friend in posts menu)
+  public friendsIds: number[] = [];
+  public activeNotificationsIds: number[] = [];
+
+  public thisUser: UserDTO;
 
   @ViewChild('commentError') private commentError: SwalComponent;
 
@@ -32,7 +38,21 @@ export class AllUsersPostsComponent implements OnInit {
   ngOnInit(): void {
     this.authService.getCurrentUser().subscribe(res => {
       this.thisUser = res;
-    })
+
+      if (res !== null && res.friends !== null) {
+        for (let i = 0; i < res.friends.length; i++) {
+          this.friendsIds.push(res.friends[i].userId);
+        }
+      }
+
+      if (res !== null && res.notifications !== null) {
+        for (let i = 0; i < res.notifications.length; i++) {
+          if (!res.notifications[i].isAccepted)
+            this.activeNotificationsIds.push(res.notifications[i].userDestinationId);
+        }
+      }
+    });
+
     this.postService.getAllPosts().subscribe(res => {
       if (res.status === "Success") {
         this.posts = res.data;
@@ -56,6 +76,9 @@ export class AllUsersPostsComponent implements OnInit {
 
     this.commentService.postComment(newComment).subscribe(res => {
       if (res.status === "Success") {
+        res.data.profilePic = this.thisUser.profilePic;
+        console.log(res.data.profilePic);
+
         this.newComments.push(res.data)
         this.commentForm.reset();
       } else {
@@ -65,12 +88,12 @@ export class AllUsersPostsComponent implements OnInit {
     });
   }
 
-  viewProfile(userId : number) {
+  viewProfile(userId: number) {
     this.router.navigate(['/view-profile', userId])
   }
 
   friendRequest(event, userId: number) {
-        this.authService.friendRequest(userId).subscribe(res => {
+    this.authService.friendRequest(userId).subscribe(res => {
       if (res.status === "Success") {
         if (event.target.innerText === "Add Friend")
           event.target.innerText = "Cancel Request";
@@ -78,6 +101,28 @@ export class AllUsersPostsComponent implements OnInit {
           event.target.innerText = "Add Friend";
       }
     });
+  }
+
+  like(postId: number) {
+    this.postService.addOrRemoveLike(postId).subscribe(res => {
+      if(res.status === "Success"){
+        if(res.data !== null && !res.data.isDelete){
+          let post = this.posts.filter(p => p.id === postId)[0];
+          post.likes.push(res.data);
+        }else{
+          
+       
+        }
+      }
+    });
+  }
+
+  removeRequest(event, userId: number) {
+
+  }
+
+  removeFriend(event, userId: number) {
+
   }
 
 

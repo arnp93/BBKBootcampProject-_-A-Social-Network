@@ -5,6 +5,7 @@ import { NewPostResponseDTO } from '../DTOs/Post/NewPostResponseDTO';
 import { PostResultResponse } from '../DTOs/Post/PostResultResponse';
 import { IResponseDTO } from '../DTOs/Common/IResponseDTO';
 import { EditPostDTO } from '../DTOs/Post/EditPostDTO';
+import { LikeDTO } from '../DTOs/Post/LikeDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class PostService {
     return this.http.get<PostResultResponse>("/api/post/user-posts");
   }
 
-  getAllPosts():Observable<PostResultResponse>{
+  getAllPosts(): Observable<PostResultResponse> {
     return this.http.get<PostResultResponse>("/api/post/all-posts");
   }
 
@@ -30,18 +31,25 @@ export class PostService {
     this.posts.next(postResult);
   }
 
-  getMorePosts(currentPage : number): Observable<PostResultResponse> {
+  getMorePosts(currentPage: number): Observable<PostResultResponse> {
     let params: HttpParams = new HttpParams().set("CurrentPage", currentPage.toString());
 
     return this.http.post<PostResultResponse>("/api/post/load-posts", params);
   }
 
-  newProfilePicture(form : FormData) : Observable<IResponseDTO<string>>{
+  newProfilePicture(form: FormData): Observable<IResponseDTO<string>> {
     return this.http.post<IResponseDTO<string>>("/api/post/profile-pic", form);
   }
 
-  editPost(editPost : EditPostDTO) : Observable<IResponseDTO<any>>{
-    return this.http.post<IResponseDTO<any>>("/api/post/edit-post",editPost);
-    
+  newCoverPicture(form: FormData): Observable<IResponseDTO<string>> {
+    return this.http.post<IResponseDTO<string>>("/api/post/cover-pic", form);
+  }
+
+  editPost(editPost: EditPostDTO): Observable<IResponseDTO<any>> {
+    return this.http.post<IResponseDTO<any>>("/api/post/edit-post", editPost);
+  }
+
+  addOrRemoveLike(postId: number): Observable<IResponseDTO<LikeDTO>> {
+    return this.http.post<IResponseDTO<LikeDTO>>("/api/post/like", postId);
   }
 }

@@ -211,8 +211,8 @@ namespace BBKBootcampSocial.Core.AllServices.Services
             User currentUser = await repository.GetEntityById(currentUserId);
             await friendRepository.AddEntity(new UserFriend
             {
-                FriendUserId = originUserId,
-                UserId = currentUserId,
+                FriendUserId = currentUserId,
+                UserId = originUserId,
                 IsDelete = false
             });
 
@@ -312,18 +312,19 @@ namespace BBKBootcampSocial.Core.AllServices.Services
         #endregion
 
         #region Notifications 
-        public async Task<List<NotificationDTO>> GetNotificationsOfUser(long userId)
+        public async Task<List<NotificationDTO>> GetNotificationsOfUser(long userId)//2
         {
             var repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
             var notificationRepository = await unitOfWork.GetRepository<GenericRepository<Notification>, Notification>();
 
 
-            return notificationRepository.GetEntitiesQuery().Where(n => n.UserDestinationId == userId && n.IsDelete == false)
+            return notificationRepository.GetEntitiesQuery().Where(n => (n.UserDestinationId == userId || n.UserOriginId == userId)&& !n.IsDelete)
                 .Select(n =>
                     new NotificationDTO
                     {
                         Id = n.Id,
                         UserOriginId = n.UserOriginId,
+                        UserDestinationId = n.UserDestinationId,
                         IsRead = n.IsRead,
                         IsAccepted = n.IsAccepted,
                         TypeOfNotification = n.TypeOfNotification,
