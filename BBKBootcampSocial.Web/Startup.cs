@@ -10,6 +10,7 @@ using BBKBootcampSocial.Domains.Comment;
 using BBKBootcampSocial.Domains.Post;
 using BBKBootcampSocial.Domains.User;
 using BBKBootcampSocial.IoC;
+using BBKBootcampSocial.Web.SignalR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -103,6 +104,12 @@ namespace BBKBootcampSocial.Web
             });
             #endregion
 
+            #region SignalR Config
+
+            services.AddSignalR();
+
+            #endregion
+
 
         }
 
@@ -132,7 +139,18 @@ namespace BBKBootcampSocial.Web
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapHub<NotificationHub>("/notificationHub");
             });
+
+            #region SignalR Configuration
+
+            //app.UseSignalR(route =>
+            //{
+            //    route.MapHub<NotificationHub>("/notificationHub");
+            //});
+
+            #endregion
 
         }
         public static void RegisterServices(IServiceCollection services)

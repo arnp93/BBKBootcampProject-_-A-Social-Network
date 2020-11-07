@@ -14,11 +14,12 @@ namespace BBKBootcampSocial.Core.AllServices.IServices
         Task<PostDTO> EditPost(PostDTO post);
         Task<List<ShowPostDTO>> PostsOfUser(long userId);
         Task<List<Post>> LoadMorePosts(int currentPage, long userId);
+        Task<List<Post>> LoadMorePosts(int currentPage);
         Task<List<ShowPostDTO>> GetAllPosts();
         Task<string> ProfilePic(IFormFile picture,long userId);
         Task<string> CoverPic(IFormFile picture, long userId);
         Task EditPost(EditPostDTO editPost);
-
+        Task<List<ShowPostDTO>> GetFriendsPosts(long userId);
         Task<LikeDTO> AddOrRemoveLike(long postId, long userId);
 
     }

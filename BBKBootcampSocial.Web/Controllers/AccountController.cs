@@ -11,7 +11,10 @@ using BBKBootcampSocial.Core.Utilities;
 using BBKBootcampSocial.Core.Utilities.Identity;
 using Microsoft.IdentityModel.Tokens;
 using BBKBootcampSocial.Domains.User;
+using BBKBootcampSocial.Web.SignalR;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.SignalR;
+using BBKBootcampSocial.Core.DTOs.Notification;
 
 namespace BBKBootcampSocial.Web.Controllers
 {
@@ -19,11 +22,14 @@ namespace BBKBootcampSocial.Web.Controllers
     {
         #region Constructor _ Dependency Injections
 
+        private readonly IHubContext<NotificationHub> hubContext;
+
         private readonly IUserService UserService;
 
-        public AccountController(IUserService UserService)
+        public AccountController(IUserService UserService, IHubContext<NotificationHub> hubContext)
         {
             this.UserService = UserService;
+            this.hubContext = hubContext;
         }
 
         #endregion
@@ -167,11 +173,29 @@ namespace BBKBootcampSocial.Web.Controllers
         public async Task<IActionResult> FriendRequest([FromBody] long userId)
         {
             long currentUserId = User.GetUserId();
-            bool isSuccess = await UserService.AddFriend(userId, currentUserId);
-            if (isSuccess)
+            var result = await UserService.AddFriend(userId, currentUserId);
+            if (result.Item1)
+            {
+                string connectionId = await UserService.GetConnectionIdByUserId(userId);
+                if (connectionId != "")
+                {
+                    await hubContext.Clients.Client(connectionId).SendAsync("AddFriendRequest", new NotificationDTO
+                    {
+                        Id = result.Item2.Id,
+                        UserDestinationId = result.Item2.UserDestinationId,
+                        UserOriginId = result.Item2.UserOriginId,
+                        TypeOfNotification = result.Item2.TypeOfNotification,
+                        IsAccepted = result.Item2.IsAccepted,
+                        IsRead = result.Item2.IsRead
+                    });
+                }
                 return JsonResponseStatus.Success();
+            }
             else
+            {
                 return JsonResponseStatus.NotFound();
+            }
+               
         }
 
         [HttpPost("accept-friend")]

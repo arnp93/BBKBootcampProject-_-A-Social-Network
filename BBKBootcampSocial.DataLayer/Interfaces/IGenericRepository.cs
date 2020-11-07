@@ -18,5 +18,7 @@ namespace BBKBootcampSocial.DataLayer.Interfaces
         void RemoveEntity(TEntity entity);
 
         Task RemoveEntity(long id);
+        void DeleteEntity(TEntity entity);
+        Task DeleteEntity(long id);
     }
 }

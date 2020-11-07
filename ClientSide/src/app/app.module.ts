@@ -28,7 +28,8 @@ import { NewFeedsComponent } from './Pages/NewsFeed/new-feeds/new-feeds.componen
 import { AllUsersPostsComponent } from './Pages/NewsFeed/all-users-posts/all-users-posts.component';
 import { IndexComponent } from './Pages/Index/index/index.component';
 import { ViewProfileComponent } from './Pages/view-profile/view-profile.component';
-
+import { FriendsPostsComponent } from './Pages/friends-posts/friends-posts.component';
+import { AllFriendsPostsComponent } from './Pages/friends-posts/all-friends-posts/all-friends-posts.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -50,7 +51,9 @@ import { ViewProfileComponent } from './Pages/view-profile/view-profile.componen
     PostCommentComponent,
     NewFeedsComponent,
     AllUsersPostsComponent,
-    ViewProfileComponent
+    ViewProfileComponent,
+    FriendsPostsComponent,
+    AllFriendsPostsComponent,
   ],
   imports: [
     BrowserModule,

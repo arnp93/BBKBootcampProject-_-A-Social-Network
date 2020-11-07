@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 using BBKBootcampSocial.DataLayer.Interfaces;
+using System.Linq;
 
 namespace BBKBootcampSocial.DataLayer.Implementations
 {
@@ -53,6 +54,17 @@ namespace BBKBootcampSocial.DataLayer.Implementations
         {
             var entity = await GetEntityById(id);
             RemoveEntity(entity);
+        }
+
+        public void DeleteEntity(TEntity entity)
+        {
+             dbset.Remove(entity);
+        }
+
+        public async Task DeleteEntity(long id)
+        {
+            var entity = await GetEntityById(id); 
+            dbset.Remove(entity);
         }
 
         public void UpdateEntity(TEntity entity)

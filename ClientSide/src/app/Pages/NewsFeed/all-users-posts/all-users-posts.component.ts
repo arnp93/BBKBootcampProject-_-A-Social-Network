@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommentDTO } from 'src/app/DTOs/CommentDTOs/CommentDTO';
 import { SendCommentDTO } from 'src/app/DTOs/CommentDTOs/SendCommentDTO';
@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { UserDTO } from '../../../DTOs/Account/UserDTO';
 import { AuthServiceService } from '../../../Services/auth-service.service';
+import { EditPostDTO } from 'src/app/DTOs/Post/EditPostDTO';
 
 @Component({
   selector: 'app-all-users-posts',
@@ -18,13 +19,15 @@ import { AuthServiceService } from '../../../Services/auth-service.service';
 })
 export class AllUsersPostsComponent implements OnInit {
 
+  @Output() public lastPostId = new EventEmitter();
   public posts: ShowPostDTO[] = [];
   public URL: string = DomainName;
   public newComments: CommentDTO[] = [];
   public commentForm: FormGroup;
+  public editPostForm: FormGroup;
   public userId: number;
- 
 
+  @ViewChild('editProfileError') private editError: SwalComponent;
   //for check if user is in friends list (manage Add Friend and Remove Friend in posts menu)
   public friendsIds: number[] = [];
   public activeNotificationsIds: number[] = [];
@@ -56,6 +59,9 @@ export class AllUsersPostsComponent implements OnInit {
     this.postService.getAllPosts().subscribe(res => {
       if (res.status === "Success") {
         this.posts = res.data;
+        if (res.data[res.data.length - 1] !== undefined) {
+          this.lastPostId.emit(res.data[res.data.length - 1].id);
+        }
       }
     });
 
@@ -65,6 +71,11 @@ export class AllUsersPostsComponent implements OnInit {
       ]),
       postId: new FormControl
     });
+
+    this.editPostForm = new FormGroup({
+      postText: new FormControl()
+    });
+    
   }
 
   newCommentSubmit(postId) {
@@ -105,14 +116,29 @@ export class AllUsersPostsComponent implements OnInit {
 
   like(postId: number) {
     this.postService.addOrRemoveLike(postId).subscribe(res => {
-      if(res.status === "Success"){
-        if(res.data !== null && !res.data.isDelete){
-          let post = this.posts.filter(p => p.id === postId)[0];
-          post.likes.push(res.data);
-        }else{
-          
-       
+
+      if (res.status === "Success") {
+        let post = this.posts.filter(p => p.id === postId)[0];
+        if (res.data !== null && !res.data.isDelete) {
+          if (post.likes.find(l => l.id === res.data.id) === undefined) {
+            post.likes.push(res.data);
+          } else
+            post.likes = post.likes.filter(l => l.id !== res.data.id);
         }
+      }
+    });
+  }
+
+  postSubmit(event, postId: number): void {
+
+    const newPostText = event.target.firstChild.value;
+
+    this.postService.editPost(new EditPostDTO(newPostText, postId)).subscribe(res => {
+      if (res.status === "Success") {
+        event.target.parentNode.style.display = "none";
+        event.target.parentNode.parentNode.firstChild.innerHTML = newPostText;
+      } else {
+        this.editError.fire();
       }
     });
   }

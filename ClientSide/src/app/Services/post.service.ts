@@ -6,6 +6,7 @@ import { PostResultResponse } from '../DTOs/Post/PostResultResponse';
 import { IResponseDTO } from '../DTOs/Common/IResponseDTO';
 import { EditPostDTO } from '../DTOs/Post/EditPostDTO';
 import { LikeDTO } from '../DTOs/Post/LikeDTO';
+import { ShowPostDTO } from '../DTOs/Post/ShowPostDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,9 @@ export class PostService {
   getAllPosts(): Observable<PostResultResponse> {
     return this.http.get<PostResultResponse>("/api/post/all-posts");
   }
+  getFriendsPosts() : Observable<IResponseDTO<ShowPostDTO[]>>{
+    return this.http.get<IResponseDTO<ShowPostDTO[]>>("/api/post/friends-posts");
+  }
 
   setPosts(postResult: PostResultResponse) {
     this.posts.next(postResult);
@@ -35,6 +39,12 @@ export class PostService {
     let params: HttpParams = new HttpParams().set("CurrentPage", currentPage.toString());
 
     return this.http.post<PostResultResponse>("/api/post/load-posts", params);
+  }
+
+  getMoreNewsfeedPosts(currentPage : number): Observable<PostResultResponse>{
+    let params: HttpParams = new HttpParams().set("CurrentPage", currentPage.toString());
+
+    return this.http.post<PostResultResponse>("/api/post/load-newsfeed-posts", params);
   }
 
   newProfilePicture(form: FormData): Observable<IResponseDTO<string>> {

@@ -68,12 +68,30 @@ namespace BBKBootcampSocial.Web.Controllers
 
         }
 
+
+        [HttpGet("friends-posts")]
+        public async Task<IActionResult> GetFriendsPosts()
+        {
+            long userId = User.GetUserId();
+            return JsonResponseStatus.Success(await postService.GetFriendsPosts(userId));
+        }
+
+        #endregion
+
+        #region Paging
+
         [HttpPost("load-posts")]
-        public async Task<IActionResult> LoadMorePosts([FromForm]int currentPage)
+        public async Task<IActionResult> LoadMorePosts([FromForm] int currentPage)
         {
             long userId = User.GetUserId();
 
-            return JsonResponseStatus.Success(await postService.LoadMorePosts(currentPage,userId));
+            return JsonResponseStatus.Success(await postService.LoadMorePosts(currentPage, userId));
+        }
+
+        [HttpPost("load-newsfeed-posts")]
+        public async Task<IActionResult> LoadMoreNewsfeedPosts([FromForm] int currentPage)
+        {
+            return JsonResponseStatus.Success(await postService.LoadMorePosts(currentPage));
         }
 
         #endregion

@@ -7,6 +7,7 @@ import { LoginErrorComponent } from './Pages/login-error/login-error.component';
 import { NotFoundComponent } from './Pages/not-found/not-found.component';
 import { NewFeedsComponent } from './Pages/NewsFeed/new-feeds/new-feeds.component';
 import { ViewProfileComponent } from './Pages/view-profile/view-profile.component';
+import { FriendsPostsComponent } from './Pages/friends-posts/friends-posts.component';
 
 const appRoutes:Routes = [
     {path: 'register', component: RegisterComponent},
@@ -16,6 +17,7 @@ const appRoutes:Routes = [
     {path: 'active-error', component: NotFoundComponent},
     {path: 'news-feed', component: NewFeedsComponent},
     {path: 'view-profile/:userId', component: ViewProfileComponent},
+    {path: 'friends-posts', component: FriendsPostsComponent},
     {path: '**', component: NotFoundComponent}
 ]
 

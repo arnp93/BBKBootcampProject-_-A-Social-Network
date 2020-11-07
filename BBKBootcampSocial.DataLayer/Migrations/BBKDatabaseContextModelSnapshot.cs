@@ -347,6 +347,33 @@ namespace BBKBootcampSocial.DataLayer.Migrations
                     b.ToTable("Notifications");
                 });
 
+            modelBuilder.Entity("BBKBootcampSocial.Domains.User.RealTimeNotification", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ConnectionId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RealTimeNotifications");
+                });
+
             modelBuilder.Entity("BBKBootcampSocial.Domains.User.User", b =>
                 {
                     b.Property<long>("Id")

@@ -3,15 +3,19 @@
     <ul class="naves">
         <li>
             <i class="ti-clipboard"></i>
+            <a routerLink="/index" title="">Home</a>
+        </li>
+        <li>
+            <i class="ti-clipboard"></i>
             <a (click)="goToNewsFeed()" class="link" title="">News feed</a>
         </li>
-        <li>
+        <!-- <li>
             <i class="ti-mouse-alt"></i>
             <a href="inbox.html" title="">Inbox</a>
-        </li>
+        </li> -->
         <li>
             <i class="ti-files"></i>
-            <a href="fav-page.html" title="">My pages</a>
+            <a routerLink="/friends-posts" title="">Friends posts</a>
         </li>
         <li>
             <i class="ti-user"></i>

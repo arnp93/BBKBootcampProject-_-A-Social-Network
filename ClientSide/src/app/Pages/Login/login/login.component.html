@@ -1,55 +1,51 @@
 <main id="all">
-    <div class="main-container">
-        <div class="RegisterPage">
-            <div class="RegisterPage__wrap">
-                <div class="RegisterPage__container">
-                    <div class="RegisterPage__boxes register" id="loginForm">
-                        <div *ngIf="IsRegisteredNow">
-                            <h4 style="color: blueviolet;">Bienvenido a la red social de BBK Bootcamp</h4>
-                            <hr>
-                        </div>
-                        <h2>Inicia sesión</h2>
-                        <form [formGroup]="LoginForm" (submit)="loginSubmit()" class="go-bottom">
-                            <div>
-                                <input id="email" formControlName="email" type="email" required>
-                                <label for="email">Email</label>
-                            </div>
-                            <div>
-                                <input id="password" formControlName="password" type="password" required>
-                                <label for="password">Contraseña</label>
-                            </div>
-                            <div>
-                                <button id="left-right-button" class="button button--left-right">
-                                    <span>Log in</span>
-                                </button>
-                            </div>
-                        </form>
-                        <p *ngIf="!IsRegisteredNow" class="alreadyAcount">¿Aun no tienes una cuenta? <a
-                                class="standar-link" [routerLink]="['/register']"
-                                routerLinkActive="router-link-active">Registrate</a></p>
-                    </div>
-                </div>
-            </div>
+    <video autoplay muted loop id="myVideo">
+        <source src="/assets/videos/video-wallpaper.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+      </video>
+      <div class="content">
+        <div *ngIf="IsRegisteredNow">
+            <h4 style="color: red;">Bienvenido a la red social de BBK Bootcamp</h4>
+            <hr>
         </div>
-    </div>
+
+          <div id="title">
+            <h1>Login</h1>
+            <hr>
+          </div>
+          
+        <form [formGroup]="LoginForm" (submit)="loginSubmit()"> 
+            <div class="form-group">
+              <label for="email">Email address</label>
+              <input type="email" formControlName="email" class="form-control" id="email" placeholder="Enter your email...">
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" formControlName="password" required class="form-control" id="password" placeholder="Enter your password...">
+            </div>
+            <!-- <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="exampleCheck1">
+              <label class="form-check-label" for="exampleCheck1">Remind me</label>
+            </div> -->
+            <button type="submit" class="btn btn-primary">Login</button>
+          </form>
+          <a class="link">Register</a>
+      </div>
+
 </main>
 
 <div class="my-container">
-    <ng-template #customLoadingTemplate>
-        <div class="custom-class">
-            <h3>
-                Loading...
-            </h3>
-        </div>
-    </ng-template>
-  
-    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate"></ngx-loading>
-  </div>
+  <ng-template #customLoadingTemplate>
+    <div class="custom-class">
+      <h3>
+        Loading...
+      </h3>
+    </div>
+  </ng-template>
 
-  <swal
-  #error
-  title="Oops"
-  icon="error"
-  [showCancelButton]="true"
-  [focusCancel]="true">
+  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate">
+  </ngx-loading>
+</div>
+<swal #error title="Oops" icon="error" [showCancelButton]="true" [focusCancel]="true">
 </swal>
+

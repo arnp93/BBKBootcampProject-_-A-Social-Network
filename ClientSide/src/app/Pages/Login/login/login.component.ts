@@ -5,6 +5,8 @@ import { UserLoginDTO } from '../../../DTOs/Account/UserLoginDTO';
 import { Router } from '@angular/router';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { CookieService } from 'ngx-cookie-service';
+import * as signalR from '@aspnet/signalr';
+import { SignalRServiceService } from '../../../Services/signal-rservice.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +20,7 @@ export class LoginComponent implements OnInit {
   public IsRegisteredNow: boolean = false;
   public LoginForm: FormGroup;
 
-  constructor(private authService: AuthServiceService, private route: Router, private CookieService: CookieService) { }
+  constructor(private signalrService: SignalRServiceService, private authService: AuthServiceService, private route: Router, private CookieService: CookieService) { }
 
   ngOnInit(): void {
     this.authService.getCurrentUser().subscribe(res => {
@@ -55,12 +57,14 @@ export class LoginComponent implements OnInit {
       if (res.status === "Success") {
         this.CookieService.set("BBKBootcampCookie", res.data.token, res.data.expireTime * 60);
         this.loading = false;
-        
+
         if (res.data.notifications === null || res.data.notifications === undefined)
           res.data.notifications = []
 
-        this.authService.setCurrentUser(res.data);  
-        
+        this.authService.setCurrentUser(res.data);
+        //signalR Connection Start
+        this.signalrService.startConnection();
+
         this.route.navigate(["/index"]);
       } else if (res.status === "NotFound") {
         this.loading = false;

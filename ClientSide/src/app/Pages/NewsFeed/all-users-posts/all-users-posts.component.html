@@ -22,7 +22,8 @@
                     <li class="link"
                         *ngIf="post.userId !== thisUser.userId && !friendsIds.includes(post.userId) && activeNotificationsIds.includes(post.userId)"
                         (click)="removeRequest($event,post.userId)">Cancel Request</li>
-                    <li class="link" *ngIf="post.userId === thisUser.userId">Edit Post</li>
+
+                    <li class="link" *ngIf="post.userId === thisUser.userId" onclick="editPost(event)">Edit Post</li>
                     <li class="link" *ngIf="post.userId === thisUser.userId">Delete Post</li>
                     <li class="link" *ngIf="post.userId !== thisUser.userId">Block User</li>
                     <li class="link" *ngIf="post.userId !== thisUser.userId">Report</li>
@@ -32,6 +33,17 @@
                 <p>
                     {{post.postText}}
                 </p>
+                <div class="editPostSection">
+                    <form [formGroup]="editPostForm" (submit)="postSubmit($event,post.id)">
+                        <textarea class="control" style="border: 1px solid black;"
+                            placeholder="Write here..."></textarea>
+                        <br>
+                        <input type="submit" class="btn btn-info pull-right" value="Edit">
+                        &nbsp;&nbsp;
+                        <input type="button" onclick="closeEditSec(this)" class="btn btn-danger btnCancel pull-right"
+                            value="Cancel">
+                    </form>
+                </div>
                 <img src="{{URL}}/PostFiles/{{post.fileName}}" alt="" *ngIf="post.fileName != null">
                 <div class="we-video-info">
                     <ul>
@@ -50,7 +62,7 @@
                         <li>
                             <span (click)="like(post.id)" class="like" data-toggle="tooltip" title="like">
                                 <i class="ti-heart"></i>
-                                <ins>{{post.likes.length + test}}</ins>
+                                <ins>{{post.likes.length}}</ins>
                             </span>
                         </li>
                         <li class="social-media">
@@ -183,4 +195,8 @@
 </div>
 
 <swal #commentError title="Oops" icon="error" [showCancelButton]="true" [focusCancel]="true">
+</swal>
+
+<swal #editProfileError text="Error in edit post... Please try again later" title="Oops" icon="error"
+    [showCancelButton]="true" [focusCancel]="true">
 </swal>

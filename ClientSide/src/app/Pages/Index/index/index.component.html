@@ -191,12 +191,17 @@
 
 									<app-user-posts (lastPostId)="lastPostId=$event"></app-user-posts>
 
+
 									<!-------------------------- Load More Posts -------------------------->
 									<div class="central-meta item" *ngFor="let post of posts" id="{{post.id}}">
 										<div class="user-post">
 											<div class="friend-info">
 												<figure>
-													<img src="/assets/images/resources/friend-avatar9.jpg" alt="">
+													<img *ngIf="thisUser !== undefined && thisUser !== null && thisUser.profilePic === null"
+													src="/assets/images/account.png" alt="">
+												<img style="height: 50px;width: 50px;"
+													*ngIf="thisUser !== undefined && thisUser !== null &&thisUser.profilePic !== null"
+													[src]="URL+'/ProfilePictures/'+thisUser.profilePic" alt="">
 												</figure>
 												<div class="friend-name">
 													<ins><a href="time-line.html" title="">{{thisUser.firstName}}
@@ -306,6 +311,8 @@
 								<form (submit)="loadMorePosts()">
 									<button id="load-more" type="submit">Load More</button>
 								</form>
+								<br>
+								<p *ngIf="morePostsError" class="alert alert-warning">No more posts</p>
 								<!-- user posts -->
 							</div><!-- centerl meta -->
 							<div class="col-lg-3">

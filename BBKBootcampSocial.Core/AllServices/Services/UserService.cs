@@ -159,12 +159,12 @@ namespace BBKBootcampSocial.Core.AllServices.Services
 
         #region Manage Friend Request
 
-        public async Task<bool> AddFriend(long userId, long currentUserId)
+        public async Task<Tuple<bool, NotificationDTO>> AddFriend(long userId, long currentUserId)
         {
             var repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
 
             var notificationRepository = await unitOfWork.GetRepository<GenericRepository<Notification>, Notification>();
-
+            var notificationDTO = new NotificationDTO();
             if (repository.GetEntitiesQuery().Any(u => u.Id == userId))
             {
                 if (notificationRepository.GetEntitiesQuery()
@@ -173,10 +173,12 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                     Notification notification = notificationRepository.GetEntitiesQuery()
                         .FirstOrDefault(n => n.UserDestinationId == userId && n.UserOriginId == currentUserId && n.IsDelete == false);
                     notificationRepository.RemoveEntity(notification);
+                    await unitOfWork.SaveChanges();
                 }
                 else
                 {
-                    await notificationRepository.AddEntity(new Notification
+
+                    Notification notification = new Notification
                     {
                         UserOriginId = currentUserId,
                         UserDestinationId = userId,
@@ -184,14 +186,25 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                         IsDelete = false,
                         IsAccepted = false,
                         TypeOfNotification = TypeOfNotification.FriendRequest
-                    });
+                    };
+                    await notificationRepository.AddEntity(notification);
+                    await unitOfWork.SaveChanges();
+                    notificationDTO = new NotificationDTO
+                    {
+                        Id = notification.Id,
+                        UserDestinationId = notification.UserDestinationId,
+                        UserOriginId = notification.UserOriginId,
+                        TypeOfNotification = notification.TypeOfNotification,
+                        IsAccepted = notification.IsAccepted,
+                        IsRead = notification.IsRead
+                    };
                 }
-                await unitOfWork.SaveChanges();
-                return true;
+
+                return new Tuple<bool, NotificationDTO>(true, notificationDTO);
             }
             else
             {
-                return false;
+                return new Tuple<bool, NotificationDTO>(true, null);
             }
         }
 
@@ -318,7 +331,7 @@ namespace BBKBootcampSocial.Core.AllServices.Services
             var notificationRepository = await unitOfWork.GetRepository<GenericRepository<Notification>, Notification>();
 
 
-            return notificationRepository.GetEntitiesQuery().Where(n => (n.UserDestinationId == userId || n.UserOriginId == userId)&& !n.IsDelete)
+            return notificationRepository.GetEntitiesQuery().Where(n => (n.UserDestinationId == userId || n.UserOriginId == userId) && !n.IsDelete)
                 .Select(n =>
                     new NotificationDTO
                     {
@@ -361,6 +374,52 @@ namespace BBKBootcampSocial.Core.AllServices.Services
             }).Take(5).ToList();
         }
 
-        #endregion
+        public async Task DeleteRealTimeNotification(long userId)
+        {
+            var repository = await unitOfWork.GetRepository<GenericRepository<RealTimeNotification>, RealTimeNotification>();
+
+            var RealTimeNotificationByUserId = repository.GetEntitiesQuery().SingleOrDefault(u => u.UserId == userId);
+            if (RealTimeNotificationByUserId != null)
+            {
+                repository.DeleteEntity(RealTimeNotificationByUserId);
+
+                await unitOfWork.SaveChanges();
+            }
+        }
+
+        public async Task AddRealTimeNotification(long userId, string connectionId)
+        {
+            var repository = await unitOfWork.GetRepository<GenericRepository<RealTimeNotification>, RealTimeNotification>();
+
+            await repository.AddEntity(new RealTimeNotification
+            {
+                UserId = userId,
+                ConnectionId = connectionId
+            });
+
+            await unitOfWork.SaveChanges();
+        }
+
+        public async Task<string> GetConnectionIdByUserId(long userId)
+        {
+            var repository = await unitOfWork.GetRepository<GenericRepository<RealTimeNotification>, RealTimeNotification>();
+            string connectionId = repository.GetEntitiesQuery().SingleOrDefault(n => n.UserId == userId).ConnectionId;
+            if (connectionId != null)
+                return connectionId;
+            else
+                return "";
+        }
+
+        public async Task DeleteRealTimeNotification(RealTimeNotification notification)
+        {
+            var repository = await unitOfWork.GetRepository<GenericRepository<RealTimeNotification>, RealTimeNotification>();
+
+            repository.DeleteEntity(notification);
+
+            await unitOfWork.SaveChanges();
+        }
     }
+
+    #endregion
 }
+

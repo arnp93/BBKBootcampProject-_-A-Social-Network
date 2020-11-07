@@ -25,6 +25,7 @@ export class IndexComponent implements OnInit {
   public selectedCoverPicture: File = null;
   public newProfilePic: string = null;
   public isLoading = false;
+  public morePostsError = false;
 
   @ViewChild('profilePicError') private emailExist: SwalComponent;
 
@@ -41,7 +42,7 @@ export class IndexComponent implements OnInit {
 
     this.authService.checkAuth().subscribe(res => {
       if (res.status === 'Success') {
-        const currentUser = new UserDTO(res.data.token, res.data.expireTime, res.data.firstName, res.data.lastName, res.data.profilePic,res.data.coverPic, res.data.userId, null, res.data.notifications, res.data.friends);
+        const currentUser = new UserDTO(res.data.token, res.data.expireTime, res.data.firstName, res.data.lastName, res.data.profilePic, res.data.coverPic, res.data.userId, null, res.data.notifications, res.data.friends);
         this.authService.setCurrentUser(currentUser);
         this.thisUser = currentUser;
       }
@@ -50,6 +51,8 @@ export class IndexComponent implements OnInit {
         this.route.navigate(["login-error"]);
       }
     });
+
+    window.scrollTo(0, 0);
   }
 
   getNewPost(event: ShowPostDTO) {
@@ -68,21 +71,25 @@ export class IndexComponent implements OnInit {
   }
 
   loadMorePosts() {
+
     var num = this.findPos(document.getElementById(this.lastPostId.toString()));
 
     this.postService.getMorePosts(this.currentPage).subscribe(res => {
       if (res.status === "Success") {
-
-        res.data.forEach(post => {
-          this.posts.push(post);
-        });
-        if (this.currentPage === 1) {
-          window.scroll(0, num[0]);
+        if (res.data.length !== 0) {
+          res.data.forEach(post => {
+            this.posts.push(post);
+          });
+          if (this.currentPage === 1) {
+            window.scroll(0, num[0] + 500);
+          } else {
+            var num2 = this.findPos(document.getElementById(this.posts[this.posts.length - (res.data.length + 1)].id.toString()));
+            window.scroll(0, num2[0] + 120);
+          }
+          this.currentPage = this.currentPage + 1;
         } else {
-          var num2 = this.findPos(document.getElementById(this.posts[this.posts.length - (res.data.length + 1)].id.toString()));
-          window.scroll(0, num2[0] + 120);
+          this.morePostsError = true;
         }
-        this.currentPage = this.currentPage + 1;
       }
     });
   }
@@ -105,8 +112,6 @@ export class IndexComponent implements OnInit {
     if (this.selectProfilePic != null)
       formData.append("pic", this.selectProfilePic, this.selectProfilePic.name);
 
-
-
     this.postService.newProfilePicture(formData).subscribe(res => {
       if (res.status === "Success") {
         this.newProfilePic = res.data;
@@ -123,15 +128,15 @@ export class IndexComponent implements OnInit {
     if (this.selectedCoverPicture !== null)
       formData.append("pic", this.selectedCoverPicture, this.selectedCoverPicture.name);
 
-      this.postService.newCoverPicture(formData).subscribe(res => {
-        if(res.status === "Success"){
-          this.thisUser.coverPic = res.data;
-        }else{
-          this.emailExist.text = "Error! Please try again later";
-          this.emailExist.fire();
-          
-        }
-      });
+    this.postService.newCoverPicture(formData).subscribe(res => {
+      if (res.status === "Success") {
+        this.thisUser.coverPic = res.data;
+      } else {
+        this.emailExist.text = "Error! Please try again later";
+        this.emailExist.fire();
+
+      }
+    });
 
   }
 }
