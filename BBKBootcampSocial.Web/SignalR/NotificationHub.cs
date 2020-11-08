@@ -1,10 +1,8 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using BBKBootcampSocial.Core.AllServices.IServices;
-using BBKBootcampSocial.Core.DTOs.Notification;
 using BBKBootcampSocial.DataLayer.Implementations;
 using BBKBootcampSocial.DataLayer.Interfaces;
-using BBKBootcampSocial.Domains.Common_Entities;
 using BBKBootcampSocial.Domains.User;
 using Microsoft.AspNetCore.SignalR;
 
@@ -40,27 +38,6 @@ namespace BBKBootcampSocial.Web.SignalR
             });
 
             await unitOfWork.SaveChanges();
-        }
-
-        public async Task AddFriendNotification(long userId,NotificationDTO notification)
-        {
-            var repository = await unitOfWork.GetRepository<GenericRepository<RealTimeNotification>, RealTimeNotification>();
-
-            var userRealTimeNotification = repository.GetEntitiesQuery().SingleOrDefault(uid => uid.UserId == userId);
-
-            if (userRealTimeNotification != null)
-            {
-                var newNotification = new NotificationDTO
-                {
-                    Id = notification.Id,
-                    UserDestinationId = notification.UserDestinationId,
-                    UserOriginId = notification.UserOriginId,
-                    TypeOfNotification = TypeOfNotification.FriendRequest,
-                    IsAccepted = notification.IsAccepted,
-                    IsRead = notification.IsRead
-                };
-                await Clients.Client(userRealTimeNotification.ConnectionId).SendAsync("AddFriendRequest", newNotification);
-            }
         }
     }
 }

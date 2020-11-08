@@ -8,16 +8,19 @@ import { NotFoundComponent } from './Pages/not-found/not-found.component';
 import { NewFeedsComponent } from './Pages/NewsFeed/new-feeds/new-feeds.component';
 import { ViewProfileComponent } from './Pages/view-profile/view-profile.component';
 import { FriendsPostsComponent } from './Pages/friends-posts/friends-posts.component';
+import { EditProfileComponent } from './Pages/edit-profile/edit-profile.component';
+import { UserAuthGuard } from './Utilities/UserAuthGuard';
 
 const appRoutes:Routes = [
     {path: 'register', component: RegisterComponent},
     {path: '', component: LoginComponent},
-    {path: 'index', component: IndexComponent},
+    {path: 'index', component: IndexComponent, canActivate: [UserAuthGuard]},
     {path: 'login-error', component: LoginErrorComponent},
     {path: 'active-error', component: NotFoundComponent},
-    {path: 'news-feed', component: NewFeedsComponent},
-    {path: 'view-profile/:userId', component: ViewProfileComponent},
-    {path: 'friends-posts', component: FriendsPostsComponent},
+    {path: 'news-feed', component: NewFeedsComponent, canActivate: [UserAuthGuard]},
+    {path: 'view-profile/:userId', component: ViewProfileComponent, canActivate: [UserAuthGuard]},
+    {path: 'friends-posts', component: FriendsPostsComponent, canActivate: [UserAuthGuard]},
+    {path: 'edit-profile', component: EditProfileComponent, canActivate: [UserAuthGuard]},
     {path: '**', component: NotFoundComponent}
 ]
 

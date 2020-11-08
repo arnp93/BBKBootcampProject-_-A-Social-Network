@@ -12,6 +12,9 @@ import { IResponseDTO } from '../DTOs/Common/IResponseDTO';
 })
 
 export class AuthServiceService {
+
+  private isLogin = false;
+
   private IsRegisteredNow: boolean;
   private currentUser: BehaviorSubject<UserDTO> = new BehaviorSubject<UserDTO>(null);
 
@@ -32,7 +35,20 @@ export class AuthServiceService {
 
   setCurrentUser(user: UserDTO): void {
     this.currentUser.next(user);
+    if (user !== null) {
+      this.isLogin = true;
+    } else {
+      this.isLogin = false;
+    }
   }
+
+  isAuthenticated() {
+    const promis = new Promise((resolve, reject) => {
+      resolve(this.isLogin);
+    });
+    return promis;
+  }
+
   getCurrentUser(): BehaviorSubject<UserDTO> {
     return this.currentUser;
   }
@@ -42,26 +58,26 @@ export class AuthServiceService {
   }
 
   userProfile(userId: number): Observable<IResponseDTO<UserDTO>> {
-    return this.http.get<IResponseDTO<UserDTO>>('/api/account/view-profile/'+ userId);
+    return this.http.get<IResponseDTO<UserDTO>>('/api/account/view-profile/' + userId);
   }
 
-  friendRequest(userId: number): Observable<IResponseDTO<any>>{
+  friendRequest(userId: number): Observable<IResponseDTO<any>> {
     return this.http.post<IResponseDTO<any>>("/api/account/friend-request", userId);
   }
 
-  logOut(){
+  logOut() {
     this.http.get<IResponseDTO<UserDTO>>('/api/account/sign-out');
   }
 
-  acceptFriendRequest(origionUserId : number) : Observable<IResponseDTO<UserDTO>>{
+  acceptFriendRequest(origionUserId: number): Observable<IResponseDTO<UserDTO>> {
     return this.http.post<IResponseDTO<UserDTO>>("/api/account/accept-friend", origionUserId);
   }
 
-  deleteNotification(notificationId : number) :Observable<IResponseDTO<any>> {
-    return this.http.post<IResponseDTO<any>>("/api/account/delete-notification",notificationId);
+  deleteNotification(notificationId: number): Observable<IResponseDTO<any>> {
+    return this.http.post<IResponseDTO<any>>("/api/account/delete-notification", notificationId);
   }
 
-  getLatestusers() : Observable<IResponseDTO<UserDTO[]>>{
+  getLatestusers(): Observable<IResponseDTO<UserDTO[]>> {
     return this.http.get<IResponseDTO<UserDTO[]>>("/api/account/latest-users");
   }
 }

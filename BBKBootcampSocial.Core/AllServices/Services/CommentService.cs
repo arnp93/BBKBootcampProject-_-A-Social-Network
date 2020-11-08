@@ -49,16 +49,13 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                 );
             }
              
-      
-        
-
-
             Comment cm = mapper.Map<Comment>(comment);
 
             await repository.AddEntity(cm);
 
             await unitOfWork.SaveChanges();
             comment.Id = cm.Id;
+            comment.DestinationUserId = await GetUserIdByPostId(comment.PostId);
 
             return comment;
         }

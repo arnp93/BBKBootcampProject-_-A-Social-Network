@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { UserDTO } from 'src/app/DTOs/Account/UserDTO';
 import { AuthServiceService } from 'src/app/Services/auth-service.service';
 import { DomainName } from 'src/app/Utilities/PathTools';
 import { Router } from '@angular/router';
 import { NotificationDTO } from '../../../DTOs/Notification/NotificationDTO';
 import { CookieService } from 'ngx-cookie-service';
+// import { SignalRServiceService } from '../../../Services/signal-rservice.service';
 
 @Component({
   selector: 'app-menu',
@@ -18,13 +19,20 @@ export class MenuComponent implements OnInit {
   public unreadNotifications: NotificationDTO[] = [];
   public lastNotifications: NotificationDTO[] = [];
   public accepted: boolean = false;
+  public newNotification: NotificationDTO = null;
 
-  constructor(private authService: AuthServiceService, private router: Router, private cookieService: CookieService) { }
+  constructor(private ngZone: NgZone,private authService: AuthServiceService, private router: Router, private cookieService: CookieService) { }
 
   ngOnInit(): void {
+    window['signalFriendRequestAccept'] = { component: this, zone: this.ngZone, acceptRequestFunction: (friendId) => this.friendAcc(friendId) }; 
+    window['signalViewProfile'] = { component: this, zone: this.ngZone, viewProfileFunction: (userId) => this.viewProfile(userId) }; 
+   
+   
+   
+   
     this.authService.getCurrentUser().subscribe(res => {
       this.thisUser = res;
-      
+
     });
 
     if (this.thisUser !== undefined && this.thisUser !== null && this.thisUser.notifications !== undefined && this.thisUser.notifications !== null)
@@ -60,7 +68,7 @@ export class MenuComponent implements OnInit {
 
   removeNotification(notificationId: number) {
     this.authService.deleteNotification(notificationId).subscribe(res => {
-      if (res.status === "Success"){
+      if (res.status === "Success") {
         this.thisUser.notifications = this.unreadNotifications.filter(n => n.id !== notificationId);
         this.unreadNotifications = this.unreadNotifications.filter(n => n.id !== notificationId);
       }

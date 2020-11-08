@@ -30,6 +30,8 @@ import { IndexComponent } from './Pages/Index/index/index.component';
 import { ViewProfileComponent } from './Pages/view-profile/view-profile.component';
 import { FriendsPostsComponent } from './Pages/friends-posts/friends-posts.component';
 import { AllFriendsPostsComponent } from './Pages/friends-posts/all-friends-posts/all-friends-posts.component';
+import { EditProfileComponent } from './Pages/edit-profile/edit-profile.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,6 +56,7 @@ import { AllFriendsPostsComponent } from './Pages/friends-posts/all-friends-post
     ViewProfileComponent,
     FriendsPostsComponent,
     AllFriendsPostsComponent,
+    EditProfileComponent,
   ],
   imports: [
     BrowserModule,

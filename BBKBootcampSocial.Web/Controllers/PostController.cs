@@ -7,7 +7,13 @@ using BBKBootcampSocial.Core.Utilities.Identity;
 using Microsoft.AspNetCore.Authorization;
 using BBKBootcampSocial.Core.DTOs.Comment;
 using BBKBootcampSocial.Domains.User;
+using BBKBootcampSocial.Web.SignalR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SignalR;
+using BBKBootcampSocial.Core.DTOs.Notification;
+using BBKBootcampSocial.Domains.Common_Entities;
+using BBKBootcampSocial.Core.DTOs.Account;
+using System;
 
 namespace BBKBootcampSocial.Web.Controllers
 {
@@ -19,12 +25,14 @@ namespace BBKBootcampSocial.Web.Controllers
         private readonly IPostService postService;
         private readonly ICommentService commentService;
         private readonly IUserService userService;
+        private readonly IHubContext<NotificationHub> hubContext;
 
-        public PostController(IPostService postService, ICommentService commentService, IUserService userService)
+        public PostController(IPostService postService, ICommentService commentService, IUserService userService, IHubContext<NotificationHub> hubContext)
         {
             this.postService = postService;
             this.commentService = commentService;
             this.userService = userService;
+            this.hubContext = hubContext;
         }
 
         #endregion
@@ -106,6 +114,31 @@ namespace BBKBootcampSocial.Web.Controllers
             long userId = User.GetUserId();
             NewCommentDTO newComment = await commentService.AddComment(new NewCommentDTO {Text = comment.Text, PostId = comment.PostId,UserId = userId },userId);
             User user = userService.GetUserById(userId).Result;
+      
+            string connectionId = await userService.GetConnectionIdByUserId(newComment.DestinationUserId);
+            if (connectionId != "")
+            {
+                await hubContext.Clients.Client(connectionId).SendAsync("NewComment", new NotificationDTO
+                {
+                    Id = newComment.Id,
+                    UserDestinationId = newComment.DestinationUserId,
+                    PostId = newComment.PostId,
+                    User = new LoginUserInfoDTO
+                    {
+                        UserId = user.Id,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        ProfilePic = user.ProfilePic,
+                    },
+                    CreateDate = DateTime.Now.ToString(),
+                    Message =" left a comment for you",
+                    UserOriginId =user.Id,
+                    TypeOfNotification = TypeOfNotification.Comment,
+                    IsAccepted = false,
+                    IsRead = false
+                });
+            }
+
             return JsonResponseStatus.Success(new CommentDTO
             {
                 FirstName = user.FirstName,

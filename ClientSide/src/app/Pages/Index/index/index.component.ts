@@ -38,11 +38,15 @@ export class IndexComponent implements OnInit {
       if (res === null) {
         this.route.navigate([""]);
       }
-    })
+    });
 
     this.authService.checkAuth().subscribe(res => {
       if (res.status === 'Success') {
-        const currentUser = new UserDTO(res.data.token, res.data.expireTime, res.data.firstName, res.data.lastName, res.data.profilePic, res.data.coverPic, res.data.userId, null, res.data.notifications, res.data.friends);
+        const currentUser = new UserDTO(
+          res.data.token,res.data.expireTime,res.data.firstName,res.data.lastName,res.data.phoneNumber
+          ,res.data.birthDay,res.data.address,res.data.about,res.data.isPrivate,res.data.gender,res.data.profilePic,
+          res.data.coverPic,res.data.userId,res.data.posts,res.data.notifications,res.data.friends
+          );
         this.authService.setCurrentUser(currentUser);
         this.thisUser = currentUser;
       }

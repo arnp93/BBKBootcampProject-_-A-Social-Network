@@ -18,7 +18,9 @@ export class ViewProfileComponent implements OnInit {
   public URL = DomainName;
   private userId: number;
   private thisUserId: number;
-  public user: UserDTO = new UserDTO(null, 0, "", "","","", 0, null,[],[]);
+  public user: UserDTO = new UserDTO(
+    null,null,null,null,null,null,null,null,null,null,null,null,null,[],[],[]
+  );
   public newComments: CommentDTO[] = [];
   public commentForm: FormGroup;
    //for check if user is in friends list (manage Add Friend and Remove Friend in posts menu)

@@ -5,6 +5,8 @@ export class NotificationDTO {
       public id: number,
       public userOriginId: number,
       public userDestinationId : number,
+      public postId : number,
+      public message : string,
       public isRead: boolean,
       public isAccepted: boolean,
       public isDelete : boolean,

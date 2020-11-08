@@ -50,11 +50,36 @@
 <body>
   <app-root></app-root>
 
+  <button hidden id="notifyComment" onclick="notifyComment(this)"></button>
+  <button hidden id="notifyFriendRequest" onclick="notifyFriendRequest(this)"></button>
+  <audio hidden src="/assets/Tones/percussion-sound-614.mp3" controls id="tone"></audio>
+
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="/assets/js/main.min.js"></script>
   <script src="/assets/js/script.js"></script>
   <script src="/assets/js/map-init.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"
+    integrity="sha512-efUTj3HdSPwWJ9gjfGR71X9cvsrthIA78/Fvd/IN+fttQVy7XWkOAXb295j8B3cmm/kFKVxjiNYzKw9IQJHIuQ=="
+    crossorigin="anonymous"></script>
+
   <script>
+    function notifyComment(element) {
+      document.getElementById("tone").play();
+      $.notify(
+        element.innerHTML, "success",
+        { position: "right bottom" } ,
+
+      );
+    }
+    function notifyFriendRequest(element) {
+      document.getElementById("tone").play();
+
+      $.notify(
+        element.innerHTML, "success",
+        { position: "right bottom" } ,
+
+      );
+    }
     function openPostMenu(e) {
       var parent = e.parentNode;
       if ($(e).hasClass("fa fa-ellipsis-h")) {
@@ -88,13 +113,30 @@
       $(parent).slideUp();
     }
 
+    function signalFriendAcc(event, friendId) {
 
-    // function test() {
-    //   var xmlHttp = new XMLHttpRequest();
-    //   xmlHttp.open("GET", "https://localhost:44317//api/account/view-profile/2");
-    //   xmlHttp.send();
-    //   alert();
-    // }
+      window.signalFriendRequestAccept.zone.run(() => {
+        window.signalFriendRequestAccept.acceptRequestFunction(friendId)
+      });
+
+      var count = document.getElementById("notification-count").innerHTML;
+      if (count !== null || count !== undefined || count !== "") {
+        count = parseInt(count) + 1;
+      } else {
+        count = 1;
+      }
+      document.getElementById("notification-count").innerHTML = count;
+
+
+      $(event.target).remove();
+
+    }
+
+    function viewProfile(userId) {
+      window.signalViewProfile.zone.run(() => {
+        window.signalViewProfile.viewProfileFunction(userId)
+      });
+    }
 
   </script>
 </body>

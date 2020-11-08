@@ -23,7 +23,7 @@ export class NewFeedsComponent implements OnInit {
   }
 
   //Find Element in the page
-  findPos(obj) {
+  findPosition(obj) {
     var curtop = 0;
     if (obj.offsetParent) {
       do {
@@ -34,8 +34,9 @@ export class NewFeedsComponent implements OnInit {
   }
 
   loadMorePosts() {
-    var num = this.findPos(document.getElementById(this.lastPostId.toString()));
-   
+
+    var num = this.findPosition(document.getElementById(this.lastPostId.toString()));
+
     this.postService.getMoreNewsfeedPosts(this.currentPage).subscribe(res => {
       if (res.status === "Success") {
         if (res.data.length !== 0) {
@@ -45,10 +46,10 @@ export class NewFeedsComponent implements OnInit {
           if (this.currentPage === 1) {
             window.scroll(0, num[0] + 500);
           } else {
-            var num2 = this.findPos(document.getElementById(this.posts[this.posts.length - (res.data.length + 1)].id.toString()));
-            window.scroll(0, num2[0] + 150);
+            var num2 = this.findPosition(document.getElementById(this.posts[this.posts.length - (res.data.length + 1)].id.toString()));
+            window.scroll(0, num2[0] + 120);
           }
-          this.currentPage = this.currentPage + 1;
+          this.currentPage += 1;
         } else {
           this.morePostsError = true;
         }

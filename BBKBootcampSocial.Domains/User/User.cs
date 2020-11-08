@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using BBKBootcampSocial.Domains.Access;
 using BBKBootcampSocial.Domains.Canal;
+using System;
 
 namespace BBKBootcampSocial.Domains.User
 {
@@ -35,10 +36,12 @@ namespace BBKBootcampSocial.Domains.User
         public string Password { get; set; }
         public string ProfilePic { get; set; }
         public string CoverPic { get; set; }
-        public string Facebook { get; set; }
-        public string LinkdIn { get; set; }
-        public string Instagram { get; set; }
-        public string WhatsApp { get; set; }
+        public string Address { get; set; }
+        public Gender UserGender { get; set; }
+        public string PhoneNumber { get; set; }
+        public string About { get; set; }
+        public DateTime BirthDay { get; set; }
+        public string SocialNetwork { get; set; }
         public bool IsActive { get; set; }
         public string ActiveCode { get; set; }
         public bool IsBan { get; set; }
@@ -57,6 +60,17 @@ namespace BBKBootcampSocial.Domains.User
         public virtual ICollection<UserRole> UserRoles { get; set; }
         public virtual ICollection<UserFriend> UserFriends { get; set; }
         public virtual ICollection<CanalUser> Canals { get; set; }
+
+        #endregion
+
+        #region Gender Enum
+
+        public enum Gender
+        {
+            Male,
+            Female,
+            Other
+        }
 
         #endregion
 

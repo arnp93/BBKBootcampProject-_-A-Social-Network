@@ -110,7 +110,6 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                 if (await ValidateEmailAndPassword(login.Email, login.Password))
                     return LoginUserResult.Success;
 
-
             }
             catch (Exception e)
             {
@@ -193,6 +192,10 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                     {
                         Id = notification.Id,
                         UserDestinationId = notification.UserDestinationId,
+                        FirstName = GetUserById(notification.UserOriginId).GetAwaiter().GetResult().FirstName,
+                        LastName = GetUserById(notification.UserOriginId).GetAwaiter().GetResult().LastName,
+                        ImageName = GetUserById(notification.UserOriginId).GetAwaiter().GetResult().ProfilePic,
+                        Message = "Has sent you a friend request",
                         UserOriginId = notification.UserOriginId,
                         TypeOfNotification = notification.TypeOfNotification,
                         IsAccepted = notification.IsAccepted,

@@ -139,8 +139,8 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                             ProfilePic = userService.GetUserById(r.UserId).Result.ProfilePic,
                             UserId = userService.GetUserById(r.UserId).Result.Id,
                             ParentId = r.ParentId
-                        }).Take(2)
-                    }).Take(3),
+                        }).OrderByDescending(r => r.Id).Take(2)
+                    }).OrderByDescending(c => c.Id).Take(3),
                     PostText = post.PostText,
                     DateTime = post.CreateDate,
                     FileName = post.FileName,
@@ -169,13 +169,13 @@ namespace BBKBootcampSocial.Core.AllServices.Services
         {
             var repository = await unitOfWork.GetRepository<GenericRepository<Post>, Post>();
             BasePaging paging = Pager.Build(currentPage, 10);
-            return repository.GetEntitiesQuery().Where(p => p.UserId == userId).OrderByDescending(p => p.Id).Skip(paging.SkipPages).Take(paging.TakePages).Include(p => p.Comments).ThenInclude(c => c.Replies).ToList(); ;
+            return repository.GetEntitiesQuery().Where(p => p.UserId == userId).OrderByDescending(p => p.Id).Skip(paging.SkipPages).Take(paging.TakePages).Include(p => p.Comments).ThenInclude(c => c.Replies).ToList();
         }
         public async Task<List<Post>> LoadMorePosts(int currentPage)
         {
             var repository = await unitOfWork.GetRepository<GenericRepository<Post>, Post>();
             BasePaging paging = Pager.Build(currentPage, 10);
-            return repository.GetEntitiesQuery().OrderByDescending(p => p.Id).Skip(paging.SkipPages).Take(paging.TakePages).Include(p => p.User).Include(p => p.Comments).ThenInclude(c => c.Replies).ToList(); ;
+            return repository.GetEntitiesQuery().OrderByDescending(p => p.Id).Skip(paging.SkipPages).Take(paging.TakePages).Include(p => p.User).Include(p => p.Comments).ThenInclude(c => c.Replies).ToList();
         }
 
         public async Task<List<ShowPostDTO>> GetAllPosts()
@@ -213,8 +213,8 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                             ProfilePic = userService.GetUserById(r.UserId).Result.ProfilePic,
                             UserId = post.UserId,
                             ParentId = r.ParentId
-                        }).Take(2)
-                    }).Take(3),
+                        }).OrderByDescending(r => r.Id).Take(2)
+                    }).OrderByDescending(c => c.Id).Take(3),
                     Likes = post.Likes.Where(l => !l.IsDelete).Select(pl => new LikeDTO
                     {
                         Id = pl.Id,
