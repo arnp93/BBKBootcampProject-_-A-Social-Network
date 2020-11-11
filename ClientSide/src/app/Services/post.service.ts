@@ -7,6 +7,7 @@ import { IResponseDTO } from '../DTOs/Common/IResponseDTO';
 import { EditPostDTO } from '../DTOs/Post/EditPostDTO';
 import { LikeDTO } from '../DTOs/Post/LikeDTO';
 import { ShowPostDTO } from '../DTOs/Post/ShowPostDTO';
+import { stringify } from 'querystring';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ import { ShowPostDTO } from '../DTOs/Post/ShowPostDTO';
 export class PostService {
 
   private posts: BehaviorSubject<PostResultResponse> = new BehaviorSubject<PostResultResponse>(null);
+  private hashtagPosts : BehaviorSubject<ShowPostDTO[]> = new BehaviorSubject<ShowPostDTO[]>(null);
   constructor(private http: HttpClient) { }
 
   addNewPost(post: FormData): Observable<NewPostResponseDTO> {
@@ -59,7 +61,25 @@ export class PostService {
     return this.http.post<IResponseDTO<any>>("/api/post/edit-post", editPost);
   }
 
+  deletePost(postId:number) : Observable<IResponseDTO<any>>{
+    return this.http.post<IResponseDTO<any>>("/api/post/delete-post", postId);
+  }
+
   addOrRemoveLike(postId: number): Observable<IResponseDTO<LikeDTO>> {
     return this.http.post<IResponseDTO<LikeDTO>>("/api/post/like", postId);
+  }
+
+  getHashtagPosts(hashtagText : string) : Observable<IResponseDTO<ShowPostDTO[]>>{
+    let data = new FormData;
+    data.append("hashtagText", hashtagText);
+    return this.http.post<IResponseDTO<ShowPostDTO[]>>("/api/post/hashtag-posts" , data);
+  }
+
+  setHashtagPosts(hashtagPosts : ShowPostDTO[]){
+    this.hashtagPosts.next(hashtagPosts);
+  }
+
+  getCurrentHashtagPosts(){
+    return this.hashtagPosts;
   }
 }

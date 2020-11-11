@@ -1,0 +1,110 @@
+<div id="mainpage" class="theme-layout">
+
+	<!-- <app-responsive-menu></app-responsive-menu> -->
+	<div class="topbar stick">
+		<!-- log Section -->
+		<div class="logo">
+			<!-- <a title="" href="newsfeed.html"><img src="/assets/images/logo.png" alt=""></a> -->
+			<h3 style="color: red;font-weight: bolder;">Beta</h3>
+		</div>
+		<!-- menu section -->
+		<app-menu></app-menu>
+	</div>
+	<!-- topbar -->
+
+
+
+	<!-- Cover Section -->
+	<section>
+		<div class="gap gray-bg">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="row" id="page-contents">
+							<div class="col-lg-3">
+								<aside class="sidebar static">
+									<app-shortcuts></app-shortcuts>
+									<!-- Shortcuts -->
+									<app-recent-activities></app-recent-activities>
+									<!-- recent activites -->
+									<app-whos-following></app-whos-following>
+									<!-- who's following -->
+								</aside>
+							</div><!-- sidebar -->
+
+
+
+							<div class="col-lg-6">
+								<div class="central-meta">
+									<div class="editing-info">
+										<h5 class="f-title"><i class="ti-info-alt"></i> Edit Basic Information</h5>
+
+										<form [formGroup]="securityForm" (submit)="changeSecutiryDetails()">
+
+											<div class="form-group">
+												<input type="password" formControlName="password" required="required">
+												<label class="control-label" for="input">New Password</label><i
+													class="mtrl-select"></i>
+												<p class="text-error"
+													*ngIf="securityForm.controls.password.errors?.minlength && securityForm.controls.password.touched">
+													Cannot be less than 9 characters
+												</p>
+											</div>
+											<div class="form-group">
+												<input type="password" formControlName="rePassword" required="required">
+												<label class="control-label" for="input">Repeat Password</label><i
+													class="mtrl-select"></i>
+												<p class="text-error"
+													*ngIf="securityForm.controls.password.errors?.minlength && securityForm.controls.password.touched">
+													Cannot be less than 9 characters
+												</p>
+											</div>
+											<br><br>
+											<div class="form-radio">
+												<div class="radio">
+													<label>
+														<input type="checkbox" formControlName="isPrivate"
+															id="isPrivate"><i class="check-box"></i>
+														<span>Private</span>
+													</label>
+												</div>
+											</div>
+
+											<div class="submit-btns">
+												<button type="reset" class="mtr-btn"><span>Cancel</span></button>
+												&nbsp;
+												<button class="mtr-btn"><span>Update</span></button>
+											</div>
+										</form>
+										<hr>
+										<br>
+										<a routerLink="/index">
+											<h6>Back to Home</h6>
+										</a>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3">
+								<app-right-side-bar></app-right-side-bar>
+							</div><!-- sidebar -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Cover Section -->
+
+
+
+	<app-footer></app-footer>
+</div>
+<app-settings></app-settings>
+<!-- settings panel -->
+
+
+<swal #error title="Oops" text="" icon="error" [showCancelButton]="true" [focusCancel]="true">
+</swal>
+
+<swal #success title="Done!"icon="success" [showCancelButton]="true" [focusCancel]="true">
+</swal>

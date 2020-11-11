@@ -6,6 +6,7 @@ import { RegisterUserDTO } from '../DTOs/Account/RegisterUserDTO';
 import { UserDTO } from '../DTOs/Account/UserDTO';
 import { UserLoginDTO } from '../DTOs/Account/UserLoginDTO';
 import { IResponseDTO } from '../DTOs/Common/IResponseDTO';
+import { ChangePasswordDTO } from '../DTOs/Account/ChangePasswordDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -80,4 +81,18 @@ export class AuthServiceService {
   getLatestusers(): Observable<IResponseDTO<UserDTO[]>> {
     return this.http.get<IResponseDTO<UserDTO[]>>("/api/account/latest-users");
   }
+
+  editUser(user : UserDTO) : Observable<IResponseDTO<UserDTO>>{
+    return this.http.post<IResponseDTO<UserDTO>>("/api/account/edit-user", user);
+  }
+
+  changeSecurityDetails(securityDetails : ChangePasswordDTO) : Observable<IResponseDTO<any>>{
+    return this.http.post<IResponseDTO<any>>("/api/account/edit-security-details", securityDetails);
+  }
+
+  deleteFriendRequest(destinationUserId : number) : Observable<IResponseDTO<any>>{
+    return this.http.post<IResponseDTO<any>>("/api/account/delete-request", destinationUserId);
+
+  }
+
 }

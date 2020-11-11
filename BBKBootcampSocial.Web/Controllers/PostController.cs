@@ -76,6 +76,16 @@ namespace BBKBootcampSocial.Web.Controllers
 
         }
 
+        [HttpPost("delete-post")]
+        public async Task<IActionResult> DeletePost([FromBody] long postId)
+        {
+            if (await postService.DeletePost(postId))
+            {
+                return JsonResponseStatus.Success();
+            }
+            return JsonResponseStatus.Error();
+        }
+
 
         [HttpGet("friends-posts")]
         public async Task<IActionResult> GetFriendsPosts()
@@ -116,7 +126,7 @@ namespace BBKBootcampSocial.Web.Controllers
             User user = userService.GetUserById(userId).Result;
       
             string connectionId = await userService.GetConnectionIdByUserId(newComment.DestinationUserId);
-            if (connectionId != "")
+            if (connectionId != "" && userId != newComment.DestinationUserId)
             {
                 await hubContext.Clients.Client(connectionId).SendAsync("NewComment", new NotificationDTO
                 {
@@ -144,6 +154,53 @@ namespace BBKBootcampSocial.Web.Controllers
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 ParentId = comment.PostId,
+                Text = comment.Text,
+                UserId = user.Id,
+                Id = newComment.Id,
+                ProfilePic = user.ProfilePic,
+                PostId = comment.PostId
+            });
+        }
+
+        [HttpPost("reply-comment")]
+        public async Task<IActionResult> ReplyComment(CommentReplyDTO comment)
+        {
+            if (!ModelState.IsValid)
+                return JsonResponseStatus.Error();
+
+            long userId = User.GetUserId();
+            CommentReplyDTO newComment = await commentService.ReplyComment(new CommentReplyDTO { Text = comment.Text, PostId = comment.PostId,ParentId = comment.ParentId, UserId = userId }, userId);
+            User user = userService.GetUserById(userId).Result;
+
+            string connectionId = await userService.GetConnectionIdByUserId(newComment.DestinationUserId);
+            if (connectionId != "" && userId != newComment.DestinationUserId)
+            {
+                await hubContext.Clients.Client(connectionId).SendAsync("NewComment", new NotificationDTO
+                {
+                    Id = newComment.Id,
+                    UserDestinationId = newComment.DestinationUserId,
+                    PostId = newComment.PostId,
+                    User = new LoginUserInfoDTO
+                    {
+                        UserId = user.Id,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        ProfilePic = user.ProfilePic,
+                    },
+                    CreateDate = DateTime.Now.ToString(),
+                    Message = " left a comment for you",
+                    UserOriginId = user.Id,
+                    TypeOfNotification = TypeOfNotification.Comment,
+                    IsAccepted = false,
+                    IsRead = false
+                });
+            }
+
+            return JsonResponseStatus.Success(new CommentDTO
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                ParentId = comment.ParentId,
                 Text = comment.Text,
                 UserId = user.Id,
                 Id = newComment.Id,
@@ -187,6 +244,16 @@ namespace BBKBootcampSocial.Web.Controllers
             long userId = User.GetUserId();
             var like = await postService.AddOrRemoveLike(postId, userId);
             return JsonResponseStatus.Success(like);
+        }
+
+        #endregion
+
+        #region Posts With Hashtag
+
+        [HttpPost("hashtag-posts")]
+        public async Task<IActionResult> GetPostsWithHashtag([FromForm]string hashtagText)
+        {
+            return JsonResponseStatus.Success(await postService.PostsWithHashtag(hashtagText));
         }
 
         #endregion

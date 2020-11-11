@@ -20,8 +20,9 @@
 				<div class="feature-photo">
 					<figure><img src="/assets/images/resources/timeline-1.jpg" alt=""></figure>
 					<div class="add-btn">
-						<span>1205 followers</span>
-						<a class="btn btn-success" *ngIf="user !== null && !friendsIds.includes(user.userId)" (click)="friendRequest($event,user.userId)">Add Friend</a>
+						<span *ngIf="!user.isPrivate">{{user.friends.length}} friends</span>
+						<a class="btn btn-success" *ngIf="user !== null && !friendsIds.includes(user.userId) && !notificationIdsForSendedFriendRequests.includes(user.userId)" (click)="friendRequest($event,user.userId)">Add Friend</a>
+						<a class="btn btn-success" *ngIf="user !== null && !friendsIds.includes(user.userId) && notificationIdsForSendedFriendRequests.includes(user.userId)" (click)="cancelFriendRequest($event,user.userId)">Cancel Request</a>
 						<a class="btn btn-danger" *ngIf="user !== null && friendsIds.includes(user.userId)" (click)="friendRequest($event,user.userId)">Remove Friend</a>
 					</div>
 					<div class="container-fluid" *ngIf="user !== null">
@@ -54,7 +55,12 @@
 								</aside>
 							</div><!-- sidebar -->
 							<div class="col-lg-6">
-
+								<div class="central-meta item" *ngIf="user.posts === null">
+									<div class="post-meta">
+										<h5 class="alert alert-danger">You do not have access to this page</h5>
+									</div>
+								
+								</div>
 								<div class="loadMore" *ngIf="user !== null && user.posts !== null">
 									<!-------------------------------START Posts------------------------------ -->
 									<div class="central-meta item" *ngFor="let post of user.posts"
@@ -254,5 +260,5 @@
 <span id="loginForm"></span>
 <span id="registerForm"></span>
 
-<swal #profilePicError title="Oops" icon="error" [showCancelButton]="true" [focusCancel]="true">
+<swal #errorPrivate title="This profile is Private!" icon="error" [showCancelButton]="true" [focusCancel]="true">
 </swal>

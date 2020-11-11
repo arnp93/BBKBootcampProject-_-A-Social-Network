@@ -23,13 +23,10 @@ export class SignalrService {
         transport: signalR.HttpTransportType.WebSockets
       }).build();
 
-
-
     this.hubConnection.on("AddFriendRequest", this.AddFriendRequest);
     this.hubConnection.on("NewComment", this.NewComment);
     this.hubConnection.start().then(function () {
-      console.log('Hub Connection Started');
-
+      console.log('Hub Connection Started : alert from signalR Hub Service (ClientSide)');
     }).catch(err => console.log('Error while starting connection: ' + err))
   }
 

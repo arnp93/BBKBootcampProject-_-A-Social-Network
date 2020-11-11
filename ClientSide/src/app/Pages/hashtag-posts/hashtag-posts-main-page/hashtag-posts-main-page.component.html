@@ -1,0 +1,175 @@
+<div id="mainpage" class="theme-layout">
+
+	<app-responsive-menu></app-responsive-menu>
+	<div class="topbar stick">
+		<!-- log Section -->
+		<div class="logo">
+			<h3 style="color: red;font-weight: bolder;">Beta</h3>
+		</div>
+		<!-- menu section -->
+		<app-menu></app-menu>
+	</div>
+	<!-- topbar -->
+
+	<!-- Cover Section -->
+	<section>
+		<div class="gap gray-bg">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="row" id="page-contents">
+							<div class="col-lg-3">
+								<aside class="sidebar static">
+									<app-shortcuts></app-shortcuts>
+									<!-- Shortcuts -->
+									<app-recent-activities></app-recent-activities>
+									<!-- recent activites -->
+									<app-whos-following></app-whos-following>
+									<!-- who's following -->
+								</aside>
+							</div><!-- sidebar -->
+							<div class="col-lg-6">
+								<!-- add post new box -->
+
+								<div class="loadMore">
+
+									<app-hashtag-posts (lastPostId)="lastPostId=$event"></app-hashtag-posts>
+
+									<!-------------------------- Load More Posts -------------------------->
+									<div class="central-meta item" *ngFor="let post of posts" id="{{post.id}}">
+										<div class="user-post">
+											<div class="friend-info">
+												<figure>
+													<img *ngIf="post.user.profilePic === null" src="/assets/images/account.png" alt="">
+													<img style="height: 50px;width: 50px;" *ngIf="post.user !== null && post.user.profilePic !== null"
+														[src]="URL+'/ProfilePictures/'+post.user.profilePic" alt="">
+												</figure>
+												<div class="friend-name">
+													<ins><a href="time-line.html" title="">{{post.user.firstName}}
+															{{post.user.lastName}}</a></ins>
+													<span>{{post.dateTime}}</span>
+												</div>
+												<div class="post-meta">
+													<p>
+														{{post.postText}}
+													</p>
+													<img src="{{URL}}/PostFiles/{{post.fileName}}" alt=""
+														*ngIf="post.fileName != null">
+													<div class="we-video-info">
+														<ul>
+															<li>
+																<span class="views" data-toggle="tooltip" title="views">
+																	<i class="fa fa-eye"></i>
+																	<ins>1.2k</ins>
+																</span>
+															</li>
+															<li>
+																<span class="comment" data-toggle="tooltip"
+																	title="Comments">
+																	<i class="fa fa-comments-o"></i>
+																	<ins>0</ins>
+																</span>
+															</li>
+															<li>
+																<span class="like" data-toggle="tooltip" title="like">
+																	<i class="ti-heart"></i>
+																	<ins>52</ins>
+																</span>
+															</li>
+															<li class="social-media">
+																<div class="menu">
+																	<div class="btn trigger"><i
+																			class="fa fa-share-alt"></i>
+																	</div>
+																	<div class="rotater">
+																		<div class="btn btn-icon"><a href="#"
+																				title=""><i class="fa fa-html5"></i></a>
+																		</div>
+																	</div>
+																	<div class="rotater">
+																		<div class="btn btn-icon"><a href="#"
+																				title=""><i
+																					class="fa fa-facebook"></i></a>
+																		</div>
+																	</div>
+																	<div class="rotater">
+																		<div class="btn btn-icon"><a href="#"
+																				title=""><i
+																					class="fa fa-google-plus"></i></a>
+																		</div>
+																	</div>
+																	<div class="rotater">
+																		<div class="btn btn-icon"><a href="#"
+																				title=""><i
+																					class="fa fa-twitter"></i></a>
+																		</div>
+																	</div>
+																	<div class="rotater">
+																		<div class="btn btn-icon"><a href="#"
+																				title=""><i class="fa fa-css3"></i></a>
+																		</div>
+																	</div>
+																	<div class="rotater">
+																		<div class="btn btn-icon"><a href="#"
+																				title=""><i
+																					class="fa fa-instagram"></i></a>
+																		</div>
+																	</div>
+																	<div class="rotater">
+																		<div class="btn btn-icon"><a href="#"
+																				title=""><i
+																					class="fa fa-dribbble"></i></a>
+																		</div>
+																	</div>
+																	<div class="rotater">
+																		<div class="btn btn-icon"><a href="#"
+																				title=""><i
+																					class="fa fa-pinterest"></i></a>
+																		</div>
+																	</div>
+
+																</div>
+															</li>
+														</ul>
+													</div>
+													<div class="description">
+
+													</div>
+												</div>
+											</div>
+											<div class="coment-area">
+												<ul class="we-comet">
+													<!-- <li class="post-comment">
+														<app-post-comment [postId]="newPost.id"></app-post-comment>
+													</li> -->
+												</ul>
+											</div>
+										</div>
+
+									</div>
+									<!-------------------------- End Load New Post -------------------------->
+								</div>
+								<form (submit)="loadMorePosts()">
+									<button id="load-more" type="submit">Load More</button>
+								</form>
+								<br>
+								<p *ngIf="morePostsError" class="alert alert-warning">No more posts</p>
+								<!-- user posts -->
+							</div><!-- centerl meta -->
+							<div class="col-lg-3">
+								<app-right-side-bar></app-right-side-bar>
+							</div><!-- sidebar -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Cover Section -->
+
+	<app-footer></app-footer>
+</div>
+<app-settings></app-settings>
+<!-- settings panel -->
+
+<span id="loginForm"></span>

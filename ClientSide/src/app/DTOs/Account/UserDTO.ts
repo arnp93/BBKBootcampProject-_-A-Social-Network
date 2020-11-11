@@ -9,7 +9,7 @@ export class UserDTO{
         public firstName : string,
         public lastName : string,
         public phoneNumber : string,
-        public birthDay : Date,
+        public birthDay : string,
         public address : string,
         public about : string,
         public isPrivate : boolean,

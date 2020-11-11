@@ -61,8 +61,16 @@ namespace BBKBootcampSocial.Web.Controllers
 
                 return JsonResponseStatus.Success(new LoginUserInfoDTO
                 {
+                    ExpireTime = 30,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
+                    Address = user.Address,
+                    Gender = user.UserGender,
+                    SocialNetwork = user.SocialNetwork,
+                    BirthDay = user.BirthDay.ToString(),
+                    PhoneNumber = user.PhoneNumber,
+                    About = user.About,
+                    IsPrivate = user.IsPrivate,
                     ProfilePic = user.ProfilePic,
                     CoverPic = user.CoverPic,
                     UserId = user.Id,
@@ -118,7 +126,7 @@ namespace BBKBootcampSocial.Web.Controllers
                             Address = user.Address,
                             Gender = user.UserGender,
                             SocialNetwork = user.SocialNetwork,
-                            BirthDay = user.BirthDay,
+                            BirthDay = user.BirthDay.ToString(),
                             PhoneNumber = user.PhoneNumber,
                             About = user.About,
                             IsPrivate = user.IsPrivate,
@@ -149,11 +157,18 @@ namespace BBKBootcampSocial.Web.Controllers
         }
         #endregion
 
-        #region Return User
+        #region Return User/Users __ Edit User
         [HttpGet("view-profile/{userId}")]
         public async Task<IActionResult> ReturnUser(long userId)
         {
             return JsonResponseStatus.Success(await UserService.ReturnUserByIdWithPosts(userId));
+        }
+
+
+        [HttpGet("latest-users")]
+        public async Task<IActionResult> GetLastestUsers()
+        {
+            return JsonResponseStatus.Success(await UserService.GetLatestUsers());
         }
 
         #endregion
@@ -218,6 +233,16 @@ namespace BBKBootcampSocial.Web.Controllers
             return JsonResponseStatus.Success();
         }
 
+        [HttpPost("delete-request")]
+        public async Task<IActionResult> DeleteFriendRequest([FromBody] long destinationUserId)
+        {
+            long currentUserId = User.GetUserId();
+
+            await UserService.DeleteFriendRequest(destinationUserId, currentUserId);
+
+            return JsonResponseStatus.Success();
+        }
+
         #endregion
 
         #region Manage notification
@@ -232,12 +257,24 @@ namespace BBKBootcampSocial.Web.Controllers
 
         #endregion
 
-        #region Get latest Users
+        #region Edit User Informations / Edit Secutiry Details (Change Password / Private/Public Profile)
 
-        [HttpGet("latest-users")]
-        public async Task<IActionResult> GetLastestUsers()
+        [HttpPost("edit-user")]
+        public async Task<IActionResult> EditUser([FromBody]LoginUserInfoDTO user)
         {
-            return JsonResponseStatus.Success(await UserService.GetLatestUsers());
+            long userId = User.GetUserId();
+
+            return JsonResponseStatus.Success(await UserService.EditUser(userId,user));
+        }
+
+        [HttpPost("edit-security-details")]
+        public async Task<IActionResult> EditSecurityDetails([FromBody] ChangeUserSecutiryInfoDTO userSecurity)
+        {
+            long userId = User.GetUserId();
+
+            await UserService.ChangeUserSecurityDetails(userId, userSecurity);
+
+            return JsonResponseStatus.Success();
         }
 
         #endregion

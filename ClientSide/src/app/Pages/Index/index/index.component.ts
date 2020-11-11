@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component,NgZone, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { UserDTO } from 'src/app/DTOs/Account/UserDTO';
@@ -7,13 +7,15 @@ import { PostService } from 'src/app/Services/post.service';
 import { DomainName } from 'src/app/Utilities/PathTools';
 import { AuthServiceService } from '../../../Services/auth-service.service';
 
+declare function addEventListenertoHashtagList();
+
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.css']
 })
 
-export class IndexComponent implements OnInit {
+export class IndexComponent implements OnInit, AfterViewInit {
 
   public lastPostId: number = 0;
   private currentPage: number = 1;
@@ -29,9 +31,16 @@ export class IndexComponent implements OnInit {
 
   @ViewChild('profilePicError') private emailExist: SwalComponent;
 
-  constructor(private authService: AuthServiceService, private postService: PostService, private route: Router) { }
+  constructor(private ngZone: NgZone,private router : Router,private authService: AuthServiceService, private postService: PostService, private route: Router) { }
+  ngAfterViewInit(): void {
+  }
 
   ngOnInit(): void {
+
+    addEventListenertoHashtagList();
+
+    window['hashtagClick'] = { component: this, zone: this.ngZone, hashtagClickedFunction: (hashtagText) => this.returnToHashtagPage(hashtagText) }; 
+
 
     this.authService.getCurrentUser().subscribe(res => {
       this.thisUser = res;
@@ -57,6 +66,16 @@ export class IndexComponent implements OnInit {
     });
 
     window.scrollTo(0, 0);
+  }
+
+  returnToHashtagPage(hashtagText : string){
+    hashtagText = hashtagText.replace("#","").trim();
+    this.postService.getHashtagPosts(hashtagText).subscribe(res => {
+      if(res.status === "Success"){
+        this.postService.setHashtagPosts(res.data);
+        this.route.navigate(["/hashtag-posts"])
+      }
+    });
   }
 
   getNewPost(event: ShowPostDTO) {

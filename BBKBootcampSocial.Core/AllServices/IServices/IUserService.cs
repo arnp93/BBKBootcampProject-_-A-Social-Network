@@ -27,6 +27,9 @@ namespace BBKBootcampSocial.Core.AllServices.IServices
         Task<List<FriendDTO>> GetFriendListByUserId(long userId);
         Task DeleteNotification(long notificationId);
         Task<List<LoginUserInfoDTO>> GetLatestUsers();
+        Task<LoginUserInfoDTO> EditUser(long userId, LoginUserInfoDTO user);
+        Task ChangeUserSecurityDetails(long userId, ChangeUserSecutiryInfoDTO userSecurity);
+        Task DeleteFriendRequest(long userDestinationId, long userId);
 
         #endregion
 

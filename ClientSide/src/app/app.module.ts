@@ -31,6 +31,9 @@ import { ViewProfileComponent } from './Pages/view-profile/view-profile.componen
 import { FriendsPostsComponent } from './Pages/friends-posts/friends-posts.component';
 import { AllFriendsPostsComponent } from './Pages/friends-posts/all-friends-posts/all-friends-posts.component';
 import { EditProfileComponent } from './Pages/edit-profile/edit-profile.component';
+import { SecurityComponent } from './Pages/security/security.component';
+import { HashtagPostsComponent } from './Pages/hashtag-posts/hashtag-posts.component';
+import { HashtagPostsMainPageComponent } from './Pages/hashtag-posts/hashtag-posts-main-page/hashtag-posts-main-page.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +60,9 @@ import { EditProfileComponent } from './Pages/edit-profile/edit-profile.componen
     FriendsPostsComponent,
     AllFriendsPostsComponent,
     EditProfileComponent,
+    SecurityComponent,
+    HashtagPostsComponent,
+    HashtagPostsMainPageComponent,
   ],
   imports: [
     BrowserModule,

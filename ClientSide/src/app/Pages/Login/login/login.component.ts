@@ -1,12 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthServiceService } from '../../../Services/auth-service.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { UserLoginDTO } from '../../../DTOs/Account/UserLoginDTO';
 import { Router } from '@angular/router';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { CookieService } from 'ngx-cookie-service';
-import * as signalR from '@aspnet/signalr';
-// import { SignalRServiceService } from '../../../Services/signal-rservice.service';
 
 @Component({
   selector: 'app-login',

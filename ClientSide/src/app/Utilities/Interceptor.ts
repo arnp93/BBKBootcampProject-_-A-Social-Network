@@ -17,7 +17,7 @@ export class Interceptor implements HttpInterceptor{
 
         const request = req.clone({
             url : DomainName + req.url,
-            headers: req.headers.append('Authorization', 'Bearer ' + token)
+            headers: req.headers.append('Authorization', 'Bearer ' + token)//.append('Content-Type','application/json')
         });
 
         return next.handle(request);

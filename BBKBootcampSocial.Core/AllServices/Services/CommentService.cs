@@ -60,6 +60,38 @@ namespace BBKBootcampSocial.Core.AllServices.Services
             return comment;
         }
 
+
+        public async Task<CommentReplyDTO> ReplyComment(CommentReplyDTO reply, long userId)
+        {
+            var repository = await unitOfWork.GetRepository<GenericRepository<Comment>, Comment>();
+            var notificationRepository = await unitOfWork.GetRepository<GenericRepository<Notification>, Notification>();
+
+            if (reply.UserId != userId)
+            {
+                await notificationRepository.AddEntity(
+                    new Notification
+                    {
+                        UserOriginId = reply.UserId,
+                        UserDestinationId = await GetUserIdByPostId(reply.PostId),
+                        IsRead = false,
+                        IsAccepted = false,
+                        IsDelete = false,
+                        TypeOfNotification = TypeOfNotification.Comment
+                    }
+                );
+            }
+
+            Comment cm = mapper.Map<Comment>(reply);
+
+            await repository.AddEntity(cm);
+
+            await unitOfWork.SaveChanges();
+            reply.Id = cm.Id;
+            reply.DestinationUserId = await GetUserIdByPostId(reply.PostId);
+
+            return reply;
+        }
+
         #endregion
 
         #region Tools
@@ -70,6 +102,7 @@ namespace BBKBootcampSocial.Core.AllServices.Services
 
             return postRepository.GetEntityById(postId).Result.UserId;
         }
+
 
         #endregion
 

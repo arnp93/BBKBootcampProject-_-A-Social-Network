@@ -16,55 +16,40 @@ export class EditProfileComponent implements OnInit {
   public URL: string = DomainName;
   public thisUser: UserDTO;
   public selectedCoverPicture: File = null;
-  public editForm : FormGroup = null;
+  public editForm: FormGroup;
   public selectProfilePic: File = null;
   public newProfilePic: string = null;
   public isLoading = false;
+  
   @ViewChild('profilePicError') private emailExist: SwalComponent;
-  constructor(private authService : AuthServiceService, private route:Router,private postService : PostService) { }
+  @ViewChild('success') private success: SwalComponent;
+  @ViewChild('error') private error: SwalComponent;
+
+  constructor(private authService: AuthServiceService, private route: Router, private postService: PostService) { }
 
   ngOnInit(): void {
+
     this.authService.getCurrentUser().subscribe(res => {
       this.thisUser = res;
     });
 
     this.editForm = new FormGroup({
-      firstName: new FormControl(this.thisUser.firstName, [
-        Validators.minLength(1),
-        Validators.required
-      ]),
-      lastName: new FormControl(this.thisUser.lastName, [
-        Validators.minLength(1),
-        Validators.required
-      ]),
-       phoneNumber: new FormControl(this.thisUser.phoneNumber, [
-        Validators.minLength(1),
-        Validators.required
-      ]),  
-      birthDay: new FormControl(this.thisUser.birthDay, [
-        Validators.minLength(1),
-        Validators.required
-      ]),
-      address: new FormControl(this.thisUser.address, [
-        Validators.minLength(1),
-        Validators.required
-      ]),
-      about: new FormControl(this.thisUser.about, [
-        Validators.minLength(1),
-        Validators.required
-      ]),
-      gender: new FormControl(this.thisUser.gender, [
-        Validators.minLength(1),
-        Validators.required
-      ]),
-      isPrivate: new FormControl(this.thisUser.isPrivate, [
-        Validators.minLength(1),
-        Validators.required
-      ])
+      firstName: new FormControl(this.thisUser.firstName),
+      lastName: new FormControl(this.thisUser.lastName),
+      phoneNumber: new FormControl(this.thisUser.phoneNumber),
+      birthdayDay: new FormControl(null),
+      birthdayMonth: new FormControl(),
+      birthdayYear: new FormControl(),
+      address: new FormControl(),
+      city: new FormControl(this.thisUser.address),
+      country: new FormControl(this.thisUser.address),
+      about: new FormControl(this.thisUser.about),
+      gender: new FormControl(this.thisUser.gender),
+      isPrivate: new FormControl(this.thisUser.isPrivate)
     });
   }
 
- 
+
 
   addPic(event) {
     this.isLoading = true;
@@ -109,7 +94,27 @@ export class EditProfileComponent implements OnInit {
 
       }
     });
-
   }
+
+  editSubmit() {
+    console.log(this.editForm);
+    const editedUserInfo = new UserDTO(
+      null, 0, this.editForm.controls.firstName.value, this.editForm.controls.lastName.value, this.editForm.controls.phoneNumber.value,
+      this.editForm.controls.birthdayDay.value + " " + this.editForm.controls.birthdayMonth.value + " " + this.editForm.controls.birthdayYear.value,
+      this.editForm.controls.address.value,
+      this.editForm.controls.about.value,
+      this.editForm.controls.isPrivate.value,
+      this.editForm.controls.gender.value,
+      null, null, 0, null, null, null
+    );
+    this.authService.editUser(editedUserInfo).subscribe(res => {
+      if(res.status === "Success"){
+        this.success.fire();
+      }else{
+        this.error.fire();
+      }
+    })
+  }
+
 
 }

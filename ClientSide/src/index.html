@@ -43,11 +43,22 @@
     .btnCancel {
       margin-right: 2px;
     }
+
+    .hidden {
+      display: none;
+    }
+
+    .link-hashtag {
+      color: rgb(64, 95, 233) !important;
+      font-weight: bold !important;
+      cursor: pointer;
+    }
   </style>
 
 </head>
 
-<body>
+<body onload="addEventListenertoHashtagList()">
+
   <app-root></app-root>
 
   <button hidden id="notifyComment" onclick="notifyComment(this)"></button>
@@ -61,84 +72,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"
     integrity="sha512-efUTj3HdSPwWJ9gjfGR71X9cvsrthIA78/Fvd/IN+fttQVy7XWkOAXb295j8B3cmm/kFKVxjiNYzKw9IQJHIuQ=="
     crossorigin="anonymous"></script>
-
-  <script>
-    function notifyComment(element) {
-      document.getElementById("tone").play();
-      $.notify(
-        element.innerHTML, "success",
-        { position: "right bottom" } ,
-
-      );
-    }
-    function notifyFriendRequest(element) {
-      document.getElementById("tone").play();
-
-      $.notify(
-        element.innerHTML, "success",
-        { position: "right bottom" } ,
-
-      );
-    }
-    function openPostMenu(e) {
-      var parent = e.parentNode;
-      if ($(e).hasClass("fa fa-ellipsis-h")) {
-        $(e).removeClass("fa fa-ellipsis-h");
-        $(e).addClass("fa fa-caret-square-o-left");
-      } else {
-        $(e).removeClass("fa fa-caret-square-o-left");
-        $(e).addClass("fa fa-ellipsis-h");
-
-      }
-      var showState = $(parent).find(".post-menu").css("display");
-      if (showState === "block") {
-        $(parent).find(".post-menu").slideUp();
-      } else {
-        $(parent).find(".post-menu").slideDown();
-      }
-    }
-
-
-    function editPost(event) {
-      var parent = event.target.parentNode.parentNode.parentNode;
-      var menu = event.target.parentNode.parentNode;
-      var editSec = $(menu).slideUp();
-
-      var editSec = $(parent).find(".editPostSection")[0];
-      $(editSec).slideDown();
-    }
-
-    function closeEditSec(btn) {
-      var parent = btn.parentNode.parentNode;
-      $(parent).slideUp();
-    }
-
-    function signalFriendAcc(event, friendId) {
-
-      window.signalFriendRequestAccept.zone.run(() => {
-        window.signalFriendRequestAccept.acceptRequestFunction(friendId)
-      });
-
-      var count = document.getElementById("notification-count").innerHTML;
-      if (count !== null || count !== undefined || count !== "") {
-        count = parseInt(count) + 1;
-      } else {
-        count = 1;
-      }
-      document.getElementById("notification-count").innerHTML = count;
-
-
-      $(event.target).remove();
-
-    }
-
-    function viewProfile(userId) {
-      window.signalViewProfile.zone.run(() => {
-        window.signalViewProfile.viewProfileFunction(userId)
-      });
-    }
-
-  </script>
+<script src="/assets/js/scripts.js"></script>
 </body>
 
 </html>

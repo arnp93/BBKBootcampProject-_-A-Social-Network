@@ -10,6 +10,8 @@ import { ViewProfileComponent } from './Pages/view-profile/view-profile.componen
 import { FriendsPostsComponent } from './Pages/friends-posts/friends-posts.component';
 import { EditProfileComponent } from './Pages/edit-profile/edit-profile.component';
 import { UserAuthGuard } from './Utilities/UserAuthGuard';
+import { SecurityComponent } from './Pages/security/security.component';
+import { HashtagPostsMainPageComponent } from './Pages/hashtag-posts/hashtag-posts-main-page/hashtag-posts-main-page.component';
 
 const appRoutes:Routes = [
     {path: 'register', component: RegisterComponent},
@@ -21,6 +23,8 @@ const appRoutes:Routes = [
     {path: 'view-profile/:userId', component: ViewProfileComponent, canActivate: [UserAuthGuard]},
     {path: 'friends-posts', component: FriendsPostsComponent, canActivate: [UserAuthGuard]},
     {path: 'edit-profile', component: EditProfileComponent, canActivate: [UserAuthGuard]},
+    {path: 'security', component: SecurityComponent, canActivate: [UserAuthGuard]},
+    {path: 'hashtag-posts', component: HashtagPostsMainPageComponent, canActivate: [UserAuthGuard]},
     {path: '**', component: NotFoundComponent}
 ]
 

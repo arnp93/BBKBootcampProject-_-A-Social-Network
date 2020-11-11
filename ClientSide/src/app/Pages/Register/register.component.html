@@ -10,41 +10,41 @@
               <div>
                 <p class="text-error"
                   *ngIf="registerForm.controls.firstName.errors?.required && registerForm.controls.firstName.touched">
-                  Rellenar este campo es obligatorio
+                  Required
                 </p>
                 <p class="text-error"
                   *ngIf="registerForm.controls.firstName.errors?.maxlength && registerForm.controls.firstName.touched">
-                  No se puede tener mas que 50 caracteres
+                  It cannot be more than 50 characters
                 </p>
               </div>
               <div>
 
                 <input id="name" formControlName="firstName" type="text" required>
-                <label for="name">Nombre</label>
+                <label for="name">First Name</label>
               </div>
               <div>
                 <p class="text-error"
                   *ngIf="registerForm.controls.lastName.errors?.required && registerForm.controls.lastName.touched">
-                  Rellenar este campo es obligatorio
+                  Required
                 </p>
                 <p class="text-error"
                   *ngIf="registerForm.controls.lastName.errors?.maxlength && registerForm.controls.lastName.touched">
-                  No se puede tener mas que 50 caracteres
+                  It cannot be more than 50 characters
                 </p>
               </div>
               <div>
                 <input id="surname" formControlName="lastName" type="text" required>
-                <label for="surname">Apellidos</label>
+                <label for="surname">Last Name</label>
 
               </div>
               <div>
                 <p class="text-error"
                   *ngIf="registerForm.controls.email.errors?.required && registerForm.controls.email.touched">
-                  Rellenar este campo es obligatorio
+                  Required
                 </p>
                 <p class="text-error"
                   *ngIf="registerForm.controls.email.errors?.email && registerForm.controls.email.touched">
-                  Este Email no es valido
+                  This email is not valid
                 </p>
               </div>
               <div>
@@ -55,15 +55,15 @@
               <div>
                 <p class="text-error"
                   *ngIf="registerForm.controls.password.errors?.required && registerForm.controls.password.touched">
-                  Rellenar este campo es obligatorio
+                  Required
                 </p>
                 <p class="text-error"
                   *ngIf="registerForm.controls.password.errors?.maxlength && registerForm.controls.password.touched">
-                  No se puede tener mas que 150 caracteres
+                  It cannot be more than 150 characters
                 </p>
                 <p class="text-error"
                   *ngIf="registerForm.controls.password.errors?.minlength && registerForm.controls.password.touched">
-                  No se puede tener menos que 9 caracteres
+                  Cannot be less than 9 characters
                 </p>
               </div>
               <div>
@@ -74,29 +74,30 @@
               <div>
                 <p class="text-error"
                   *ngIf="registerForm.controls.rePassword.errors?.required && registerForm.controls.rePassword.touched">
-                  Rellenar este campo es obligatorio
+                Required
                 </p>
                 <p class="text-error"
                   *ngIf="registerForm.controls.rePassword.errors?.maxlength && registerForm.controls.rePassword.touched">
-                  No se puede tener mas que 150 caracteres
+                  It cannot be more than 150 characters
                 </p>
                 <p class="text-error"
                   *ngIf="registerForm.controls.rePassword.errors?.minlength && registerForm.controls.rePassword.touched">
-                  No se puede tener menos que 9 caracteres
+                  Cannot be less than 9 characters
+
                 </p>
               </div>
               <div>
 
                 <input id="repeatPassword" formControlName="rePassword" type="password" required>
-                <label for="repeatPassword">Repetir contraseña</label>
+                <label for="repeatPassword">Repeat Password</label>
               </div>
               <div>
                 <button type="submit" id="left-right-button" class="button button--left-right">
-                  <span>Registrarse</span>
+                  <span>Register</span>
                 </button>
               </div>
             </form>
-            <p class="alreadyAcount">¿tienes uenta? <a class="standar-link" [routerLink]="''"
+            <p class="alreadyAcount">Do you have an Account? <a class="standar-link" [routerLink]="''"
                 routerLinkActive="router-link-active">Login</a></p>
 
 

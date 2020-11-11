@@ -6,6 +6,8 @@ namespace BBKBootcampSocial.Core.AllServices.IServices
     public interface ICommentService
     {
         Task<NewCommentDTO> AddComment(NewCommentDTO comment, long userId);
+
+        Task<CommentReplyDTO> ReplyComment(CommentReplyDTO reply, long userId);
         Task<long> GetUserIdByPostId(long postId);
     }
 }

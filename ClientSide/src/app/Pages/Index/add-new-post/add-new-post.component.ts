@@ -7,6 +7,8 @@ import { UserDTO } from 'src/app/DTOs/Account/UserDTO';
 import { AuthServiceService } from '../../../Services/auth-service.service';
 import { DomainName } from 'src/app/Utilities/PathTools';
 
+declare function addEventListenertoHashtagListFromAngular();
+
 @Component({
   selector: 'app-add-new-post',
   templateUrl: './add-new-post.component.html',
@@ -43,17 +45,27 @@ export class AddNewPostComponent implements OnInit {
     const formData: FormData = new FormData();
     if (this.selectedFile != null)
       formData.append("FileName", this.selectedFile, this.selectedFile.name);
-
-    formData.append("PostText", this.PostForm.controls.postText.value);
+      let postText = this.PostForm.controls.postText.value;
+      let postWordsArray = postText.split(" ");
+      postText = "";
+      if(postWordsArray.length > 0){
+        for (let i = 0; i < postWordsArray.length; i++) {
+          if(postWordsArray[i].startsWith("#")){
+            postWordsArray[i] = `<a class="link-hashtag"> ${postWordsArray[i]} </a>`
+          }
+        
+          postText += " " + postWordsArray[i]; 
+        }
+      }
+    formData.append("PostText", postText);
 
     this.postService.addNewPost(formData).subscribe(res => {
       if (res.status === "Success") {
-
-        //send new post to index.componnet
         this.newPost.emit(res.data);
         this.PostForm.reset();
+        addEventListenertoHashtagListFromAngular();
       } else {
-        console.error("Error with Add new Comment!!!");
+        console.error("Error with Add new Post!!!");
         
       }
     });

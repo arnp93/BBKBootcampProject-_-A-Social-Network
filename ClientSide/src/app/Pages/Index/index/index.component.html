@@ -19,8 +19,11 @@
 		<div class="gap gray-bg">
 			<div class="container-fluid">
 				<div class="feature-photo">
-					<figure *ngIf="thisUser !== undefined && thisUser !== null && thisUser.coverPic === null"><img src="/assets/images/resources/timeline-1.jpg" alt="Cover Picture"></figure> 
-					<figure *ngIf="thisUser !== undefined && thisUser !== null && thisUser.coverPic !== null"><img style="max-height: 500px;" [src]="URL+'/CoverPictures/'+thisUser.coverPic" alt="Cover Picture"></figure>
+					<figure *ngIf="thisUser !== undefined && thisUser !== null && thisUser.coverPic === null"><img
+							src="/assets/images/resources/timeline-1.jpg" alt="Cover Picture"></figure>
+					<figure *ngIf="thisUser !== undefined && thisUser !== null && thisUser.coverPic !== null"><img
+							style="max-height: 500px;" [src]="URL+'/CoverPictures/'+thisUser.coverPic"
+							alt="Cover Picture"></figure>
 					<!-- <div class="add-btn">
 						<span>1205 followers</span>
 						<a href="#" title="" data-ripple="">Add Friend</a>
@@ -37,10 +40,13 @@
 							<div class="col-lg-2 col-sm-3">
 								<div class="user-avatar">
 									<figure>
-										<img *ngIf="thisUser !== undefined && thisUser !== null && thisUser.profilePic === null && !isLoading" src="/assets/images/account.png" alt="">
+										<img *ngIf="thisUser !== undefined && thisUser !== null && thisUser.profilePic === null && !isLoading"
+											src="/assets/images/account.png" alt="">
 										<img *ngIf="isLoading" src="/assets/loadings/Pulse-1s-200px.gif" alt="">
-										<img style="min-height: 120px;min-width: 120px;" *ngIf="thisUser !== undefined && thisUser !== null &&thisUser.profilePic !== null && !isLoading" [src]="URL+'/ProfilePictures/'+thisUser.profilePic" alt="">
-										
+										<img style="min-height: 120px;min-width: 120px;"
+											*ngIf="thisUser !== undefined && thisUser !== null &&thisUser.profilePic !== null && !isLoading"
+											[src]="URL+'/ProfilePictures/'+thisUser.profilePic" alt="">
+
 										<form (submit)="uploadPic()" class="edit-phto">
 											<i class="fa fa-camera-retro"></i>
 											<label class="fileContainer">
@@ -52,7 +58,8 @@
 								</div>
 							</div>
 							<div class="col-lg-10 col-sm-9">
-								<h5 *ngIf="thisUser !== undefined && thisUser !== null " style="font-weight: bold">{{thisUser.firstName}} {{thisUser.lastName}}</h5>
+								<h5 *ngIf="thisUser !== undefined && thisUser !== null " style="font-weight: bold">
+									{{thisUser.firstName}} {{thisUser.lastName}}</h5>
 							</div>
 						</div>
 					</div>
@@ -81,8 +88,11 @@
 										<div class="user-post">
 											<div class="friend-info">
 												<figure>
-													<img *ngIf="thisUser !== undefined && thisUser !== null && thisUser.profilePic === null" src="/assets/images/account.png" alt="">
-													<img style="height: 50px;width: 50px;" *ngIf="thisUser !== undefined && thisUser !== null &&thisUser.profilePic !== null" [src]="URL+'/ProfilePictures/'+thisUser.profilePic" alt="">
+													<img *ngIf="thisUser !== undefined && thisUser !== null && thisUser.profilePic === null"
+														src="/assets/images/account.png" alt="">
+													<img style="height: 50px;width: 50px;"
+														*ngIf="thisUser !== undefined && thisUser !== null &&thisUser.profilePic !== null"
+														[src]="URL+'/ProfilePictures/'+thisUser.profilePic" alt="">
 												</figure>
 												<div class="friend-name">
 													<ins><a href="time-line.html" title="">{{thisUser.firstName}}
@@ -90,8 +100,7 @@
 													<span>{{newPost.dateTime}}</span>
 												</div>
 												<div class="post-meta">
-													<p>
-														{{newPost.postText}}
+													<p innerHTML="{{newPost.postText}}">
 													</p>
 													<img src="{{URL}}/PostFiles/{{newPost.fileName}}" alt=""
 														*ngIf="newPost.fileName != null">
@@ -198,10 +207,10 @@
 											<div class="friend-info">
 												<figure>
 													<img *ngIf="thisUser !== undefined && thisUser !== null && thisUser.profilePic === null"
-													src="/assets/images/account.png" alt="">
-												<img style="height: 50px;width: 50px;"
-													*ngIf="thisUser !== undefined && thisUser !== null &&thisUser.profilePic !== null"
-													[src]="URL+'/ProfilePictures/'+thisUser.profilePic" alt="">
+														src="/assets/images/account.png" alt="">
+													<img style="height: 50px;width: 50px;"
+														*ngIf="thisUser !== undefined && thisUser !== null &&thisUser.profilePic !== null"
+														[src]="URL+'/ProfilePictures/'+thisUser.profilePic" alt="">
 												</figure>
 												<div class="friend-name">
 													<ins><a href="time-line.html" title="">{{thisUser.firstName}}
@@ -209,8 +218,7 @@
 													<span>{{post.dateTime}}</span>
 												</div>
 												<div class="post-meta">
-													<p>
-														{{post.postText}}
+													<p innerHTML="{{post.postText}}">
 													</p>
 													<img src="{{URL}}/PostFiles/{{post.fileName}}" alt=""
 														*ngIf="post.fileName != null">
@@ -326,7 +334,7 @@
 	</section>
 	<!-- End Cover Section -->
 
-	
+
 
 	<app-footer></app-footer>
 </div>

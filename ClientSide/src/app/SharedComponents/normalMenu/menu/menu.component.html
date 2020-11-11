@@ -24,6 +24,8 @@
             <a href="#" title="Notification" id="menu-window" data-ripple="">
                 <i class="ti-bell"></i><span id="notification-count"
                     *ngIf="unreadNotifications !== undefined && unreadNotifications !== null && unreadNotifications.length > 0">{{unreadNotifications.length}}</span>
+                    <span id="notification-count"
+                    *ngIf="unreadNotifications === undefined || unreadNotifications === null || unreadNotifications.length === 0">{{unreadNotifications.length}}</span>
             </a>
             <div class="dropdowns" *ngIf="thisUser != null &&thisUser.notifications !== undefined">
                 <ul class="drops-menu" id="notifications">

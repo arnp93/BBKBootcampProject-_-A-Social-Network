@@ -167,12 +167,26 @@ namespace BBKBootcampSocial.Core.AllServices.Services
             if (repository.GetEntitiesQuery().Any(u => u.Id == userId))
             {
                 if (notificationRepository.GetEntitiesQuery()
-                    .Any(n => n.UserDestinationId == userId && n.UserOriginId == currentUserId && n.IsDelete == false))
+                    .Any(n => n.UserDestinationId == userId && n.UserOriginId == currentUserId && n.IsDelete))
                 {
-                    Notification notification = notificationRepository.GetEntitiesQuery()
-                        .FirstOrDefault(n => n.UserDestinationId == userId && n.UserOriginId == currentUserId && n.IsDelete == false);
-                    notificationRepository.RemoveEntity(notification);
+                    Notification notification = notificationRepository
+                        .GetEntitiesQuery().FirstOrDefault(n => n.UserDestinationId == userId && n.UserOriginId == currentUserId && n.IsDelete);
+                    notification.IsDelete = false;
+                    notificationRepository.UpdateEntity(notification);
                     await unitOfWork.SaveChanges();
+                    notificationDTO = new NotificationDTO
+                    {
+                        Id = notification.Id,
+                        UserDestinationId = notification.UserDestinationId,
+                        FirstName = GetUserById(notification.UserOriginId).GetAwaiter().GetResult().FirstName,
+                        LastName = GetUserById(notification.UserOriginId).GetAwaiter().GetResult().LastName,
+                        ImageName = GetUserById(notification.UserOriginId).GetAwaiter().GetResult().ProfilePic,
+                        Message = "Has sent you a friend request",
+                        UserOriginId = notification.UserOriginId,
+                        TypeOfNotification = notification.TypeOfNotification,
+                        IsAccepted = notification.IsAccepted,
+                        IsRead = notification.IsRead
+                    };
                 }
                 else
                 {
@@ -238,6 +252,23 @@ namespace BBKBootcampSocial.Core.AllServices.Services
             await unitOfWork.SaveChanges();
         }
 
+        public async Task DeleteFriendRequest(long userDestinationId, long userId)
+        {
+            var notificationRepository = await unitOfWork.GetRepository<GenericRepository<Notification>, Notification>();
+
+            if (notificationRepository.GetEntitiesQuery()
+                .Any(n => n.UserDestinationId == userDestinationId && n.UserOriginId == userId && n.TypeOfNotification == TypeOfNotification.FriendRequest && !n.IsDelete))
+            {
+                Notification notification = notificationRepository
+                    .GetEntitiesQuery().FirstOrDefault(n => n.UserDestinationId == userDestinationId && n.UserOriginId == userId &&
+                                                            n.TypeOfNotification == TypeOfNotification.FriendRequest && !n.IsDelete);
+
+                notificationRepository.RemoveEntity(notification);
+
+                await unitOfWork.SaveChanges();
+            }
+
+        }
 
         #endregion
 
@@ -306,6 +337,7 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                 LastName = user.LastName,
                 ProfilePic = user.ProfilePic,
                 UserId = user.Id,
+                IsPrivate = user.IsPrivate,
                 Posts = user.Posts.OrderByDescending(p => p.Id).Select(p => new ShowPostDTO
                 {
                     Comments = p.Comments.Select(c => new CommentDTO
@@ -323,6 +355,46 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                     PostText = p.PostText
                 }).Take(10)
             };
+        }
+
+        public async Task<LoginUserInfoDTO> EditUser(long userId, LoginUserInfoDTO user)
+        {
+            var repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
+
+            User CurrentUser = await repository.GetEntityById(userId);
+
+            CurrentUser.FirstName = user.FirstName;
+            CurrentUser.LastName = user.LastName;
+            CurrentUser.About = user.About;
+            CurrentUser.Address = user.Address;
+            CurrentUser.PhoneNumber = user.PhoneNumber;
+            CurrentUser.BirthDay = DateTime.Parse(user.BirthDay);
+            CurrentUser.UserGender = user.Gender;
+            CurrentUser.SocialNetwork = user.SocialNetwork;
+            CurrentUser.IsPrivate = user.IsPrivate;
+
+            repository.UpdateEntity(CurrentUser);
+
+            await unitOfWork.SaveChanges();
+
+            return user;
+        }
+
+        public async Task ChangeUserSecurityDetails(long userId, ChangeUserSecutiryInfoDTO userSecurity)
+        {
+            var repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
+            User user = await repository.GetEntityById(userId);
+
+            if (userSecurity.Password != null && userSecurity.Password == userSecurity.RePassword)
+                user.Password = PasswordHelper.EncodePasswordMd5(userSecurity.Password);
+
+            if (user.IsPrivate != userSecurity.isPrivate)
+                user.IsPrivate = userSecurity.isPrivate;
+
+
+            repository.UpdateEntity(user);
+
+            await unitOfWork.SaveChanges();
         }
 
         #endregion
@@ -406,9 +478,14 @@ namespace BBKBootcampSocial.Core.AllServices.Services
         public async Task<string> GetConnectionIdByUserId(long userId)
         {
             var repository = await unitOfWork.GetRepository<GenericRepository<RealTimeNotification>, RealTimeNotification>();
-            string connectionId = repository.GetEntitiesQuery().SingleOrDefault(n => n.UserId == userId).ConnectionId;
-            if (connectionId != null)
-                return connectionId;
+            if (repository.GetEntitiesQuery().Any(n => n.UserId == userId))
+            {
+                string connectionId = repository.GetEntitiesQuery().Single(n => n.UserId == userId).ConnectionId;
+                if (connectionId != null)
+                    return connectionId;
+
+                return "";
+            }
             else
                 return "";
         }
@@ -421,6 +498,7 @@ namespace BBKBootcampSocial.Core.AllServices.Services
 
             await unitOfWork.SaveChanges();
         }
+
     }
 
     #endregion

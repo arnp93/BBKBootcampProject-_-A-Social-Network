@@ -12,6 +12,9 @@ import { UserDTO } from '../../../DTOs/Account/UserDTO';
 import { AuthServiceService } from '../../../Services/auth-service.service';
 import { EditPostDTO } from 'src/app/DTOs/Post/EditPostDTO';
 
+declare function addEventListenertoHashtagListFromAngular();
+
+
 @Component({
   selector: 'app-all-users-posts',
   templateUrl: './all-users-posts.component.html',
@@ -31,6 +34,8 @@ export class AllUsersPostsComponent implements OnInit {
   //for check if user is in friends list (manage Add Friend and Remove Friend in posts menu)
   public friendsIds: number[] = [];
   public activeNotificationsIds: number[] = [];
+  public notificationIdsForSendedFriendRequests: number[] = [];
+
 
   public thisUser: UserDTO;
 
@@ -39,6 +44,7 @@ export class AllUsersPostsComponent implements OnInit {
   constructor(private postService: PostService, private authService: AuthServiceService, private commentService: CommentService, private router: Router) { }
 
   ngOnInit(): void {
+    addEventListenertoHashtagListFromAngular();
     this.authService.getCurrentUser().subscribe(res => {
       this.thisUser = res;
 
@@ -47,11 +53,10 @@ export class AllUsersPostsComponent implements OnInit {
           this.friendsIds.push(res.friends[i].userId);
         }
       }
-
       if (res !== null && res.notifications !== null) {
-        for (let i = 0; i < res.notifications.length; i++) {
-          if (!res.notifications[i].isAccepted)
-            this.activeNotificationsIds.push(res.notifications[i].userDestinationId);
+        let sendRequests = res.notifications.filter(n => n.userOriginId == res.userId && !n.isAccepted && !n.isDelete);
+        for (let i = 0; i < sendRequests.length; i++) {
+          this.notificationIdsForSendedFriendRequests.push(sendRequests[i].userDestinationId);
         }
       }
     });
@@ -75,7 +80,7 @@ export class AllUsersPostsComponent implements OnInit {
     this.editPostForm = new FormGroup({
       postText: new FormControl()
     });
-    
+
   }
 
   newCommentSubmit(postId) {
@@ -106,10 +111,7 @@ export class AllUsersPostsComponent implements OnInit {
   friendRequest(event, userId: number) {
     this.authService.friendRequest(userId).subscribe(res => {
       if (res.status === "Success") {
-        if (event.target.innerText === "Add Friend")
-          event.target.innerText = "Cancel Request";
-        else
-          event.target.innerText = "Add Friend";
+        this.notificationIdsForSendedFriendRequests.push(userId);
       }
     });
   }
@@ -143,8 +145,21 @@ export class AllUsersPostsComponent implements OnInit {
     });
   }
 
-  removeRequest(event, userId: number) {
+  deletePost(event, postId: number) {
+    this.postService.deletePost(postId).subscribe(res => {
+      if (res.status === "Success")
+        event.target.parentNode.parentNode.parentNode.parentNode.parentNode.innerHTML = "<p class='alert alert-info'> Deleted! </p>";
+    });
+  }
 
+  cancelFriendRequest(event, userId: number) {
+    this.authService.deleteFriendRequest(userId).subscribe(res => {
+      if (res.status === "Success") {
+        if (this.notificationIdsForSendedFriendRequests.includes(userId)) {
+          this.notificationIdsForSendedFriendRequests = this.notificationIdsForSendedFriendRequests.filter(id => id !== userId);
+        }
+      }
+    })
   }
 
   removeFriend(event, userId: number) {

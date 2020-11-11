@@ -47,6 +47,7 @@ namespace BBKBootcampSocial.Web
                 configuration.CreateMap<Post, ShowPostDTO>();
                 configuration.CreateMap<Comment, CommentDTO>();
                 configuration.CreateMap<NewCommentDTO, Comment>();
+                configuration.CreateMap<CommentReplyDTO, Comment>();
                 configuration.CreateMap<User,LoginUserInfoDTO>();
                 //configuration.CreateMap<LikeDTO, Like>();
                 configuration.CreateMap<Like, LikeDTO>();
