@@ -117,7 +117,8 @@ namespace BBKBootcampSocial.Web.Controllers
                         );
 
                         var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-                        var test = new LoginUserInfoDTO
+
+                        return JsonResponseStatus.Success(new LoginUserInfoDTO
                         {
                             Token = tokenString,
                             ExpireTime = 30,
@@ -135,8 +136,7 @@ namespace BBKBootcampSocial.Web.Controllers
                             UserId = user.Id,
                             Notifications = await UserService.GetNotificationsOfUser(user.Id),
                             Friends = await UserService.GetFriendListByUserId(user.Id)
-                        };
-                        return JsonResponseStatus.Success(test);
+                        });
                 }
             }
             return JsonResponseStatus.Error();

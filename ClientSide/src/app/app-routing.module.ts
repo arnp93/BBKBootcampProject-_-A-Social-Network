@@ -12,6 +12,7 @@ import { EditProfileComponent } from './Pages/edit-profile/edit-profile.componen
 import { UserAuthGuard } from './Utilities/UserAuthGuard';
 import { SecurityComponent } from './Pages/security/security.component';
 import { HashtagPostsMainPageComponent } from './Pages/hashtag-posts/hashtag-posts-main-page/hashtag-posts-main-page.component';
+import { SinglePostMainPageComponent } from './Pages/single-post/single-post-main-page/single-post-main-page.component';
 
 const appRoutes:Routes = [
     {path: 'register', component: RegisterComponent},
@@ -25,6 +26,7 @@ const appRoutes:Routes = [
     {path: 'edit-profile', component: EditProfileComponent, canActivate: [UserAuthGuard]},
     {path: 'security', component: SecurityComponent, canActivate: [UserAuthGuard]},
     {path: 'hashtag-posts', component: HashtagPostsMainPageComponent, canActivate: [UserAuthGuard]},
+    {path: 'view-post/:postId', component: SinglePostMainPageComponent, canActivate: [UserAuthGuard]},
     {path: '**', component: NotFoundComponent}
 ]
 

@@ -63,15 +63,6 @@ export class HashtagPostsComponent implements OnInit {
         }
       });
   
-      // this.postService.getAllPosts().subscribe(res => {
-      //   if (res.status === "Success") {
-      //     this.posts = res.data;
-      //     if (res.data[res.data.length - 1] !== undefined) {
-      //       this.lastPostId.emit(res.data[res.data.length - 1].id);
-      //     }
-      //   }
-      // });
-
       this.postService.getCurrentHashtagPosts().subscribe(res => {
         this.posts = res;
             if (res[res.length - 1] !== undefined) {

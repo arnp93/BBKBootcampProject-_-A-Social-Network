@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { NotificationDTO } from '../../../DTOs/Notification/NotificationDTO';
 import { CookieService } from 'ngx-cookie-service';
 // import { SignalRServiceService } from '../../../Services/signal-rservice.service';
+import { FriendDTO } from '../../../DTOs/Account/FriendDTO';
 
 @Component({
   selector: 'app-menu',
@@ -54,6 +55,9 @@ export class MenuComponent implements OnInit {
     this.authService.acceptFriendRequest(userOriginId).subscribe(res => {
       if (res.status === "Success") {
         this.accepted = true;
+        this.authService.userProfile(userOriginId).subscribe(res => {
+          this.thisUser.friends.push(new FriendDTO(res.data.userId,res.data.about + " " + res.data.lastName,res.data.profilePic));
+        });
       }
 
     });

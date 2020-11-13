@@ -86,12 +86,17 @@ namespace BBKBootcampSocial.Web.Controllers
             return JsonResponseStatus.Error();
         }
 
-
         [HttpGet("friends-posts")]
         public async Task<IActionResult> GetFriendsPosts()
         {
             long userId = User.GetUserId();
             return JsonResponseStatus.Success(await postService.GetFriendsPosts(userId));
+        }
+
+        [HttpPost("get-single-post")]
+        public async Task<IActionResult> GetSoinglePost([FromBody] long postId)
+        {
+            return JsonResponseStatus.Success(await postService.GetPostById(postId));
         }
 
         #endregion
@@ -122,7 +127,7 @@ namespace BBKBootcampSocial.Web.Controllers
             if (!ModelState.IsValid)
                 return JsonResponseStatus.Error();
             long userId = User.GetUserId();
-            NewCommentDTO newComment = await commentService.AddComment(new NewCommentDTO {Text = comment.Text, PostId = comment.PostId,UserId = userId },userId);
+            NewCommentDTO newComment = await commentService.AddComment(new NewCommentDTO {Text = comment.Text, PostId = comment.PostId, UserId = comment.UserId },userId);
             User user = userService.GetUserById(userId).Result;
       
             string connectionId = await userService.GetConnectionIdByUserId(newComment.DestinationUserId);

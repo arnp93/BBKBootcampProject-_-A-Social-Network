@@ -101,6 +101,12 @@ function viewProfile(userId) {
     });
 }
 
+function viewSinglePost(postId){
+    window.viewPost.zone.run(() => {
+        window.viewPost.viewPostFunction(postId);
+    });
+}
+
 function replyBtnClicked(e) {
     var replyForm = $(e.parentNode.parentNode).find("form.reply-form");
     if (replyForm.hasClass("hidden")) {

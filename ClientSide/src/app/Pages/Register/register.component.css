@@ -1,213 +1,73 @@
-  #all{
-    height: auto;
-    color: white;
-    font-weight: 400;
-  }
-  #all *{
-    font-family: Roboto, Arial, sans-serif;
-  }
-  .display{
-    display: block;
-  }
-  form {
-    width: 100%;
-    max-width: 100%;
-    float: left;
-    z-index: 0;
-    box-sizing: border-box;
-  }
-  form > div {
-    position: relative;
-    overflow: hidden;
-  }
-  form input[type=text], form input[type=tel], form input[type=password], form input[type=email], form textarea {
-    width: 100%;
-    border: 2px solid #404040;
-    background: none;
-    position: relative;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    padding: 8px 12px;
-    outline: 0;
-    margin-bottom: 15px;
-  }
-  form input[type=text]:valid, form input[type=tel]:valid, form input[type=password]:valid, form input[type=email]:valid, form textarea:valid {
-    background: #181818;
-  }
-  form input[type=text]:focus, form input[type=tel]:focus, form input[type=password]:focus, form input[type=email]:focus, form textarea:focus {
-    border-color: #9900cc;
-  }
-  form input[type=text]:focus + label, form input[type=tel]:focus + label, form input[type=password]:focus + label, form input[type=email]:focus + label, form textarea:focus + label {
-    background: #9900cc;
-    color: white;
-    font-size: 70%;
-    padding: 1px 6px;
-    z-index: 2;
-    text-transform: uppercase;
-  }
-  form label {
-    transition: background 0.2s, color 0.2s, top 0.2s, bottom 0.2s, right 0.2s, left 0.2s;
-    position: absolute;
-    color: #aaaaaa;
-    padding: 12px 12px;
-  }
-  form textarea {
-    display: block;
-    resize: vertical;
+#all{
+  display: flex;
+  justify-content: center;
   }
   
-  form.go-bottom input[type=text], form.go-bottom input[type=tel], form.go-bottom input[type=password], form.go-bottom input[type=email], form.go-bottom textarea {
-    padding: 12px 12px 12px 12px;
-  }
-  form.go-bottom label {
-    top: 0;
+  #myVideo {
+    position: fixed;
+    right: 0;
     bottom: 0;
-    left: 0;
-    width: 100%;
-  }
-  form.go-bottom input:focus, form.go-bottom textarea:focus {
-    padding: 4px 6px 20px 6px;
-  }
-  form.go-bottom input:focus + label, form.go-bottom textarea:focus + label {
-    top: 100%;
-    margin-top: -16px;
+    min-width: 100%; 
+    min-height: 100%;
+    /* opacity: 0.5; */
   }
   
-  .button {
-    letter-spacing: 0;
-    padding: 12px 56px;
-    opacity: 1;
-    font-size: 16px;
-    font-weight: 900;
-    border-radius: 0;
-    position: relative;
-    text-transform: uppercase;
-    opacity: 1;
-    line-height: 20px;
-    display: inline-block;
+  .content {
+    position: fixed;
+    /* bottom: 15%; */
+    /* bottom: 5%; */
+    top: 1%;
+    background: rgba(0, 0, 0, 0.5);
+    color: #f1f1f1;
+    width: 60%;
+    padding: 20px 5%;
+    margin: 0px auto;
+    border-radius: 50px;
+  }
+  #myBtn {
+    width: 200px;
+    font-size: 18px;
+    padding: 10px;
+    border: none;
+    background: #000;
+    color: #fff;
     cursor: pointer;
   }
-  @media screen and (max-width: 767px) {
-    .button {
-      padding: 12px 30px;
-    }
+  
+  #myBtn:hover {
+    background: #ddd;
+    color: black;
   }
   
-  .button:focus {
-    outline: none !important;
+  input{
+  height: 40px;
+  padding-left: 10px;
+  text-align: center;
+  background-color: whitesmoke;
+  color: black !important;
   }
   
-  .button span {
-    z-index: 5;
-    position: relative;
-    font-weight: 600;
+  a{
+    float: right;
+    transition: 0.8s;
+    border-bottom: 1px solid whitesmoke;
+  }
+  a:hover{
+    color: rgb(212, 212, 214) !important;
+    border-bottom: 1px solid blue;
   }
   
-  /* Button left-right
-  ============== */
-  .button--left-right {
-    color: #9900cc;
-    background: transparent;
-    border: 2px solid #9900cc;
-  }
-  .button--left-right:before {
-    width: 0;
-    height: 101%;
-    bottom: 0;
-    left: 0;
-    content: "";
-    position: absolute;
-    z-index: 0;
-    -webkit-transition: all 0.2s;
-    -moz-transition: all 0.2s;
-    transition: all 0.2s;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-  }
-  .button--left-right:before {
-    background: #9900cc;
-  }
-  .button--left-right:hover {
-    color: #ffffff;
-  }
-  .button--left-right:hover:before, .button--left-right:active:before {
-    width: 100%;
+  hr{
+    background-color: whitesmoke;
   }
   
-  .standar-link {
-    color: #9900cc;
-    text-decoration: none;
-    border-bottom: solid 3px #9900cc;
-    padding-bottom: 0px;
-    transition: padding-bottom 0.1s;
-    font-weight: 600;
-  }
-  .standar-link:hover {
-    padding-bottom: 3px;
+  .content{
+    font-size: large;
   }
   
-  .RegisterPage {
-    width: 100%;
-    top: 50%;
-    left: 50%;
+  button{
+    width: 100px;
+    height: 50px;
+    padding: 5px;
+    font-size: large;
   }
-  @media screen and (max-width: 767px) {
-    .RegisterPage {
-      width: 100%;
-      position: relative;
-      top: 0;
-      left: 0;
-      transform: none;
-    }
-  }
-  .RegisterPage__wrap {
-    position: relative;
-    max-width: 85%;
-    width: 767px;
-    margin: auto;
-  }
-  @media screen and (max-width: 767px) {
-    .RegisterPage__wrap {
-      max-width: 95%;
-      width: 100%;
-    }
-  }
-  .RegisterPage__container {
-    display: flex;
-    justify-content: space-around;
-    padding: 20px;
-  }
-  @media screen and (max-width: 767px) {
-    .RegisterPage__container {
-      padding: 10px 0;
-    }
-  }
-  .RegisterPage__boxes {
-    padding: 50px;
-    width: 100%;
-    background-color: #202020;
-    margin: 10px;
-  }
-  .RegisterPage h2 {
-    text-transform: uppercase;
-  }
-  .RegisterPage .button {
-    margin-top: 10px;
-  }
-  .RegisterPage .alreadyAcount {
-    display: inline-block;
-    color: #aaaaaa;
-    margin-top: 30px;
-  }
-  @media screen and (max-width: 767px) {
-    .RegisterPage .alreadyAcount a {
-      margin-top: 5px;
-      display: inherit;
-    }
-  }
-  
-  /*# sourceMappingURL=style.css.map */
-
- 

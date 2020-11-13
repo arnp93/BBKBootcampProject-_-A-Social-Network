@@ -39,7 +39,7 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                 await notificationRepository.AddEntity(
                     new Notification
                     {
-                        UserOriginId = comment.UserId,
+                        UserOriginId = userId,
                         UserDestinationId = await GetUserIdByPostId(comment.PostId),
                         IsRead = false,
                         IsAccepted = false,
@@ -50,6 +50,7 @@ namespace BBKBootcampSocial.Core.AllServices.Services
             }
              
             Comment cm = mapper.Map<Comment>(comment);
+            cm.UserId = userId;
 
             await repository.AddEntity(cm);
 
@@ -99,8 +100,8 @@ namespace BBKBootcampSocial.Core.AllServices.Services
         public async Task<long> GetUserIdByPostId(long postId)
         {
             var postRepository = await unitOfWork.GetRepository<GenericRepository<Post>, Post>();
-
-            return postRepository.GetEntityById(postId).Result.UserId;
+            var user = await postRepository.GetEntityById(postId);
+            return user.UserId;
         }
 
 

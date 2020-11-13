@@ -82,4 +82,8 @@ export class PostService {
   getCurrentHashtagPosts(){
     return this.hashtagPosts;
   }
+
+  getSinglePost(postId:number) : Observable<IResponseDTO<ShowPostDTO>>{
+    return this.http.post<IResponseDTO<ShowPostDTO>>("/api/post/get-single-post", postId);
+  }
 }

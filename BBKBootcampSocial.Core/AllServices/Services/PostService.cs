@@ -154,16 +154,6 @@ namespace BBKBootcampSocial.Core.AllServices.Services
 
 
             return ShowPosts;
-
-            //List<Post> posts = repository.GetEntitiesQuery().Where(p => p.UserId == userId)
-            //    .Include(p => p.Comments.Select(c => new CommentDTO
-            //    {
-            //        FirstName = userService.GetUserById(c.UserId).Result.FirstName.ToString(),
-            //        LastName = userService.GetUserById(c.UserId).Result.LastName.ToString(),
-            //        Text = c.Text
-            //    })).ToList();
-
-            //return mapper.Map<List<ShowPostDTO>>(posts);
         }
 
         public async Task<List<Post>> LoadMorePosts(int currentPage, long userId)
@@ -247,12 +237,11 @@ namespace BBKBootcampSocial.Core.AllServices.Services
             List<ShowPostDTO> ShowPosts = new List<ShowPostDTO>();
 
            
-            List<Post> posts = repository.GetEntitiesQuery().Where(p => !p.IsDelete && p.PostText.Contains("#" + hashtagText)).Include(p => p.User).Include(p => p.Likes).Include(p => p.Comments).ThenInclude(c => c.Replies).OrderByDescending(p => p.Id).Take(10).ToList();
+            var posts = repository.GetEntitiesQuery().Where(p => !p.IsDelete && p.PostText.Contains("#" + hashtagText)).Include(p => p.User).Include(p => p.Likes).Include(p => p.Comments).ThenInclude(c => c.Replies).OrderByDescending(p => p.Id).Take(10);
            
-            posts = posts.Where(p => !p.User.IsPrivate).ToList();
+            posts = posts.Where(p => !p.User.IsPrivate);
             foreach (var post in posts)
             {
-
                 ShowPosts.Add(new ShowPostDTO
                 {
                     Comments = post.Comments.Select(c => new CommentDTO
@@ -300,6 +289,58 @@ namespace BBKBootcampSocial.Core.AllServices.Services
 
 
             return ShowPosts;
+        }
+
+        public async Task<ShowPostDTO> GetPostById(long postId)
+        {
+            var repository = await unitOfWork.GetRepository<GenericRepository<Post>, Post>();
+
+            Post post = repository.GetEntitiesQuery().Where(p => p.Id == postId).Include(p => p.User)
+                .Include(p => p.Likes).Include(p => p.Comments).ThenInclude(c => c.Replies).FirstOrDefault();
+
+            return new ShowPostDTO
+            {
+                Comments = post.Comments.Select(c => new CommentDTO
+                {
+                    Id = c.Id,
+                    FirstName = userService.GetUserById(c.UserId).Result.FirstName,
+                    LastName = userService.GetUserById(c.UserId).Result.LastName,
+                    Text = c.Text,
+                    LikeCount = 0,
+                    PostId = post.Id,
+                    ProfilePic = userService.GetUserById(c.UserId).Result.ProfilePic,
+                    UserId = userService.GetUserById(c.UserId).Result.Id,
+                    ParentId = c.ParentId,
+                    Replies = c.Replies.Select(r => new CommentDTO
+                    {
+                        Id = r.Id,
+                        FirstName = userService.GetUserById(r.UserId).Result.FirstName,
+                        LastName = userService.GetUserById(r.UserId).Result.LastName,
+                        Text = r.Text,
+                        LikeCount = 0,
+                        PostId = post.Id,
+                        ProfilePic = userService.GetUserById(r.UserId).Result.ProfilePic,
+                        UserId = post.UserId,
+                        ParentId = r.ParentId
+                    }).OrderByDescending(r => r.Id).Take(2)
+                }).OrderByDescending(c => c.Id).Take(3),
+                Likes = post.Likes.Where(l => !l.IsDelete).Select(pl => new LikeDTO
+                {
+                    Id = pl.Id,
+                    UserId = pl.UserId,
+                    FirstName = userService.GetUserById(pl.UserId).Result.FirstName,
+                    LastName = userService.GetUserById(pl.UserId).Result.LastName,
+                    ProfilePic = userService.GetUserById(pl.UserId).Result.ProfilePic
+                }).ToList(),
+                PostText = post.PostText,
+                DateTime = post.CreateDate,
+                FileName = post.FileName,
+                Id = post.Id,
+                UserId = post.UserId,
+                CanalId = null,
+                ParentId = null,
+                User = mapper.Map<LoginUserInfoDTO>(post.User)
+            };
         }
 
         public async Task<string> ProfilePic(IFormFile picture, long userId)
@@ -431,7 +472,6 @@ namespace BBKBootcampSocial.Core.AllServices.Services
 
             return showPosts;
         }
-
 
         #endregion
 

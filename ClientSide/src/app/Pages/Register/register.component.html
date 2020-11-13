@@ -1,112 +1,62 @@
 <main id="all">
-  <div class="main-container">
-    <div class="RegisterPage">
-      <div class="RegisterPage__wrap">
-        <div class="RegisterPage__container">
-          <div class="RegisterPage__boxes register" style="display: none;" id="registerForm" >
-            <h1 class="text-error" *ngIf="activeEmailMsg != null">{{activeEmailMsg}}</h1>
-            <h2>Crea tu cuenta</h2>
-            <form [formGroup]="registerForm" (submit)="registerUser()" class="go-bottom">
-              <div>
-                <p class="text-error"
-                  *ngIf="registerForm.controls.firstName.errors?.required && registerForm.controls.firstName.touched">
-                  Required
-                </p>
-                <p class="text-error"
-                  *ngIf="registerForm.controls.firstName.errors?.maxlength && registerForm.controls.firstName.touched">
-                  It cannot be more than 50 characters
-                </p>
-              </div>
-              <div>
-
-                <input id="name" formControlName="firstName" type="text" required>
-                <label for="name">First Name</label>
-              </div>
-              <div>
-                <p class="text-error"
-                  *ngIf="registerForm.controls.lastName.errors?.required && registerForm.controls.lastName.touched">
-                  Required
-                </p>
-                <p class="text-error"
-                  *ngIf="registerForm.controls.lastName.errors?.maxlength && registerForm.controls.lastName.touched">
-                  It cannot be more than 50 characters
-                </p>
-              </div>
-              <div>
-                <input id="surname" formControlName="lastName" type="text" required>
-                <label for="surname">Last Name</label>
-
-              </div>
-              <div>
-                <p class="text-error"
-                  *ngIf="registerForm.controls.email.errors?.required && registerForm.controls.email.touched">
-                  Required
-                </p>
-                <p class="text-error"
-                  *ngIf="registerForm.controls.email.errors?.email && registerForm.controls.email.touched">
-                  This email is not valid
-                </p>
-              </div>
-              <div>
-
-                <input id="email" formControlName="email" type="email" required>
-                <label for="email">Email</label>
-              </div>
-              <div>
-                <p class="text-error"
-                  *ngIf="registerForm.controls.password.errors?.required && registerForm.controls.password.touched">
-                  Required
-                </p>
-                <p class="text-error"
-                  *ngIf="registerForm.controls.password.errors?.maxlength && registerForm.controls.password.touched">
-                  It cannot be more than 150 characters
-                </p>
-                <p class="text-error"
-                  *ngIf="registerForm.controls.password.errors?.minlength && registerForm.controls.password.touched">
-                  Cannot be less than 9 characters
-                </p>
-              </div>
-              <div>
-
-                <input id="password" formControlName="password" type="password" required>
-                <label for="password">Contraseña</label>
-              </div>
-              <div>
-                <p class="text-error"
-                  *ngIf="registerForm.controls.rePassword.errors?.required && registerForm.controls.rePassword.touched">
-                Required
-                </p>
-                <p class="text-error"
-                  *ngIf="registerForm.controls.rePassword.errors?.maxlength && registerForm.controls.rePassword.touched">
-                  It cannot be more than 150 characters
-                </p>
-                <p class="text-error"
-                  *ngIf="registerForm.controls.rePassword.errors?.minlength && registerForm.controls.rePassword.touched">
-                  Cannot be less than 9 characters
-
-                </p>
-              </div>
-              <div>
-
-                <input id="repeatPassword" formControlName="rePassword" type="password" required>
-                <label for="repeatPassword">Repeat Password</label>
-              </div>
-              <div>
-                <button type="submit" id="left-right-button" class="button button--left-right">
-                  <span>Register</span>
-                </button>
-              </div>
-            </form>
-            <p class="alreadyAcount">Do you have an Account? <a class="standar-link" [routerLink]="''"
-                routerLinkActive="router-link-active">Login</a></p>
+  <video autoplay muted loop id="myVideo">
+    <source src="/assets/videos/video-wallpaper.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
+  </video>
+  <div class="content">
 
 
-          </div>
-        </div>
-      </div>
+    <div id="title">
+      <h1>Register</h1>
+      <h5 class="text-error" *ngIf="activeEmailMsg != null">{{activeEmailMsg}}</h5>
+      <hr>
     </div>
+
+    <form [formGroup]="registerForm" (submit)="registerUser()">
+      <div class="form-group">
+        <label for="fname">First Name</label>
+        <input type="text" formControlName="firstName" class="form-control" id="fname"
+          placeholder="Enter your first name...">
+        <p class="text-error"
+          *ngIf="registerForm.controls.firstName.errors?.required && registerForm.controls.firstName.touched">
+          Required
+        </p>
+        <p class="text-error"
+          *ngIf="registerForm.controls.firstName.errors?.maxlength && registerForm.controls.firstName.touched">
+          It cannot be more than 50 characters
+        </p>
+      </div>
+      <div class="form-group">
+        <label for="lname">Last Name</label>
+        <input type="text" formControlName="lastName" class="form-control" id="lname" placeholder="Enter your last name...">
+      </div>
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" formControlName="email" class="form-control" id="email" placeholder="Enter your email...">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" formControlName="password" required class="form-control" id="password"
+          placeholder="Enter your password...">
+      </div>
+      <div class="form-group">
+        <label for="repassword">Repeat Password</label>
+        <input type="password" formControlName="rePassword" required class="form-control" id="repassword"
+          placeholder="Enter your password again...">
+      </div>
+      <!-- <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1">Remind me</label>
+          </div> -->
+      <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+    <a routerLink="" class="link">Login</a>
   </div>
+
 </main>
+
+
+
 
 <div class="my-container">
   <ng-template #customLoadingTemplate>

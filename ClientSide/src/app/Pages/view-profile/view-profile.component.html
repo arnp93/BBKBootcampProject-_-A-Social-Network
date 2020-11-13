@@ -57,7 +57,7 @@
 							<div class="col-lg-6">
 								<div class="central-meta item" *ngIf="user.posts === null">
 									<div class="post-meta">
-										<h5 class="alert alert-danger">You do not have access to this page</h5>
+										<h5 class="alert alert-danger">This page is private</h5>
 									</div>
 								
 								</div>
@@ -77,8 +77,8 @@
 													<span>{{post.dateTime}}</span>
 												</div>
 												<div class="post-meta">
-													<p>
-														{{post.postText}}
+													<p [innerHTML]=post.postText>
+														
 													</p>
 													<img src="{{URL}}/PostFiles/{{post.fileName}}" alt=""
 														*ngIf="post.fileName != null">

@@ -73,11 +73,11 @@ export class ViewProfileComponent implements OnInit {
           this.user.coverPic = res.data.coverPic;
           this.user.profilePic = res.data.profilePic;
           this.user.isPrivate = res.data.isPrivate;
+          this.user.friends = res.data.friends;
           this.user.posts = null
         } else {
           this.user = res.data;
         }
-
       }
     });
 

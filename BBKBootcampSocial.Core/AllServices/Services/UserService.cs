@@ -328,7 +328,7 @@ namespace BBKBootcampSocial.Core.AllServices.Services
         {
             var repository = await unitOfWork.GetRepository<GenericRepository<User>, User>();
 
-            User user = repository.GetEntitiesQuery().Where(u => u.Id == userId).Include(u => u.Posts)
+            User user = repository.GetEntitiesQuery().Where(u => u.Id == userId).Include(u => u.UserFriends).Include(u => u.Posts)
                 .ThenInclude(p => p.Comments).ThenInclude(c => c.Replies).FirstOrDefault();
 
             return new LoginUserInfoDTO
@@ -338,6 +338,12 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                 ProfilePic = user.ProfilePic,
                 UserId = user.Id,
                 IsPrivate = user.IsPrivate,
+                Friends = user.UserFriends.Select(uf => new FriendDTO
+                {
+                    ProfilePicture = GetUserById(uf.FriendUserId).Result.ProfilePic,
+                    UserId = uf.FriendUserId,
+                    UserName = GetUserById(uf.FriendUserId).Result.FirstName + GetUserById(uf.FriendUserId).Result.LastName
+                }).ToList(),
                 Posts = user.Posts.OrderByDescending(p => p.Id).Select(p => new ShowPostDTO
                 {
                     Comments = p.Comments.Select(c => new CommentDTO

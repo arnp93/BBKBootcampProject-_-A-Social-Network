@@ -22,6 +22,7 @@ namespace BBKBootcampSocial.Core.AllServices.IServices
         Task<List<ShowPostDTO>> GetFriendsPosts(long userId);
         Task<LikeDTO> AddOrRemoveLike(long postId, long userId);
         Task<List<ShowPostDTO>> PostsWithHashtag(string hashtagText);
+        Task<ShowPostDTO> GetPostById(long postId);
 
     }
 }

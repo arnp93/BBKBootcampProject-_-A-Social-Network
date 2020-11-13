@@ -34,6 +34,8 @@ import { EditProfileComponent } from './Pages/edit-profile/edit-profile.componen
 import { SecurityComponent } from './Pages/security/security.component';
 import { HashtagPostsComponent } from './Pages/hashtag-posts/hashtag-posts.component';
 import { HashtagPostsMainPageComponent } from './Pages/hashtag-posts/hashtag-posts-main-page/hashtag-posts-main-page.component';
+import { SinglePostComponent } from './Pages/single-post/single-post.component';
+import { SinglePostMainPageComponent } from './Pages/single-post/single-post-main-page/single-post-main-page.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +65,8 @@ import { HashtagPostsMainPageComponent } from './Pages/hashtag-posts/hashtag-pos
     SecurityComponent,
     HashtagPostsComponent,
     HashtagPostsMainPageComponent,
+    SinglePostComponent,
+    SinglePostMainPageComponent,
   ],
   imports: [
     BrowserModule,

@@ -6,6 +6,7 @@ import { ShowPostDTO } from 'src/app/DTOs/Post/ShowPostDTO';
 import { PostService } from 'src/app/Services/post.service';
 import { DomainName } from 'src/app/Utilities/PathTools';
 import { AuthServiceService } from '../../../Services/auth-service.service';
+import { SignalrService } from '../../../Services/signalr.service';
 
 declare function addEventListenertoHashtagList();
 
@@ -31,7 +32,7 @@ export class IndexComponent implements OnInit, AfterViewInit {
 
   @ViewChild('profilePicError') private emailExist: SwalComponent;
 
-  constructor(private ngZone: NgZone,private router : Router,private authService: AuthServiceService, private postService: PostService, private route: Router) { }
+  constructor(private signalrService : SignalrService,private ngZone: NgZone,private router : Router,private authService: AuthServiceService, private postService: PostService, private route: Router) { }
   ngAfterViewInit(): void {
   }
 
@@ -40,15 +41,24 @@ export class IndexComponent implements OnInit, AfterViewInit {
     addEventListenertoHashtagList();
 
     window['hashtagClick'] = { component: this, zone: this.ngZone, hashtagClickedFunction: (hashtagText) => this.returnToHashtagPage(hashtagText) }; 
+    window['viewPost'] = { component: this, zone: this.ngZone, viewPostFunction: (postId) => this.viewSinglePost(postId) }; 
 
 
     this.authService.getCurrentUser().subscribe(res => {
       this.thisUser = res;
+      this.signalrService.startConnection();
+      setTimeout(() => {
+        // this.signalrService.askServerListener();
+        this.signalrService.askServer(res.userId);
+      }, 1500);
       if (res === null) {
         this.route.navigate([""]);
       }
     });
 
+
+
+    
     this.authService.checkAuth().subscribe(res => {
       if (res.status === 'Success') {
         const currentUser = new UserDTO(
@@ -123,6 +133,7 @@ export class IndexComponent implements OnInit, AfterViewInit {
     this.uploadPic();
     this.isLoading = false;
   }
+
   addCoverPic(event) {
     this.isLoading = true;
     this.selectedCoverPicture = <File>event.target.files[0];
@@ -161,5 +172,9 @@ export class IndexComponent implements OnInit, AfterViewInit {
       }
     });
 
+  }
+
+  viewSinglePost(postId: number) {
+    this.router.navigate(['/view-post', postId])
   }
 }

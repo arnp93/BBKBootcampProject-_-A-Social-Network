@@ -93,7 +93,7 @@ export class SignalrService {
             <div>
                 <span>
                     <input class="btn-xs btn-success small btn-margin"
-                        type="button" value="View" onclick="viewCommentedPost(event,${notification.postId})">
+                        type="button" value="View" onclick="viewSinglePost(${notification.postId})">
                 </span>
                 <input class="btn-xs btn-warning small btn-margin" type="button" value="Remove"
                     onclick="removeNotification(${notification.id})">

@@ -12,7 +12,6 @@ namespace BBKBootcampSocial.Domains.Canal
 
         #endregion
 
-
         #region Relations
 
         public User.User user { get; set; }
