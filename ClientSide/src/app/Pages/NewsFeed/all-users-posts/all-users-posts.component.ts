@@ -11,6 +11,7 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { UserDTO } from '../../../DTOs/Account/UserDTO';
 import { AuthServiceService } from '../../../Services/auth-service.service';
 import { EditPostDTO } from 'src/app/DTOs/Post/EditPostDTO';
+import { ReplyCommentDTO } from 'src/app/DTOs/CommentDTOs/ReplyCommentDTO';
 
 declare function addEventListenertoHashtagListFromAngular();
 
@@ -31,6 +32,7 @@ export class AllUsersPostsComponent implements OnInit {
   public userId: number;
 
   @ViewChild('editProfileError') private editError: SwalComponent;
+  
   //for check if user is in friends list (manage Add Friend and Remove Friend in posts menu)
   public friendsIds: number[] = [];
   public activeNotificationsIds: number[] = [];
@@ -133,7 +135,19 @@ export class AllUsersPostsComponent implements OnInit {
 
   postSubmit(event, postId: number): void {
 
-    const newPostText = event.target.firstChild.value;
+    let newPostText = event.target.firstChild.value;
+
+    let postWordsArray = newPostText.split(" ");
+    newPostText = "";
+    if(postWordsArray.length > 0){
+      for (let i = 0; i < postWordsArray.length; i++) {
+        if(postWordsArray[i].startsWith("#")){
+          postWordsArray[i] = `<a class="link-hashtag"> ${postWordsArray[i]} </a>`
+        }
+      
+        newPostText += " " + postWordsArray[i]; 
+      }
+    }
 
     this.postService.editPost(new EditPostDTO(newPostText, postId)).subscribe(res => {
       if (res.status === "Success") {
@@ -161,7 +175,24 @@ export class AllUsersPostsComponent implements OnInit {
       }
     })
   }
+  newCommentReplySubmit(postId,commentId,parentCommentUserId){
+    const newComment = new ReplyCommentDTO(
+      this.commentForm.controls.text.value,
+      parseInt(postId),
+      parseInt(parentCommentUserId),
+      parseInt(commentId)
+    );
 
+    this.commentService.replyComment(newComment).subscribe(res => {
+      if (res.status === "Success") {
+        res.data.profilePic = this.thisUser.profilePic;
+        let post = this.posts.filter(p => p.id === postId)[0];
+        let comment = post.comments.filter(c => c.id === commentId)[0];
+        comment.replies.unshift(res.data);
+        this.commentForm.reset();
+      }
+    });
+  }
   removeFriend(event, userId: number) {
 
   }

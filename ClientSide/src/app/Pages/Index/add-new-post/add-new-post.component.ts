@@ -45,6 +45,7 @@ export class AddNewPostComponent implements OnInit {
     const formData: FormData = new FormData();
     if (this.selectedFile != null)
       formData.append("FileName", this.selectedFile, this.selectedFile.name);
+      
       let postText = this.PostForm.controls.postText.value;
       let postWordsArray = postText.split(" ");
       postText = "";

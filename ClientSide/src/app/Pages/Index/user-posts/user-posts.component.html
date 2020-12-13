@@ -44,7 +44,7 @@
                         <li>
                             <span class="views" data-toggle="tooltip" title="views">
                                 <i class="fa fa-eye"></i>
-                                <ins>1.2k</ins>
+                                <ins>0</ins>
                             </span>
                         </li>
                         <li>
@@ -56,7 +56,7 @@
                         <li>
                             <span class="like" data-toggle="tooltip" title="like">
                                 <i class="ti-heart"></i>
-                                <ins>52</ins>
+                                <ins>0</ins>
                             </span>
                         </li>
                         <li class="social-media">
@@ -107,11 +107,13 @@
         <div class="coment-area">
             <ul class="we-comet" *ngIf="newComments.length > 0">
                 <li *ngFor="let newComment of newComments">
+                    <span class="fa fa-ellipsis-h pull-right link menu-icon"></span>
                     <div>
                         <div class="comet-avatar">
                             <img *ngIf="newComment.profilePic === null" src="/assets/images/account.png" alt="">
                             <img style="height: 50px;width: 50px;" *ngIf="newComment.profilePic !== null"
                                 [src]="URL+'/ProfilePictures/'+newComment.profilePic" alt="">
+
                         </div>
                         <div class="we-comment">
                             <div class="coment-head">
@@ -136,56 +138,31 @@
                         </div>
                         <div class="we-comment">
                             <div class="coment-head">
+                                <div>
+                                    <span class="fa fa-ellipsis-h pull-right link menu-icon"
+                                        onclick="openCommentMenu(this)"></span>
+                                </div>
                                 <h5><a class="link" (click)="viewProfile(comment.userId)">{{comment.firstName}}
                                         {{comment.lastName}}</a>
                                 </h5>
-                                <span>1 year ago</span>
-                                <a class="we-reply link" onclick="replyBtnClicked(this)" title="Reply"><i class="fa fa-reply"></i></a>
+                                <span>Just Now</span>
+                                <a class="we-reply link" onclick="replyBtnClicked(this)" title="Reply"><i
+                                        class="fa fa-reply"></i></a>
+                            </div>
+                            <div class="post-menu pull-right comment-menu">
+                                <ul>
+                                    <li class="link" onclick="editPost(event)">Delete</li>
+                                    <li class="link" onclick="editPost(event)">Edit</li>
+
+                                </ul>
                             </div>
                             <p>{{comment.text}}</p>
-                            <li class="post-comment comment-reply-section">
-                                <div class="post-comt-box">
-                                    <form class="reply-form hidden" [formGroup]="commentForm" (submit)="newCommentReplySubmit(post.id,comment.id,comment.userId)">
-                                        <textarea class="reply-text" formControlName="text" placeholder="Post your comment"></textarea>
-                                        <div class="add-smiles" style="margin-top: 11px;margin-right: 5px;">
-                                            <br>
-                                            <button style="background-color:cadetblue ;height: 35px;" type="submit">Post</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </li>
-                        </div>
-                    </div>
-
-                    <ul *ngFor="let reply of comment.replies">
-                        <div *ngIf="reply.parentId === comment.id">
-                            <li>
-                                <div class="comet-avatar">
-                                    <img *ngIf="reply.profilePic === null" src="/assets/images/account.png" alt="">
-                                    <img style="height: 50px;width: 50px;" *ngIf="reply.profilePic !== null"
-                                        [src]="URL+'/ProfilePictures/'+ reply.profilePic" alt="">
-                                </div>
-                                <div class="we-comment">
-                                    <div class="coment-head">
-                                        <h5>
-                                            <a (click)="viewProfile(comment.userId)">{{reply.firstName}} {{reply.lastName}}</a>
-                                        </h5>
-                                        <span>1 month ago</span>
-                                        <!-- <a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a> -->
-                                    </div>
-                                    <p>{{reply.text}}</p>
-                                </div>
-                            </li>
-                        </div>
-                    </ul>
-                </li>
-                <li *ngIf="post.comments.length !== 0">
-                    <a class="showmore underline">more comments</a>
-                </li>
-                <li class="post-comment">
+                <li class="post-comment comment-reply-section">
                     <div class="post-comt-box">
-                        <form [formGroup]="commentForm" (submit)="newCommentSubmit(post.id)">
-                            <textarea formControlName="text" placeholder="Post your comment"></textarea>
+                        <form class="reply-form hidden" [formGroup]="commentForm"
+                            (submit)="newCommentReplySubmit(post.id,comment.id,comment.userId)">
+                            <textarea class="reply-text" formControlName="text"
+                                placeholder="Post your comment"></textarea>
                             <div class="add-smiles" style="margin-top: 11px;margin-right: 5px;">
                                 <br>
                                 <button style="background-color:cadetblue ;height: 35px;" type="submit">Post</button>
@@ -193,9 +170,48 @@
                         </form>
                     </div>
                 </li>
-            </ul>
         </div>
     </div>
+
+    <ul *ngFor="let reply of comment.replies">
+        <div *ngIf="reply.parentId === comment.id">
+            <li>
+                <div class="comet-avatar">
+                    <img *ngIf="reply.profilePic === null" src="/assets/images/account.png" alt="">
+                    <img style="height: 50px;width: 50px;" *ngIf="reply.profilePic !== null"
+                        [src]="URL+'/ProfilePictures/'+ reply.profilePic" alt="">
+                </div>
+                <div class="we-comment">
+                    <div class="coment-head">
+                        <h5>
+                            <a (click)="viewProfile(comment.userId)">{{reply.firstName}} {{reply.lastName}}</a>
+                        </h5>
+                        <span>1 month ago</span>
+                        <!-- <a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a> -->
+                    </div>
+                    <p>{{reply.text}}</p>
+                </div>
+            </li>
+        </div>
+    </ul>
+    </li>
+    <li *ngIf="post.comments.length !== 0">
+        <a class="showmore underline">more comments</a>
+    </li>
+    <li class="post-comment">
+        <div class="post-comt-box">
+            <form [formGroup]="commentForm" (submit)="newCommentSubmit(post.id)">
+                <textarea formControlName="text" placeholder="Post your comment"></textarea>
+                <div class="add-smiles" style="margin-top: 11px;margin-right: 5px;">
+                    <br>
+                    <button style="background-color:cadetblue ;height: 35px;" type="submit">Post</button>
+                </div>
+            </form>
+        </div>
+    </li>
+    </ul>
+</div>
+</div>
 </div>
 
 <swal #editProfileError text="Error in edit post... Please try again later" title="Oops" icon="error"

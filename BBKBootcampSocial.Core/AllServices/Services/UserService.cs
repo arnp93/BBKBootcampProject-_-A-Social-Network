@@ -346,16 +346,30 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                 }).ToList(),
                 Posts = user.Posts.OrderByDescending(p => p.Id).Select(p => new ShowPostDTO
                 {
-                    Comments = p.Comments.Select(c => new CommentDTO
+                    Comments = p.Comments.Where(c => c.ParentId == null).Select(c => new CommentDTO
                     {
                         Id = c.Id,
+                        FirstName = GetUserById(c.UserId).GetAwaiter().GetResult().FirstName,
+                        LastName = GetUserById(c.UserId).GetAwaiter().GetResult().LastName,
                         Text = c.Text,
-                        FirstName = GetUserById(c.UserId).Result.FirstName,
-                        LastName = GetUserById(c.UserId).Result.LastName,
-                        PostId = c.PostId,
-                        UserId = GetUserById(c.UserId).Result.Id,
-                        ProfilePic = GetUserById(c.UserId).Result.ProfilePic
-                    }).Take(3),
+                        LikeCount = c.LikeCount,
+                        PostId = p.Id,
+                        ProfilePic = GetUserById(c.UserId).GetAwaiter().GetResult().ProfilePic,
+                        UserId = GetUserById(c.UserId).GetAwaiter().GetResult().Id,
+                        ParentId = c.ParentId,
+                        Replies = p.Comments.OrderByDescending(o => o.Id).Where(r => r.ParentId == c.Id).Select(r => new CommentDTO
+                        {
+                            Id = r.Id,
+                            FirstName = GetUserById(r.UserId).GetAwaiter().GetResult().FirstName,
+                            LastName = GetUserById(r.UserId).GetAwaiter().GetResult().LastName,
+                            Text = r.Text,
+                            LikeCount = r.LikeCount,
+                            PostId = p.Id,
+                            ProfilePic = GetUserById(r.UserId).GetAwaiter().GetResult().ProfilePic,
+                            UserId = GetUserById(r.UserId).GetAwaiter().GetResult().Id,
+                            ParentId = r.ParentId
+                        }).Take(2).ToList().OrderBy(r => r.Id)
+                    }).OrderByDescending(c => c.Id).Take(3).ToList(),
                     FileName = p.FileName,
                     Id = p.Id,
                     PostText = p.PostText
@@ -420,6 +434,7 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                         UserOriginId = n.UserOriginId,
                         UserDestinationId = n.UserDestinationId,
                         IsRead = n.IsRead,
+                        PostId = n.PostId,
                         IsAccepted = n.IsAccepted,
                         TypeOfNotification = n.TypeOfNotification,
                         User = new LoginUserInfoDTO

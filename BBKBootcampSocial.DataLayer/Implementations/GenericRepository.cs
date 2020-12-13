@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 using BBKBootcampSocial.DataLayer.Interfaces;
-using System.Linq;
 
 namespace BBKBootcampSocial.DataLayer.Implementations
 {

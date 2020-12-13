@@ -20,7 +20,7 @@
             </div>
         </li>
         <li><a href="newsfeed.html" title="Home" data-ripple=""><i class="ti-home"></i></a></li>
-        <li>
+        <li onclick="">
             <a href="#" title="Notification" id="menu-window" data-ripple="">
                 <i class="ti-bell"></i><span id="notification-count"
                     *ngIf="unreadNotifications !== undefined && unreadNotifications !== null && unreadNotifications.length > 0">{{unreadNotifications.length}}</span>
@@ -41,7 +41,7 @@
                                 <span *ngIf="notification.typeOfNotification === 0 && notification.isAccepted">Accepted
                                     Friend Request</span>
                                 <span *ngIf="notification.typeOfNotification === 0 && accepted">Accepted!</span>
-                                <span *ngIf="notification.typeOfNotification === 1">Te ha dejado un comentario </span>
+                                <span *ngIf="notification.typeOfNotification === 1">Has left you a Comment </span>
                                 <i>{{notification.createDate}}</i>
                                 <div>
                                     <span *ngIf="notification.typeOfNotification === 0 && !notification.isAccepted">
@@ -55,7 +55,7 @@
                                 </div>
 
                                 <div *ngIf="notification.typeOfNotification === 1">
-                                    <input class="btn-xs btn-success small btn-margin" type="button" value="View">
+                                    <input class="btn-xs btn-success small btn-margin" type="button" (click)="viewPost(notification.postId)" value="View">
                                 </div>
                             </div>
                         </a>
@@ -75,7 +75,7 @@
             </div>
         </li>
         <li>
-            <a href="#" title="Messages" data-ripple=""><i class="ti-comment"></i><span>12</span></a>
+            <a href="#" title="Messages" data-ripple=""><i class="ti-comment"></i><span>0</span></a>
             <div class="dropdowns">
                 <span>5 New Messages</span>
                 <ul class="drops-menu">

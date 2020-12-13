@@ -1,13 +1,14 @@
+import { UserDTO } from './../../DTOs/Account/UserDTO';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommentDTO } from 'src/app/DTOs/CommentDTOs/CommentDTO';
 import { SendCommentDTO } from 'src/app/DTOs/CommentDTOs/SendCommentDTO';
-import { UserDTO } from '../../DTOs/Account/UserDTO';
 import { AuthServiceService } from '../../Services/auth-service.service';
 import { DomainName } from '../../Utilities/PathTools';
 import { CommentService } from '../../Services/comment.service';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
+import { ReplyCommentDTO } from 'src/app/DTOs/CommentDTOs/ReplyCommentDTO';
 
 @Component({
   selector: 'app-view-profile',
@@ -22,6 +23,7 @@ export class ViewProfileComponent implements OnInit {
   public user: UserDTO = new UserDTO(
     null, null, null, null, null, null, null, null, null, null, null, null, null, [], [], []
   );
+  public thisUser : UserDTO;
   public newComments: CommentDTO[] = [];
   public commentForm: FormGroup;
   @ViewChild('errorPrivate') private errorPrivate: SwalComponent;
@@ -36,8 +38,11 @@ export class ViewProfileComponent implements OnInit {
   ngOnInit(): void {
 
     this.authService.getCurrentUser().subscribe(res => {
-      if (res !== null)
+      if (res !== null){
         this.thisUserId = res.userId;
+        this.thisUser = res;
+      }
+        
 
       if (res !== null && res.friends !== null) {
         for (let i = 0; i < res.friends.length; i++) {
@@ -89,6 +94,9 @@ export class ViewProfileComponent implements OnInit {
     });
 
     window.scrollTo(0, 0);
+
+    
+    
   }
 
   newCommentSubmit(postId) {
@@ -129,7 +137,30 @@ export class ViewProfileComponent implements OnInit {
           this.notificationIdsForSendedFriendRequests = this.notificationIdsForSendedFriendRequests.filter(id => id !== userId);
         }
       }
-    })
+    });
+  }
+
+  newCommentReplySubmit(postId,commentId,parentCommentUserId){
+    const newComment = new ReplyCommentDTO(
+      this.commentForm.controls.text.value,
+      parseInt(postId),
+      parseInt(parentCommentUserId),
+      parseInt(commentId)
+    );
+
+    this.commentService.replyComment(newComment).subscribe(res => {
+      if (res.status === "Success") {
+        res.data.profilePic = this.thisUser.profilePic;
+        let post = this.user.posts.filter(p => p.id === postId)[0];
+        
+        let comment = post.comments.filter(c => c.id === commentId)[0];
+        console.log(res);
+        
+          comment.replies.unshift(res.data);
+        
+        this.commentForm.reset();
+      }
+    });
   }
 
 }

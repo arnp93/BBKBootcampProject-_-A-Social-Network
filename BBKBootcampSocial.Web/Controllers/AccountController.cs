@@ -118,6 +118,7 @@ namespace BBKBootcampSocial.Web.Controllers
 
                         var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
 
+
                         return JsonResponseStatus.Success(new LoginUserInfoDTO
                         {
                             Token = tokenString,
@@ -278,5 +279,6 @@ namespace BBKBootcampSocial.Web.Controllers
         }
 
         #endregion
+
     }
 }

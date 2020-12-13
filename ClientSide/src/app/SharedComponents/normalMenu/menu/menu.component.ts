@@ -7,6 +7,7 @@ import { NotificationDTO } from '../../../DTOs/Notification/NotificationDTO';
 import { CookieService } from 'ngx-cookie-service';
 // import { SignalRServiceService } from '../../../Services/signal-rservice.service';
 import { FriendDTO } from '../../../DTOs/Account/FriendDTO';
+import { PostService } from '../../../Services/post.service';
 
 @Component({
   selector: 'app-menu',
@@ -22,7 +23,7 @@ export class MenuComponent implements OnInit {
   public accepted: boolean = false;
   public newNotification: NotificationDTO = null;
 
-  constructor(private ngZone: NgZone,private authService: AuthServiceService, private router: Router, private cookieService: CookieService) { }
+  constructor(private ngZone: NgZone,private authService: AuthServiceService, private router: Router, private cookieService: CookieService,private postService : PostService) { }
 
   ngOnInit(): void {
     window['signalFriendRequestAccept'] = { component: this, zone: this.ngZone, acceptRequestFunction: (friendId) => this.friendAcc(friendId) }; 
@@ -33,14 +34,12 @@ export class MenuComponent implements OnInit {
    
     this.authService.getCurrentUser().subscribe(res => {
       this.thisUser = res;
-
     });
 
     if (this.thisUser !== undefined && this.thisUser !== null && this.thisUser.notifications !== undefined && this.thisUser.notifications !== null)
       this.unreadNotifications = this.thisUser.notifications.filter(n => !n.isRead && !n.isDelete && n.userDestinationId === this.thisUser.userId && n.userOriginId !== this.thisUser.userId)
     if (this.thisUser !== undefined && this.thisUser !== null)
       this.lastNotifications = this.thisUser.notifications.filter(n => n.isRead);
-
   }
 
   goToProfile() {
@@ -77,5 +76,13 @@ export class MenuComponent implements OnInit {
         this.unreadNotifications = this.unreadNotifications.filter(n => n.id !== notificationId);
       }
     });
+  }
+
+  viewPost(postId : number){
+    this.postService.getSinglePost(postId).subscribe(res => {
+      if(res.status === "Success"){
+        this.router.navigate(['/view-post', postId])
+      }
+    })
   }
 }

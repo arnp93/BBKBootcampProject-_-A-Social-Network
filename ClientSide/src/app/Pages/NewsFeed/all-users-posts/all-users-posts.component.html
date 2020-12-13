@@ -125,9 +125,20 @@
                                         {{newComment.lastName}}</a>
                                 </h5>
                                 <span>1 year ago</span>
-                                <a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a>
+                                <a class="we-reply link" onclick="replyBtnClicked(this)" title="Reply"><i class="fa fa-reply"></i></a>
                             </div>
                             <p>{{newComment.text}}</p>
+                            <li class="post-comment comment-reply-section">
+                                <div class="post-comt-box">
+                                    <form class="reply-form hidden" [formGroup]="commentForm" (submit)="newCommentReplySubmit(post.id,newComment.id,newComment.userId)">
+                                        <textarea class="reply-text" formControlName="text" placeholder="Post your comment"></textarea>
+                                        <div class="add-smiles" style="margin-top: 11px;margin-right: 5px;">
+                                            <br>
+                                            <button style="background-color:cadetblue ;height: 35px;" type="submit">Post</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </li>
                         </div>
                     </div>
                 </li>
@@ -146,9 +157,20 @@
                                         {{comment.lastName}}</a>
                                 </h5>
                                 <span>1 year ago</span>
-                                <a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a>
+                                <a class="we-reply link" onclick="replyBtnClicked(this)" title="Reply"><i class="fa fa-reply"></i></a>
                             </div>
                             <p>{{comment.text}}</p>
+                            <li class="post-comment comment-reply-section">
+                                <div class="post-comt-box">
+                                    <form class="reply-form hidden" [formGroup]="commentForm" (submit)="newCommentReplySubmit(post.id,comment.id,comment.userId)">
+                                        <textarea class="reply-text" formControlName="text" placeholder="Post your comment"></textarea>
+                                        <div class="add-smiles" style="margin-top: 11px;margin-right: 5px;">
+                                            <br>
+                                            <button style="background-color:cadetblue ;height: 35px;" type="submit">Post</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </li>
                         </div>
                     </div>
 
@@ -166,7 +188,6 @@
                                                 title="">{{reply.firstName}}
                                                 {{reply.lastName}}</a></h5>
                                         <span>1 month ago</span>
-                                        <a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a>
                                     </div>
                                     <p>{{reply.text}}</p>
                                 </div>

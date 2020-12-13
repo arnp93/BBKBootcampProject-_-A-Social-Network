@@ -94,7 +94,7 @@ namespace BBKBootcampSocial.Web.Controllers
         }
 
         [HttpPost("get-single-post")]
-        public async Task<IActionResult> GetSoinglePost([FromBody] long postId)
+        public async Task<IActionResult> GetSinglePost([FromBody] long postId)
         {
             return JsonResponseStatus.Success(await postService.GetPostById(postId));
         }

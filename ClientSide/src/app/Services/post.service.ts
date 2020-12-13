@@ -86,4 +86,8 @@ export class PostService {
   getSinglePost(postId:number) : Observable<IResponseDTO<ShowPostDTO>>{
     return this.http.post<IResponseDTO<ShowPostDTO>>("/api/post/get-single-post", postId);
   }
+
+  deleteComment(commentId : number) : Observable<IResponseDTO<any>>{
+    return this.http.post<IResponseDTO<any>>("/api/post/delete-comment",commentId);
+  }
 }

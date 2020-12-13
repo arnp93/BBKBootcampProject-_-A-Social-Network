@@ -9,6 +9,7 @@ namespace BBKBootcampSocial.Domains.User
 {
     public class User : BaseEntity
     {
+
         #region Properties
 
         [Display(Name = "Username")]

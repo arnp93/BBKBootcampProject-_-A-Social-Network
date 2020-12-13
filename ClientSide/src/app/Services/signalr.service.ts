@@ -79,7 +79,6 @@ export class SignalrService {
   }
 
   NewComment(notification: NotificationDTO) {
-    var date = new Date();
     let innerHtmlOfMenu = document.getElementById("notifications").innerHTML;
     var newNotification = ` <li *ngFor="let notification of unreadNotifications">
     <a *ngIf="thisUser.notifications.length > 0">
@@ -118,8 +117,4 @@ export class SignalrService {
     document.getElementById("notifyComment").innerHTML = notification.user.firstName + " " + notification.user.lastName + "-" + notification.message;
     document.getElementById("notifyComment").click();
   }
-  // friendAcc(friendId: any) {
-  //   throw new Error('Method not implemented.');
-  // }
-
 }

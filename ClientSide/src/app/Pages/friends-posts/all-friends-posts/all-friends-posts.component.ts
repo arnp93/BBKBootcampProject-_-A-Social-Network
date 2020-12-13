@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { UserDTO } from 'src/app/DTOs/Account/UserDTO';
 import { CommentDTO } from 'src/app/DTOs/CommentDTOs/CommentDTO';
+import { ReplyCommentDTO } from 'src/app/DTOs/CommentDTOs/ReplyCommentDTO';
 import { SendCommentDTO } from 'src/app/DTOs/CommentDTOs/SendCommentDTO';
 import { ShowPostDTO } from 'src/app/DTOs/Post/ShowPostDTO';
 import { AuthServiceService } from 'src/app/Services/auth-service.service';
@@ -119,6 +120,27 @@ export class AllFriendsPostsComponent implements OnInit {
       }
     });
   }
+
+
+  newCommentReplySubmit(postId,commentId,parentCommentUserId){
+    const newComment = new ReplyCommentDTO(
+      this.commentForm.controls.text.value,
+      parseInt(postId),
+      parseInt(parentCommentUserId),
+      parseInt(commentId)
+    );
+
+    this.commentService.replyComment(newComment).subscribe(res => {
+      if (res.status === "Success") {
+        res.data.profilePic = this.thisUser.profilePic;
+        let post = this.posts.filter(p => p.id === postId)[0];
+        let comment = post.comments.filter(c => c.id === commentId)[0];
+        comment.replies.unshift(res.data);
+        this.commentForm.reset();
+      }
+    });
+  }
+
 
   removeRequest(event, userId: number) {
 

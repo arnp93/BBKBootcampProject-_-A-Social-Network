@@ -41,6 +41,7 @@ namespace BBKBootcampSocial.Core.AllServices.Services
                     {
                         UserOriginId = userId,
                         UserDestinationId = await GetUserIdByPostId(comment.PostId),
+                        PostId = comment.PostId,
                         IsRead = false,
                         IsAccepted = false,
                         IsDelete = false,
@@ -102,6 +103,13 @@ namespace BBKBootcampSocial.Core.AllServices.Services
             var postRepository = await unitOfWork.GetRepository<GenericRepository<Post>, Post>();
             var user = await postRepository.GetEntityById(postId);
             return user.UserId;
+        }
+
+        public async Task DeleteComment(long commentId)
+        {
+            var repository = await unitOfWork.GetRepository<GenericRepository<Comment>, Comment>();
+
+            await repository.RemoveEntity(commentId);
         }
 
 
