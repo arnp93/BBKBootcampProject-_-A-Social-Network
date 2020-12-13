@@ -1,5 +1,5 @@
 
-Una Red social completo:
+Una Red social:
 
 ASP.NET CORE - API _ ANGULAR -SIGNALR
 
