@@ -1,6 +1,6 @@
 
 Una Red social:
 
-ASP.NET CORE - API _ ANGULAR -SIGNALR
+ASP.NET CORE API _ ENTITY FRAMEWORK _ ANGULAR _ SIGNALR
 
-Desarrollando...
+En desarrollo...
