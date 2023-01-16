@@ -144,7 +144,7 @@ namespace BBKBootcampSocial.Web
                 endpoints.MapHub<NotificationHub>("/notificationHub");
             });
 
-            #region SignalR Configuration
+            #region SignalR Configuration (OLD VERSION)
 
             //app.UseSignalR(route =>
             //{

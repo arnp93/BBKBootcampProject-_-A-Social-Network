@@ -66,7 +66,7 @@ import { SinglePostMainPageComponent } from './Pages/single-post/single-post-mai
     HashtagPostsComponent,
     HashtagPostsMainPageComponent,
     SinglePostComponent,
-    SinglePostMainPageComponent,
+    SinglePostMainPageComponent
   ],
   imports: [
     BrowserModule,

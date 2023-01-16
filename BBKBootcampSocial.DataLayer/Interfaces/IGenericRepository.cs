@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BBKBootcampSocial.DataLayer.Interfaces
 {
-    public interface IGenericRepository<TEntity> : IDisposable where  TEntity : BaseEntity
+    public interface IGenericRepository<TEntity> : IDisposable where TEntity : BaseEntity
     {
         IQueryable<TEntity> GetEntitiesQuery();
 

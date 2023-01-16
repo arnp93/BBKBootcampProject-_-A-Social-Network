@@ -31,7 +31,7 @@ export class AuthServiceService {
     return this.IsRegisteredNow;
   }
   LoginUser(login: UserLoginDTO): Observable<ILoginUserAccount> {
-    return this.http.post<any>('/api/account/login', login);
+    return this.http.post<ILoginUserAccount>('/api/account/login', login);
   }
 
   setCurrentUser(user: UserDTO): void {

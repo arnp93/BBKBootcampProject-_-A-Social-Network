@@ -7,10 +7,8 @@ namespace BBKBootcampSocial.IoC
 {
     public class DependencyContainer
     {
-
         public static void RegisterServices(IServiceCollection services)
         {
-            
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IMailSender, SendEmail>();
             services.AddScoped<IViewRenderService, RenderViewToString>();

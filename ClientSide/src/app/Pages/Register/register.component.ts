@@ -23,7 +23,7 @@ export class RegisterComponent implements OnInit {
       if (res != null) {
         this.route.navigate(["index"]);
       }
-    })
+    });
     
 
     if (document.getElementById("registerForm") !== null && document.getElementById("registerForm") !== undefined) {
@@ -32,7 +32,6 @@ export class RegisterComponent implements OnInit {
         document.getElementById("registerForm").style.display = "block";
       }, 1500);
     }
-
 
     //Form Group
     this.registerForm = new FormGroup({
@@ -83,7 +82,7 @@ export class RegisterComponent implements OnInit {
       this.authService.RegisterUser(registerData).subscribe(res => {
         if (res.status === "Success") {
           this.authService.setAlertOfNewRegister();
-          this.activeEmailMsg = "Te hemos enviado un email con el enlace de Activar tu cuenta"
+          this.activeEmailMsg = "Te hemos enviado un email con el enlace de activar tu cuenta"
           this.loading = false;
         } else {
           this.loading = false;
@@ -99,5 +98,4 @@ export class RegisterComponent implements OnInit {
       this.emailExist.fire();
     }
   }
-
 }

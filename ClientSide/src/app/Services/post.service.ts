@@ -7,7 +7,6 @@ import { IResponseDTO } from '../DTOs/Common/IResponseDTO';
 import { EditPostDTO } from '../DTOs/Post/EditPostDTO';
 import { LikeDTO } from '../DTOs/Post/LikeDTO';
 import { ShowPostDTO } from '../DTOs/Post/ShowPostDTO';
-import { stringify } from 'querystring';
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +38,6 @@ export class PostService {
 
   getMorePosts(currentPage: number): Observable<PostResultResponse> {
     let params: HttpParams = new HttpParams().set("CurrentPage", currentPage.toString());
-
     return this.http.post<PostResultResponse>("/api/post/load-posts", params);
   }
 

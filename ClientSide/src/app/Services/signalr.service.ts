@@ -26,19 +26,19 @@ export class SignalrService {
     this.hubConnection.on("AddFriendRequest", this.AddFriendRequest);
     this.hubConnection.on("NewComment", this.NewComment);
     this.hubConnection.start().then(function () {
-      console.log('Hub Connection Started : alert from signalR Hub Service (ClientSide)');
+      console.info('Hub Connection Started : alert from signalR Hub Service (ClientSide)');
     }).catch(err => console.log('Error while starting connection: ' + err))
   }
 
   //save connection of user in database
   askServer(userId: number) {
-    this.hubConnection.invoke('SaveConnection', userId).catch(err => console.log(err));
+    this.hubConnection.invoke('SaveConnection', userId).catch(err => console.warn(err));
   }
 
   AddFriendRequest(notification: SignalRFriendRequestResponse) {
     let innerHtmlOfMenu = document.getElementById("notifications").innerHTML;
     var date = new Date();
-    var newNotification = ` <li *ngFor="let notification of unreadNotifications">
+    var newNotification = `<li *ngFor="let notification of unreadNotifications">
     <a *ngIf="thisUser.notifications.length > 0">
         <img width="40" height="40" src="https://localhost:44317/ProfilePictures/${notification.imageName}"
             alt="">

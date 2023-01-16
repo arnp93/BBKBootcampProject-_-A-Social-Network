@@ -21,7 +21,6 @@ export class AppComponent implements OnDestroy {
   constructor(private signalrService: SignalrService, private authService: AuthServiceService) { }
 
   ngOnInit(): void {
-
     // addEventListenertoHashtagList();
     loadPage();
     this.authService.checkAuth().subscribe(res => {
@@ -31,24 +30,17 @@ export class AppComponent implements OnDestroy {
           , res.data.birthDay, res.data.address, res.data.about, res.data.isPrivate, res.data.gender, res.data.profilePic,
           res.data.coverPic, res.data.userId, res.data.posts, res.data.notifications, res.data.friends
         );
-
         this.authService.setCurrentUser(currentUser);
-
         this.signalrService.startConnection();
         setTimeout(() => {
           // this.signalrService.askServerListener();
           this.signalrService.askServer(res.data.userId);
         }, 1500);
-
       }
     });
-
-
   }
 
   ngOnDestroy(): void {
     // this.signalrService.hubConnection.off("askServerResponse");
   }
-
-
 }

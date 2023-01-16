@@ -34,7 +34,6 @@ export class AddNewPostComponent implements OnInit {
     this.authService.getCurrentUser().subscribe(res => {
       this.thisUser = res;
     });
- 
   }
 
   addPhoto(event) {
@@ -54,7 +53,6 @@ export class AddNewPostComponent implements OnInit {
           if(postWordsArray[i].startsWith("#")){
             postWordsArray[i] = `<a class="link-hashtag"> ${postWordsArray[i]} </a>`
           }
-        
           postText += " " + postWordsArray[i]; 
         }
       }
@@ -67,7 +65,6 @@ export class AddNewPostComponent implements OnInit {
         addEventListenertoHashtagListFromAngular();
       } else {
         console.error("Error with Add new Post!!!");
-        
       }
     });
   }

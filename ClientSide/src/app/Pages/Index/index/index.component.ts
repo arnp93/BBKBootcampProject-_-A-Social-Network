@@ -55,9 +55,6 @@ export class IndexComponent implements OnInit, AfterViewInit {
         this.route.navigate([""]);
       }
     });
-
-
-
     
     this.authService.checkAuth().subscribe(res => {
       if (res.status === 'Success') {
@@ -83,7 +80,7 @@ export class IndexComponent implements OnInit, AfterViewInit {
     this.postService.getHashtagPosts(hashtagText).subscribe(res => {
       if(res.status === "Success"){
         this.postService.setHashtagPosts(res.data);
-        this.route.navigate(["/hashtag-posts"])
+        this.route.navigate(["/hashtag-posts"]);
       }
     });
   }
@@ -92,7 +89,7 @@ export class IndexComponent implements OnInit, AfterViewInit {
     this.newPosts.push(event);
   }
 
-  //Find Element in the page
+  //Find Element in the html page
   findPos(obj) {
     var curtop = 0;
     if (obj.offsetParent) {

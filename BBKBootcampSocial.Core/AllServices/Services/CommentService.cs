@@ -33,7 +33,7 @@ namespace BBKBootcampSocial.Core.AllServices.Services
         {
             var repository = await unitOfWork.GetRepository<GenericRepository<Comment>, Comment>();
             var notificationRepository = await unitOfWork.GetRepository<GenericRepository<Notification>, Notification>();
-
+            
             if (comment.UserId != userId)
             {
                 await notificationRepository.AddEntity(
